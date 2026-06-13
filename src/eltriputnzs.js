@@ -6,7 +6,7 @@ import PublicProfile from './proyek';
 import ErrorPage from './ErrorPage';   
 
 
-function App() {
+function EltriPutnzs() {
 
   useEffect(() => {
     // 1. Protokol Sistem Keamanan Master Eltri
@@ -105,7 +105,7 @@ function App() {
   };
 
   return (
-    <div className="App">
+    <div className="EltriPutnzs">
 {/* NAVBAR */}
       <nav className="container-navbar">
         <div className="nav-left">
@@ -371,4 +371,4 @@ function App() {
   );
 }
 
-export default App;
+export default EltriPutnzs;
