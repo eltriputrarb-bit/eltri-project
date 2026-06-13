@@ -243,86 +243,87 @@ function App() {
               </div>
             </div>
 
-{/* SKILLS SECTION */}
-            <div className="skills-section-wrapper">
-              <ul className="cubes">
-                <li></li><li></li><li></li><li></li>
-              </ul>
-              
-              <div className="skills-grid-container">
-                
-                {/* PYTHON */}
-                <div className="rpg-skill-card">
-                  <div className="skill-card-logo-zone">
-                    <i className="fa-brands fa-python skill-icon-logo python-color"></i>
-                  </div>
-                  <div className="skill-card-header">
-                    <span className="skill-title">PYTHON</span>
-                    <span className="card-level">Lv.6</span>
-                  </div>
-                  <div className="card-progress-bar">
-                    <div className="progress-fill" style={{ width: '6%' }}></div>
-                  </div>
-                </div>
+<div className="skills-section-wrapper">
+      {/* PARTIKEL ANIMASI KUBUS */}
+      <ul className="cubes">
+        <li></li><li></li><li></li><li></li>
+      </ul>
+      
+      {/* KONTEN UTAMA GRID SKILL */}
+      <div className="skills-grid-container">
+        
+        {/* 1. PYTHON */}
+        <div className="rpg-skill-card">
+          <div className="skill-card-logo-zone">
+            <i className="fa-brands fa-python skill-icon-logo python-color"></i>
+          </div>
+          <div className="skill-card-header">
+            <span className="skill-title">PYTHON</span>
+            <span className="card-level">Lv.6</span>
+          </div>
+          <div className="card-progress-bar">
+            <div className="progress-fill" style={{ width: '6%' }}></div>
+          </div>
+        </div>
 
-                {/* HTML5 */}
-                <div className="rpg-skill-card">
-                  <div className="skill-card-logo-zone">
-                    <i className="fa-brands fa-html5 skill-icon-logo html-color"></i>
-                  </div>
-                  <div className="skill-card-header">
-                    <span className="skill-title">HTML5</span>
-                    <span className="card-level">Lv.95</span>
-                  </div>
-                  <div className="card-progress-bar">
-                    <div className="progress-fill" style={{ width: '95%' }}></div>
-                  </div>
-                </div>
+        {/* 2. HTML5 */}
+        <div className="rpg-skill-card">
+          <div className="skill-card-logo-zone">
+            <i className="fa-brands fa-html5 skill-icon-logo html-color"></i>
+          </div>
+          <div className="skill-card-header">
+            <span className="skill-title">HTML5</span>
+            <span className="card-level">Lv.95</span>
+          </div>
+          <div className="card-progress-bar">
+            <div className="progress-fill" style={{ width: '95%' }}></div>
+          </div>
+        </div>
 
-                {/* JAVASCRIPT */}
-                <div className="rpg-skill-card">
-                  <div className="skill-card-logo-zone">
-                    <i className="fa-brands fa-js skill-icon-logo js-color"></i>
-                  </div>
-                  <div className="skill-card-header">
-                    <span className="skill-title">JAVASCRIPT</span>
-                    <span className="card-level">Lv.95</span>
-                  </div>
-                  <div className="card-progress-bar">
-                    <div className="progress-fill" style={{ width: '95%' }}></div>
-                  </div>
-                </div>
+        {/* 3. JAVASCRIPT */}
+        <div className="rpg-skill-card">
+          <div className="skill-card-logo-zone">
+            <i className="fa-brands fa-js skill-icon-logo js-color"></i>
+          </div>
+          <div className="skill-card-header">
+            <span className="skill-title">JAVASCRIPT</span>
+            <span className="card-level">Lv.95</span>
+          </div>
+          <div className="card-progress-bar">
+            <div className="progress-fill" style={{ width: '95%' }}></div>
+          </div>
+        </div>
 
-                {/* CSS3 */}
-                <div className="rpg-skill-card">
-                  <div className="skill-card-logo-zone">
-                    <i className="fa-brands fa-css3-alt skill-icon-logo css-color"></i>
-                  </div>
-                  <div className="skill-card-header">
-                    <span className="skill-title">CSS</span>
-                    <span className="card-level">Lv.95</span>
-                  </div>
-                  <div className="card-progress-bar">
-                    <div className="progress-fill" style={{ width: '95%' }}></div>
-                  </div>
-                </div>
+        {/* 4. CSS3 */}
+        <div className="rpg-skill-card">
+          <div className="skill-card-logo-zone">
+            <i className="fa-brands fa-css3-alt skill-icon-logo css-color"></i>
+          </div>
+          <div className="skill-card-header">
+            <span className="skill-title">CSS3</span>
+            <span className="card-level">Lv.95</span>
+          </div>
+          <div className="card-progress-bar">
+            <div className="progress-fill" style={{ width: '95%' }}></div>
+          </div>
+        </div>
 
-                {/* REACT JS */}
-                <div className="rpg-skill-card react-card-glow">
-                  <div className="skill-card-logo-zone">
-                    <i className="fa-brands fa-react skill-icon-logo react-color"></i>
-                  </div>
-                  <div className="skill-card-header">
-                    <span className="skill-title">REACT JS</span>
-                    <span className="card-level react-level-color">Lv.51</span>
-                  </div>
-                  <div className="card-progress-bar">
-                    <div className="progress-fill react-progress-fill" style={{ width: '51%' }}></div>
-                  </div>
-                </div>
+        {/* 5. REACT JS (DENGAN EFEK GLOW GAHAR) */}
+        <div className="rpg-skill-card react-card-glow">
+          <div className="skill-card-logo-zone">
+            <i className="fa-brands fa-react skill-icon-logo react-color"></i>
+          </div>
+          <div className="skill-card-header">
+            <span className="skill-title">REACT JS</span>
+            <span className="card-level react-level-color">Lv.51</span>
+          </div>
+          <div className="card-progress-bar">
+            <div className="progress-fill react-progress-fill" style={{ width: '51%' }}></div>
+          </div>
+        </div>
 
-              </div>
-            </div>
+      </div>
+    </div>
 
             {/* PROFILE SECTION */}
             <section className="profile-section">
