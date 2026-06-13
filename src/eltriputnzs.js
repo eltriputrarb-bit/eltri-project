@@ -214,9 +214,10 @@ function EltriPutnzs() {
 
             {/* WORLD CLOCK SECTION */}
             <div className="world-clock-container">
-              <ul className="cubes">
-                <li></li><li></li><li></li><li></li>
-              </ul>
+<ul className="cubes-fixed">
+    <li></li><li></li><li></li><li></li><li></li>
+    <li></li><li></li><li></li><li></li>
+  </ul>
               
               <div className="clock-card">
                 <span className="city-name">SINGAPORE</span>
@@ -245,7 +246,8 @@ function EltriPutnzs() {
 
 {/* SKILLS SECTION INTEGRASI TOTAL */}
 <div className="skills-section-wrapper">
-  <ul className="cubes">
+<ul className="cubes-fixed">
+    <li></li><li></li><li></li><li></li><li></li>
     <li></li><li></li><li></li><li></li>
   </ul>
   
