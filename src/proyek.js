@@ -45,17 +45,19 @@ const PublicProfile = () => {
     };
   }, []);
 
-  // EDIT: Fungsi dipermudah, langsung buka Google Maps di tab baru tanpa cek Apple Maps
+  // Fungsi navigasi link lokasi maps
   const handleMapsClick = (e, googleUrl) => {
     e.preventDefault();
     window.open(googleUrl, '_blank');
   };
 
   return (
-    <div style={{ width: '100%', minHeight: '100vh', background: '#030a16', paddingTop: '100px', boxSizing: 'border-box', position: 'relative', overflow: 'hidden' }}>
+    <div style={{ width: '100%', minHeight: '100vh', background: '#030a16', paddingTop: '100px', boxSizing: 'border-box', position: 'relative', overflow: 'hidden', fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>
       
-      {/* --- Suntikan Style CSS Animasi Kubus TEMA BIRU NEON --- */}
+      {/* --- Suntikan Style CSS Animasi Kubus & Google Fonts Premium --- */}
       <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800;900&display=swap');
+
         .cubes-fixed {
           position: absolute;
           top: 0; left: 0; width: 100%; height: 100%;
@@ -86,6 +88,22 @@ const PublicProfile = () => {
           90% { opacity: 0.8; }
           100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; border-radius: 50%; }
         }
+
+        .profile-title-main {
+          font-family: 'Poppins', sans-serif;
+          font-weight: 900;
+        }
+
+        .section-heading {
+          font-family: 'Poppins', sans-serif;
+          font-weight: 800;
+        }
+
+        .text-ios-premium {
+          font-family: 'Inter', sans-serif;
+          font-weight: 600;
+          letter-spacing: -0.3px;
+        }
       `}</style>
 
       {/* PARTIKEL ANIMASI KUBUS GAHAR */}
@@ -99,65 +117,67 @@ const PublicProfile = () => {
         <div className="profile-container" style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: '30px', padding: '10px', alignItems: 'flex-start' }}>
           
           {/* KARTU SIDEBAR PROFILE */}
-          <div className="side-bar" style={{ flex: '1', minWidth: '280px', background: 'rgba(17, 17, 17, 0.9)', border: '1px solid rgba(255,255,255,0.05)', padding: '30px', borderRadius: '15px', textAlign: 'center', boxSizing: 'border-box' }}>
-            <div className="photo-frame" style={{ width: '180px', height: '180px', margin: '0 auto 25px auto', borderRadius: '50%', overflow: 'hidden', border: '3px solid #0088cc', boxShadow: '0 0 20px rgba(0, 136, 204, 0.5)' }}>
+          <div className="side-bar" style={{ flex: '1', minWidth: '280px', background: 'rgba(11, 18, 33, 0.9)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.08)', padding: '35px 25px', borderRadius: '20px', textAlign: 'center', boxSizing: 'border-box', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>
+            <div className="photo-frame" style={{ width: '170px', height: '170px', margin: '0 auto 25px auto', borderRadius: '50%', overflow: 'hidden', border: '4px solid #0088cc', boxShadow: '0 0 25px rgba(0, 136, 204, 0.6)' }}>
               <img src="/images/profileE.jpg" alt="Eltri Putra" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
             
-            <div className="side-content" style={{ textAlign: 'left', marginTop: '20px' }}>
-              <h3 style={{ color: '#0088cc', fontSize: '15px', fontWeight: '800', letterSpacing: '1px', marginBottom: '8px', textTransform: 'uppercase' }}>
-                <i className="fas fa-user-circle"></i> JKT48 PROFIL AKTIF ONLINE
+            <div className="side-content" style={{ textAlign: 'center', marginTop: '20px' }}>
+              <h3 className="text-ios-premium" style={{ color: '#0088cc', fontSize: '13px', letterSpacing: '1.5px', marginBottom: '12px', textTransform: 'uppercase' }}>
+                <i className="fas fa-user-circle" style={{ marginRight: '5px' }}></i> JKT48 PROFIL AKTIF ONLINE
               </h3>
               
-              <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '8px', marginBottom: '15px' }}>
-                <p style={{ color: '#ccc', fontSize: '14px', margin: '0', fontFamily: "'Roboto', sans-serif", lineHeight: '1.4' }}>Nama Saya: Eltri Putra Rombebua</p>
-                <span className="status-dot-fixed"></span>
+              <div style={{ display: 'inline-flex', alignItems: 'center', justifyConten: 'center', gap: '10px', background: 'rgba(255,255,255,0.04)', padding: '8px 16px', borderRadius: '30px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                <p className="text-ios-premium" style={{ color: '#e2e8f0', fontSize: '14px', margin: '0' }}>Eltri Putra Rombebua</p>
+                <span className="status-dot-fixed" style={{ width: '8px', height: '8px', backgroundColor: '#00ff88', borderRadius: '50%', display: 'inline-block', boxShadow: '0 0 8px #00ff88' }}></span>
               </div>
             </div>
           </div>
 
           {/* KONTEN UTAMA - RIWAYAT PENDIDIKAN */}
-          <div className="main-content" style={{ flex: '2', minWidth: '300px', maxWidth: '100%', background: 'rgba(17, 17, 17, 0.8)', border: '1px solid rgba(255,255,255,0.05)', padding: '30px', borderRadius: '15px', boxSizing: 'border-box' }}>
-            <h1 className="profile-name" style={{ fontSize: '2.2rem', fontWeight: '900', letterSpacing: '1px', marginBottom: '10px', color: '#fff', wordBreak: 'break-word' }}>ELTRI PUTRA ROMBEBUA</h1>
-            <hr className="line-gold" style={{ border: '0', height: '3px', background: 'linear-gradient(90deg, #0088cc, transparent)', marginBottom: '35px', width: '100px' }} />
+          <div className="main-content" style={{ flex: '2', minWidth: '300px', maxWidth: '100%', background: 'rgba(11, 18, 33, 0.85)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.08)', padding: '35px', borderRadius: '20px', boxSizing: 'border-box', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>
+            <h1 className="profile-name profile-title-main" style={{ fontSize: '2.4rem', marginBottom: '5px', color: '#fff', wordBreak: 'break-word', letterSpacing: '-0.5px' }}>ELTRI PUTRA ROMBEBUA</h1>
+            <hr className="line-gold" style={{ border: '0', height: '4px', background: 'linear-gradient(90deg, #0088cc, transparent)', marginBottom: '35px', width: '80px', borderRadius: '2px' }} />
             
             <div className="info-section">
-              <h2 style={{ fontSize: '18px', fontWeight: '800', color: '#0088cc', marginBottom: '25px', letterSpacing: '1px', textTransform: 'uppercase' }}>
+              <h2 className="section-heading" style={{ fontSize: '16px', color: '#0088cc', marginBottom: '25px', letterSpacing: '1px', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <i className="fas fa-graduation-cap"></i> RIWAYAT PENDIDIKAN
               </h2>
               
               {/* ITEM SMK */}
-              <div className="item" style={{ background: 'rgba(255,255,255,0.02)', padding: '20px', borderLeft: '4px solid #0088cc', marginBottom: '20px', borderRadius: '0 10px 10px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
-                <strong style={{ fontSize: '16px', color: '#fff' }}>SMK XXXXX XXXXX</strong>
-                <span style={{ fontSize: '13px', color: '#FF0000', background: 'rgba(0,136,204,0.1)', padding: '4px 12px', borderRadius: '20px', fontWeight: '700' }}>2023 - 2026 Offline</span>
+              <div className="item" style={{ background: 'rgba(255,255,255,0.02)', padding: '20px', borderLeft: '4px solid #0088cc', marginBottom: '20px', borderRadius: '0 14px 14px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', borderTop: '1px solid rgba(255,255,255,0.02)', borderRight: '1px solid rgba(255,255,255,0.02)', borderBottom: '1px solid rgba(255,255,255,0.02)' }}>
+                <strong className="text-ios-premium" style={{ fontSize: '16px', color: '#ffffff' }}>SMK XXXXX XXXXX</strong>
+                <span className="text-ios-premium" style={{ fontSize: '12px', color: '#ff4d4d', background: 'rgba(255,77,77,0.1)', border: '1px solid rgba(255,77,77,0.2)', padding: '5px 14px', borderRadius: '20px' }}>2023 - 2026 Offline</span>
               </div>
 
               {/* ITEM SMP */}
-              <div className="item" style={{ background: "rgba(6, 11, 25, 0.75) url('/images/eltripro.png') no-repeat center center / cover", backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', padding: '20px', border: '1px solid rgba(0, 136, 204, 0.25)', borderLeft: '4px solid #0088cc', marginBottom: '20px', borderRadius: '0 10px 10px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px', boxShadow: '0 6px 20px rgba(0, 0, 0, 0.4)', position: 'relative', overflow: 'hidden' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', position: 'relative', zIndex: '2' }}>
-                  <strong style={{ fontSize: '16px', color: '#fff', letterSpacing: '0.5px', textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>SMPLB/SMP Katolik Rajawali</strong>
+              <div className="item" style={{ background: "linear-gradient(rgba(6, 11, 25, 0.82), rgba(6, 11, 25, 0.82)), url('/images/eltripro.png') no-repeat center center / cover", padding: '20px', border: '1px solid rgba(0, 136, 204, 0.2)', borderLeft: '4px solid #0088cc', marginBottom: '20px', borderRadius: '0 14px 14px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', boxShadow: '0 6px 20px rgba(0, 0, 0, 0.3)' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <strong className="text-ios-premium" style={{ fontSize: '16px', color: '#ffffff' }}>SMPLB/SMP Katolik Rajawali</strong>
                   <button 
                     onClick={(e) => handleMapsClick(e, "https://maps.app.goo.gl/sZbx2tqaH15aapteA")}
-                    style={{ background: 'none', border: 'none', padding: 0, color: '#0088cc', cursor: 'pointer', textAlign: 'left', fontSize: '12px', fontWeight: '700', display: 'inline-flex', alignItems: 'center', gap: '5px' }}
+                    className="text-ios-premium"
+                    style={{ background: 'none', border: 'none', padding: 0, color: '#0088cc', cursor: 'pointer', textAlign: 'left', fontSize: '12px', display: 'inline-flex', alignItems: 'center', gap: '6px', transition: '0.2s' }}
                   >
                     <i className="fas fa-map-marker-alt"></i> LIHAT LOKASI SEKOLAH
                   </button>
                 </div>
-                <span style={{ fontSize: '13px', color: '#00ff88', background: 'rgba(0, 255, 136, 0.1)', border: '1px solid rgba(0, 255, 136, 0.3)', padding: '4px 12px', borderRadius: '20px', fontWeight: '700', textShadow: '0 0 5px rgba(0,255,136,0.5)', position: 'relative', zIndex: '2' }}>2020 - 2023 Online</span>
+                <span className="text-ios-premium" style={{ fontSize: '12px', color: '#00ff88', background: 'rgba(0, 255, 136, 0.1)', border: '1px solid rgba(0, 255, 136, 0.25)', padding: '5px 14px', borderRadius: '20px', textShadow: '0 0 4px rgba(0,255,136,0.3)' }}>2020 - 2023 Online</span>
               </div>
 
               {/* ITEM SD */}
-              <div className="item" style={{ background: "rgba(6, 11, 25, 0.75) url('/images/eltripro.png') no-repeat center center / cover", backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', padding: '20px', border: '1px solid rgba(0, 136, 204, 0.25)', borderLeft: '4px solid #0088cc', marginBottom: '0', borderRadius: '0 10px 10px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px', boxShadow: '0 6px 20px rgba(0, 0, 0, 0.4)', position: 'relative', overflow: 'hidden' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', position: 'relative', zIndex: '2' }}>
-                  <strong style={{ fontSize: '16px', color: '#fff', letterSpacing: '0.5px', textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>SDLB/SD Katolik Rajawali</strong>
+              <div className="item" style={{ background: "linear-gradient(rgba(6, 11, 25, 0.82), rgba(6, 11, 25, 0.82)), url('/images/eltripro.png') no-repeat center center / cover", padding: '20px', border: '1px solid rgba(0, 136, 204, 0.2)', borderLeft: '4px solid #0088cc', marginBottom: '0', borderRadius: '0 14px 14px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', boxShadow: '0 6px 20px rgba(0, 0, 0, 0.3)' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <strong className="text-ios-premium" style={{ fontSize: '16px', color: '#ffffff' }}>SDLB/SD Katolik Rajawali</strong>
                   <button 
                     onClick={(e) => handleMapsClick(e, "https://maps.app.goo.gl/MNqCMi9kFdeL2woCA")}
-                    style={{ background: 'none', border: 'none', padding: 0, color: '#0088cc', cursor: 'pointer', textAlign: 'left', fontSize: '12px', fontWeight: '700', display: 'inline-flex', alignItems: 'center', gap: '5px' }}
+                    className="text-ios-premium"
+                    style={{ background: 'none', border: 'none', padding: 0, color: '#0088cc', cursor: 'pointer', textAlign: 'left', fontSize: '12px', display: 'inline-flex', alignItems: 'center', gap: '6px', transition: '0.2s' }}
                   >
                     <i className="fas fa-map-marker-alt"></i> LIHAT LOKASI SEKOLAH
                   </button>
                 </div>
-                <span style={{ fontSize: '13px', color: '#00ff88', background: 'rgba(0, 255, 136, 0.1)', border: '1px solid rgba(0, 255, 136, 0.3)', padding: '4px 12px', borderRadius: '20px', fontWeight: '700', textShadow: '0 0 5px rgba(0,255,136,0.5)', position: 'relative', zIndex: '2' }}>2014 - 2020 Online</span>
+                <span className="text-ios-premium" style={{ fontSize: '12px', color: '#00ff88', background: 'rgba(0, 255, 136, 0.1)', border: '1px solid rgba(0, 255, 136, 0.25)', padding: '5px 14px', borderRadius: '20px', textShadow: '0 0 4px rgba(0,255,136,0.3)' }}>2014 - 2020 Online</span>
               </div>
 
             </div>
@@ -167,7 +187,7 @@ const PublicProfile = () => {
       </section>
 
       {/* FOOTER */}
-      <footer style={{ textAlign: 'center', padding: '30px', color: '#555', fontSize: '13px', fontWeight: '600', letterSpacing: '1px', borderTop: '1px solid rgba(255,255,255,0.02)', marginTop: '40px', position: 'relative', zIndex: '2' }}>
+      <footer className="text-ios-premium" style={{ textAlign: 'center', padding: '30px', color: '#414b5a', fontSize: '12px', letterSpacing: '1px', borderTop: '1px solid rgba(255,255,255,0.02)', marginTop: '50px', position: 'relative', zIndex: '2' }}>
         © 2026 ELTRI PROJECT. All Rights Reserved.
       </footer>
     </div>
