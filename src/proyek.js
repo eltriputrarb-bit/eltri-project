@@ -161,7 +161,7 @@ const PublicProfile = () => {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                   <strong className="premium-sub-title" style={{ fontSize: '16px', color: '#ffffff' }}>SMPLB/SMP Katolik Rajawali</strong>
                   <button 
-                    onClick={(e) => handleMapsClick(e, "https://maps.google.com")}
+                    onClick={(e) => handleMapsClick(e, "https://maps.app.goo.gl/bWFjn5CvVD8UB59Z9")}
                     className="premium-sub-title"
                     style={{ background: 'none', border: 'none', padding: 0, color: '#0088cc', cursor: 'pointer', textAlign: 'left', fontSize: '12px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
                   >
@@ -176,7 +176,7 @@ const PublicProfile = () => {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                   <strong className="premium-sub-title" style={{ fontSize: '16px', color: '#ffffff' }}>SDLB/SD Katolik Rajawali</strong>
                   <button 
-                    onClick={(e) => handleMapsClick(e, "https://maps.google.com")}
+                    onClick={(e) => handleMapsClick(e, "https://maps.app.goo.gl/4yzQYwkZcfacuTXm7")}
                     className="premium-sub-title"
                     style={{ background: 'none', border: 'none', padding: 0, color: '#0088cc', cursor: 'pointer', textAlign: 'left', fontSize: '12px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
                   >
