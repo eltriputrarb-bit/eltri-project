@@ -666,7 +666,7 @@ body {
     display: flex !important;
     flex-direction: row !important;
     justify-content: center !important;
-    flex-wrap: wrap !important; /* Supaya kalau kepanjangan dia otomatis turun */
+    flex-wrap: wrap !important;
     gap: 20px !important;
     width: 90% !important;
     max-width: 1200px;
@@ -680,7 +680,7 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
     border-radius: 12px !important;
     padding: 20px !important;
-    width: 200px !important; /* Ukuran proporsional desktop */
+    width: 200px !important;
     height: 140px !important;
     backdrop-filter: blur(8px);
     font-family: "Courier New", monospace;
@@ -709,7 +709,7 @@ body {
     font-size: 2rem !important;
 }
 
-/* Efek Warna Icon */
+/* Efek Warna Icon Global */
 .python-color { color: #3776ab; filter: drop-shadow(0 0 8px rgba(55, 118, 171, 0.6)); }
 .html-color   { color: #e34f26; filter: drop-shadow(0 0 8px rgba(227, 79, 38, 0.6)); }
 .js-color     { color: #f7df1e; background: #000; border-radius: 4px; padding: 1px 4px; font-size: 1.7rem !important; filter: drop-shadow(0 0 8px rgba(247, 223, 30, 0.5)); }
@@ -726,6 +726,21 @@ body {
 .react-card-glow:hover {
     border-color: rgba(97, 218, 251, 0.6) !important;
     box-shadow: 0 0 20px rgba(97, 218, 251, 0.25) !important;
+}
+
+/* Efek Khusus PHP */
+.php-color { 
+    color: #777bb4; 
+    filter: drop-shadow(0 0 8px rgba(119, 123, 180, 0.7)); 
+    font-size: 2.2rem !important;
+}
+.php-level-color { 
+    color: #a0a4d4 !important; 
+    font-weight: bold;
+}
+.php-progress-fill { 
+    background: linear-gradient(90deg, #777bb4, #9b9ece) !important;
+    box-shadow: 0 0 10px rgba(119, 123, 180, 0.6) !important;
 }
 
 /* Header di dalam kartu */
@@ -749,7 +764,7 @@ body {
     font-weight: bold;
 }
 
-/* Progress Bar */
+/* Progress Bar Base */
 .skills-section-wrapper .card-progress-bar {
     width: 100% !important;
     height: 6px !important;
@@ -766,7 +781,7 @@ body {
 }
 
 /* ==========================================================================
-   PENYELAMAT LAYOUT MOBILE / ANDROID (ANTI-MENCUT)
+   PENYELAMAT LAYOUT MOBILE / ANDROID (OPTIMIZED)
    ========================================================================== */
 @media screen and (max-width: 768px) {
     .skills-section-wrapper {
@@ -775,7 +790,7 @@ body {
         padding: 25px 12px !important;
     }
 
-    /* Paksa total ganti ke Grid murni 2 kolom */
+    /* Grid Murni 2 Kolom Kompak */
     .skills-section-wrapper .skills-grid-container {
         display: grid !important;
         grid-template-columns: repeat(2, 1fr) !important;
@@ -783,7 +798,7 @@ body {
         width: 100% !important;
     }
 
-    /* Pengaturan dimensi ulang kartu di HP agar teks leluasa */
+    /* Kartu Responsif Android */
     .skills-section-wrapper .rpg-skill-card {
         width: 100% !important;
         min-width: 0 !important;
@@ -792,7 +807,7 @@ body {
         border-radius: 10px !important;
     }
 
-    /* Set nama skill di atas, level di bawahnya supaya tidak tabrakan ke samping */
+    /* Penyelamatan Header Kartu di Mobile */
     .skills-section-wrapper .skill-card-header {
         flex-direction: column !important;
         align-items: flex-start !important;
@@ -812,12 +827,17 @@ body {
         font-size: 0.8rem !important;
     }
 
+    /* Skala Ukuran Icon di Layar Kecil */
     .skills-section-wrapper .skill-icon-logo {
         font-size: 1.6rem !important;
     }
 
     .skills-section-wrapper .js-color {
         font-size: 1.3rem !important;
+    }
+    
+    .skills-section-wrapper .php-color {
+        font-size: 1.8rem !important; /* Mencegah logo PHP mobile overflow */
     }
 
     .skills-section-wrapper .card-progress-bar {
