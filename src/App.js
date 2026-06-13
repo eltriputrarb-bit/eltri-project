@@ -243,13 +243,15 @@ function App() {
               </div>
             </div>
 
-            {/* SKILLS SECTION */}
+{/* SKILLS SECTION */}
             <div className="skills-section-wrapper">
               <ul className="cubes">
                 <li></li><li></li><li></li><li></li>
               </ul>
+              
               <div className="skills-grid-container">
                 
+                {/* PYTHON */}
                 <div className="rpg-skill-card">
                   <div className="skill-card-logo-zone">
                     <i className="fa-brands fa-python skill-icon-logo python-color"></i>
@@ -263,12 +265,13 @@ function App() {
                   </div>
                 </div>
 
+                {/* HTML5 */}
                 <div className="rpg-skill-card">
                   <div className="skill-card-logo-zone">
                     <i className="fa-brands fa-html5 skill-icon-logo html-color"></i>
                   </div>
                   <div className="skill-card-header">
-                    <span className="skill-title">HTML</span>
+                    <span className="skill-title">HTML5</span>
                     <span className="card-level">Lv.95</span>
                   </div>
                   <div className="card-progress-bar">
@@ -276,6 +279,7 @@ function App() {
                   </div>
                 </div>
 
+                {/* JAVASCRIPT */}
                 <div className="rpg-skill-card">
                   <div className="skill-card-logo-zone">
                     <i className="fa-brands fa-js skill-icon-logo js-color"></i>
@@ -289,6 +293,7 @@ function App() {
                   </div>
                 </div>
 
+                {/* CSS3 */}
                 <div className="rpg-skill-card">
                   <div className="skill-card-logo-zone">
                     <i className="fa-brands fa-css3-alt skill-icon-logo css-color"></i>
@@ -299,6 +304,20 @@ function App() {
                   </div>
                   <div className="card-progress-bar">
                     <div className="progress-fill" style={{ width: '95%' }}></div>
+                  </div>
+                </div>
+
+                {/* REACT JS */}
+                <div className="rpg-skill-card react-card-glow">
+                  <div className="skill-card-logo-zone">
+                    <i className="fa-brands fa-react skill-icon-logo react-color"></i>
+                  </div>
+                  <div className="skill-card-header">
+                    <span className="skill-title">REACT JS</span>
+                    <span className="card-level react-level-color">Lv.51</span>
+                  </div>
+                  <div className="card-progress-bar">
+                    <div className="progress-fill react-progress-fill" style={{ width: '51%' }}></div>
                   </div>
                 </div>
 
