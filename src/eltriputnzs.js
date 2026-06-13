@@ -115,35 +115,35 @@ function EltriPutnzs() {
           </Link>
         </div>
 
-        <div className="nav-right">
+<div className="nav-right">
           <ul className="ul-navbar" id="nav-links">
             <li>
-              <Link to="/" className="menu-item-btn btn-gahar">
+              <Link to="/" className="menu-item-btn btn-gahar" onClick={toggleMenu}>
                 <i className="fas fa-home"></i> HOME
               </Link>
             </li>
             <li>
-              <Link to="/gallery" className="menu-item-btn btn-gahar">
+              <Link to="/gallery" className="menu-item-btn btn-gahar" onClick={toggleMenu}>
                 <i className="fas fa-images"></i> GALLERY
               </Link>
             </li>
             <li>
-              <a href="/proyek" className="menu-item-btn btn-gahar">
+              <Link to="/proyek" className="menu-item-btn btn-gahar" onClick={toggleMenu}>
                 <i className="fas fa-user"></i> PublicProfile
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/ErrorPage" className="menu-item-btn btn-gahar">
+              <Link to="/ErrorPage" className="menu-item-btn btn-gahar" onClick={toggleMenu}>
                 <i className="fas fa-exclamation-triangle"></i> ErrorPage
-              </a>
+              </Link>
             </li>
           </ul>
+        </div>
 
-          <div className="menu-toggle" id="mobile-menu" onClick={toggleMenu}>
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
+        <div className="menu-toggle" id="mobile-menu" onClick={toggleMenu}>
+          <span></span>
+          <span></span>
+          <span></span>
         </div>
       </nav>
 

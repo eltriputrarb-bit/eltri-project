@@ -91,11 +91,15 @@ function Gallery() {
   };
 
   const closeModal = () => {
+    // FIX: Matikan paksa audio video jika lightbox ditutup agar suaranya tidak bocor
+    if (videoRef.current) {
+      videoRef.current.pause();
+    }
     setModalOpen(false);
     setModalMedia({ type: '', src: '' });
   };
 
-  return (
+return (
     <div className="gallery-view">
       {/* UPDATE SERVER LOADER */}
       {showLoader && (
@@ -110,6 +114,8 @@ function Gallery() {
           </div>
         </div>
       )}
+
+      {/* KODE NAVBAR DOUBLE SEBELUMNYA SUDAH DIHAPUS TOTAL DI SINI */}
 
       {/* BACKGROUND ANIMASI CUBES */}
       <ul className="cubes">
