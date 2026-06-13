@@ -66,61 +66,33 @@ body {
     100% { background-position: 0% 50%; }
 }
 
-/* --- SISTEM KUBUS DIGITAL MELAYANG (GALLERY FIXED LAYER) --- */
-.cubes {
-    position: fixed !important;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    overflow: hidden;
-    z-index: -1 !important; /* Berada di bawah seluruh tumpukan kartu galeri */
-    pointer-events: none;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
+.cubes-fixed {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      overflow: hidden; z-index: 1; list-style: none; padding: 0; margin: 0;
+    }
+    .cubes-fixed li {
+      position: absolute; display: block; list-style: none; width: 25px; height: 25px;
+      background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(0, 212, 255, 0.4);
+      box-shadow: 0 0 10px rgba(0, 212, 255, 0.2); bottom: -150px;
+      animation: flyUpwards 20s linear infinite; border-radius: 4px;
+    }
+    .cubes-fixed li:nth-child(1) { left: 10%; width: 80px; height: 80px; animation-delay: 0s; animation-duration: 18s; }
+    .cubes-fixed li:nth-child(2) { left: 25%; width: 35px; height: 35px; animation-delay: 2s; animation-duration: 12s; }
+    .cubes-fixed li:nth-child(3) { left: 40%; width: 65px; height: 65px; animation-delay: 4s; animation-duration: 22s; }
+    .cubes-fixed li:nth-child(4) { left: 55%; width: 20px; height: 20px; animation-delay: 1s; animation-duration: 15s; }
+    .cubes-fixed li:nth-child(5) { left: 70%; width: 90px; height: 90px; animation-delay: 5s; animation-duration: 25s; }
+    .cubes-fixed li:nth-child(6) { left: 85%; width: 40px; height: 40px; animation-delay: 3s; animation-duration: 14s; }
+    .cubes-fixed li:nth-child(7) { left: 18%; width: 50px; height: 50px; animation-delay: 7s; animation-duration: 16s; }
+    .cubes-fixed li:nth-child(8) { left: 48%; width: 30px; height: 30px; animation-delay: 9s; animation-duration: 11s; }
+    .cubes-fixed li:nth-child(9) { left: 78%; width: 75px; height: 75px; animation-delay: 2s; animation-duration: 19s; }
 
-.cubes li {
-    position: absolute;
-    display: block;
-    /* UPDATE: Mempertegas kilau border dan menambahkan pendaran box-shadow serasi halaman utama */
-    border: 2px solid rgba(0, 188, 212, 0.4) !important; 
-    background: rgba(0, 188, 212, 0.03) !important;
-    bottom: -150px;
-    animation: flyUpGallery 22s linear infinite;
-    border-radius: 12px; /* Lebih rounded halus dan modern */
-    box-shadow: 0 0 15px rgba(0, 188, 212, 0.15);
-}
-
-/* Penempatan posisi, ukuran acak, delay, dan durasi kubus agar menyebar estetik */
-.cubes li:nth-child(1) { left: 5%; width: 75px; height: 75px; animation-delay: 0s; animation-duration: 18s; }
-.cubes li:nth-child(2) { left: 22%; width: 35px; height: 35px; animation-delay: 3s; animation-duration: 12s; }
-.cubes li:nth-child(3) { left: 40%; width: 95px; height: 95px; animation-delay: 1s; animation-duration: 22s; }
-.cubes li:nth-child(4) { left: 58%; width: 45px; height: 45px; animation-delay: 0s; animation-duration: 15s; }
-.cubes li:nth-child(5) { left: 75%; width: 30px; height: 30px; animation-delay: 5s; animation-duration: 13s; }
-.cubes li:nth-child(6) { left: 90%; width: 110px; height: 110px; animation-delay: 2s; animation-duration: 25s; border-color: rgba(0, 136, 204, 0.4) !important; }
-.cubes li:nth-child(7) { left: 14%; width: 55px; height: 55px; animation-delay: 7s; animation-duration: 16s; }
-.cubes li:nth-child(8) { left: 48%; width: 25px; height: 25px; animation-delay: 4s; animation-duration: 10s; }
-.cubes li:nth-child(9) { left: 80%; width: 65px; height: 65px; animation-delay: 6s; animation-duration: 19s; }
-
-@keyframes flyUpGallery {
-    0% { 
-        transform: translateY(0) rotate(0deg); 
-        opacity: 0; 
+    @keyframes flyUpwards {
+      0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; border-radius: 50%; }
     }
-    10% {
-        opacity: 0.8;
-    }
-    90% {
-        opacity: 0.8;
-    }
-    100% { 
-        transform: translateY(-125vh) rotate(360deg); 
-        opacity: 0; 
-        border-radius: 30%; /* Efek melengkung saat hancur di atas screen */
-    }
-}
 
 /* ==========================================================================
    2. NAVBAR STRUCTURE (BIRU NEON ACCENT)

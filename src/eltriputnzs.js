@@ -197,15 +197,30 @@ function EltriPutnzs() {
   </div>
 </section>
 
-            {/* SOCIAL FOOTER */}
 <section className="social-footer">
   <h3>Project Sosial</h3>
   <div className="social-icons">
-    <a href="https://www.instagram.com/eltriputra?igsh=cDE5ZXllNXB4dHNo" className="icon instagram" target="_blank" rel="noreferrer">
+    <a 
+      href="https://www.instagram.com/eltriputra?igsh=cDE5ZXllNXB4dHNo" 
+      className="icon instagram" 
+      target="_blank" 
+      rel="noopener noreferrer"
+    >
       <i className="fab fa-instagram"></i>
     </a>
-    <a href="https://x.com/eltri_putra" className="icon x-logo" target="_blank" rel="noreferrer">
-      <svg className="svg-x" viewBox="0 0 24 24" aria-hidden="true">
+    
+    <a 
+      href="https://x.com/eltri_putra" 
+      className="icon x-logo" 
+      target="_blank" 
+      rel="noopener noreferrer"
+    >
+      <svg 
+        viewBox="0 0 24 24" 
+        aria-hidden="true" 
+        className="svg-x" 
+        style={{ width: '24px', height: '24px', fill: 'white', verticalAlign: 'middle' }}
+      >
         <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
       </svg>
     </a>
@@ -214,10 +229,9 @@ function EltriPutnzs() {
 
             {/* WORLD CLOCK SECTION */}
             <div className="world-clock-container">
-<ul className="cubes-fixed">
-    <li></li><li></li><li></li><li></li><li></li>
-    <li></li><li></li><li></li><li></li>
-  </ul>
+              <ul className="cubes">
+                <li></li><li></li><li></li><li></li>
+              </ul>
               
               <div className="clock-card">
                 <span className="city-name">SINGAPORE</span>
@@ -341,24 +355,24 @@ function EltriPutnzs() {
 </div>
 
             {/* PROFILE SECTION */}
-            <section className="profile-section">
-              <div className="container-flex">
-                <div className="image-wrapper">
-                  <img src={`${process.env.PUBLIC_URL}/gereja.jpg`} className="img-main" alt="Gereja" />
-                  <div className="floating-logo">
-                    <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="Floating Logo" />
-                  </div>
-                </div>
+<section className="profile-section">
+  <div className="container-flex">
+    <div className="image-wrapper">
+      <img src="  /gereja.jpg" className="img-main" alt="Gereja" />
+      <div className="floating-logo">
+        <img src="logo.png" alt="Floating Logo" />
+      </div>
+    </div>
+    <div className="text-wrapper">
+      <span className="label-eltri">ELTRI</span>
+      <h2 className="name-title">ELTRI PUTRA ROMBEBUA</h2>
+      <div className="visi-content">
+        <p className="visi-text">"Tuhan Yang Maha Esa"</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-                <div className="text-wrapper">
-                  <span className="label-eltri">ELTRI</span>
-                  <h2 className="name-title">ELTRI PUTRA ROMBEBUA</h2>
-                  <div className="visi-content">
-                    <p className="visi-text">"Tuhan Yang Maha Esa"</p>
-                  </div>
-                </div>
-              </div>
-            </section>
           </>
         } />
 
