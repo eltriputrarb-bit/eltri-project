@@ -50,7 +50,7 @@ const PublicProfile = () => {
     window.open(googleUrl, '_blank');
   };
 
-  return (
+return (
     <div style={{ width: '100%', minHeight: '100vh', background: '#030a16', paddingTop: '100px', boxSizing: 'border-box', position: 'relative', overflow: 'hidden', fontFamily: "'Poppins', sans-serif" }}>
       
       {/* --- PANGGIL FONT LOKAL & PENGATURAN TEKS --- */}
@@ -113,12 +113,12 @@ const PublicProfile = () => {
       `}</style>
 
       {/* PARTIKEL ANIMASI KUBUS GAHAR */}
-<ul className="cubes-fixed">
-    <li></li><li></li><li></li><li></li><li></li>
-    <li></li><li></li><li></li><li></li>
-  </ul>
+      <ul className="cubes-fixed">
+        <li></li><li></li><li></li><li></li><li></li>
+        <li></li><li></li><li></li><li></li>
+      </ul>
 
-<div className="hero-about" style={{ marginTop: '120px', padding: '20px 0' }}>
+      <div className="hero-about" style={{ marginTop: '120px', padding: '20px 0' }}>
         <section className="public-profile">
           <div className="profile-container" style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: '30px', padding: '20px', alignItems: 'flex-start' }}>
             
@@ -168,13 +168,15 @@ const PublicProfile = () => {
                   </span>
                 </div>
 
-                {/* ITEM 2: SMP */}
+{/* ITEM 2: SMP */}
                 <div className="item education-item" style={{ background: "rgba(6, 11, 25, 0.75) url('images/Eltripro.jpg') no-repeat center center / cover", backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', padding: '22px 20px', border: '1px solid rgba(0, 136, 204, 0.2)', borderLeft: '5px solid #00d8ff', marginBottom: '20px', borderRadius: '0 12px 12px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '15px', boxShadow: '0 6px 20px rgba(0, 0, 0, 0.4)', position: 'relative', overflow: 'hidden' }}>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', position: 'relative', zIndex: 2 }}>
                     <strong style={{ fontSize: '16px', color: '#fff', letterSpacing: '0.5px', textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>SMPLB/SMP Katolik Rajawali</strong>
+                    
                     <a 
-                      href="#" 
+                      href="https://maps.app.goo.gl/4Ziqx6ttAos2BBeaA" 
                       className="maps-link" 
+                      onClick={handleMapsClick} // <-- Dipasang di sini supaya fungsi terpakai
                       data-google="https://maps.app.goo.gl/4Ziqx6ttAos2BBeaA"  
                       data-apple="https://maps.apple.com/place?place-id=I2F30F7CA285A3484&address=Jalan+Arief+Rate+No.+2%2C+Makassar%2C+South+Sulawesi+90112%2C+Indonesia&coordinate=-5.145646%2C119.411699&name=SMP+Katolik+Rajawali&_provider=9902" 
                       target="_blank" 
@@ -204,6 +206,7 @@ const PublicProfile = () => {
                     <a 
                       href="https://maps.app.goo.gl/anPddpFL9hKKa9wF7" 
                       className="maps-link" 
+                      onClick={handleMapsClick} // <-- Dipasang di sini juga supaya konsisten
                       data-google="https://maps.app.goo.gl/anPddpFL9hKKa9wF7" 
                       data-apple="maps://maps.apple.com/?q=SD+Katolik+Rajawali+Makassar" 
                       target="_blank" 
@@ -231,10 +234,11 @@ const PublicProfile = () => {
         </section>
       </div>
 
-<footer className="main-footer" style={{ textAlign: 'center', padding: '30px', color: '#666', fontSize: '13px', fontWeight: '600', letterSpacing: '1px', borderTop: '1px solid rgba(255,255,255,0.02)', marginTop: '50px' }}>
+      <footer className="main-footer" style={{ textAlign: 'center', padding: '30px', color: '#666', fontSize: '13px', fontWeight: '600', letterSpacing: '1px', borderTop: '1px solid rgba(255,255,255,0.02)', marginTop: '50px' }}>
         © 2026 ELTRI PROJECT. All Rights Reserved.
       </footer>
-    </div> // Tutup div utama kamu jika ada, atau ganti </>
-  ); // Tutup dari return (
-};
+    </div>
+  );
+}
+
 export default PublicProfile;
