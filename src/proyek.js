@@ -45,9 +45,17 @@ const PublicProfile = () => {
     };
   }, []);
 
-  const handleMapsClick = (e, googleUrl) => {
-    e.preventDefault();
-    window.open(googleUrl, '_blank');
+const handleMapsClick = (e) => {
+    const isApple = /iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent);
+    if (isApple) {
+      e.preventDefault();
+      const appleLink = e.currentTarget.getAttribute('data-apple');
+      if (appleLink) window.open(appleLink, '_blank');
+    } else {
+      e.preventDefault();
+      const googleLink = e.currentTarget.getAttribute('data-google');
+      if (googleLink) window.open(googleLink, '_blank');
+    }
   };
 
 return (
@@ -174,11 +182,13 @@ return (
                     <strong style={{ fontSize: '16px', color: '#fff', letterSpacing: '0.5px', textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>SMPLB/SMP Katolik Rajawali</strong>
                     
                     <a 
-                      href="https://maps.app.goo.gl/4Ziqx6ttAos2BBeaA" 
+                      href="https://maps.app.goo.gl/J7tRUt9f3QzeR5pi8" 
                       className="maps-link" 
-                      onClick={handleMapsClick} // <-- Dipasang di sini supaya fungsi terpakai
-                      data-google="https://maps.app.goo.gl/4Ziqx6ttAos2BBeaA"  
-                      data-apple="https://maps.apple.com/place?place-id=I2F30F7CA285A3484&address=Jalan+Arief+Rate+No.+2%2C+Makassar%2C+South+Sulawesi+90112%2C+Indonesia&coordinate=-5.145646%2C119.411699&name=SMP+Katolik+Rajawali&_provider=9902" 
+                      onClick={(e) => {
+                        if (typeof handleMapsClick === 'function') handleMapsClick(e);
+                      }}
+                      data-google="https://maps.app.goo.gl/J7tRUt9f3QzeR5pi8"  
+                      data-apple="https://maps.apple.com/place?address=Jalan+Arief+Rate+No.+2%2C+Makassar%2C+South+Sulawesi+90112%2C+Indonesia&coordinate=-5.145646%2C119.411699&name=SMP+Katolik+Rajawali" 
                       target="_blank" 
                       rel="noopener noreferrer"
                       style={{ color: '#00d8ff', textDecoration: 'none', fontSize: '12px', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '5px', transition: '0.2s' }} 
@@ -204,10 +214,12 @@ return (
                       SDLB/SD Katolik Rajawali
                     </strong>
                     <a 
-                      href="https://maps.app.goo.gl/anPddpFL9hKKa9wF7" 
+                      href="https://maps.app.goo.gl/o1JExkS8SGsWWa1R8" 
                       className="maps-link" 
-                      onClick={handleMapsClick} // <-- Dipasang di sini juga supaya konsisten
-                      data-google="https://maps.app.goo.gl/anPddpFL9hKKa9wF7" 
+                      onClick={(e) => {
+                        if (typeof handleMapsClick === 'function') handleMapsClick(e);
+                      }}
+                      data-google="https://maps.app.goo.gl/o1JExkS8SGsWWa1R8" 
                       data-apple="maps://maps.apple.com/?q=SD+Katolik+Rajawali+Makassar" 
                       target="_blank" 
                       rel="noopener noreferrer"
