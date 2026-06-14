@@ -16,8 +16,8 @@ function Gallery() {
 
   // Data Media Grid Galeri Kamu
   const galleryItems = [
-    { id: 17, type: 'img', src: '/images/foto12.jpg', date: '14/06,juni,2026', desc: '📸' },
-    { id: 16, type: 'video', src: '/video/waterboom.mp4', date: '14/06,juni,2026', desc: 'water' },
+    { id: 17, type: 'img', src: '/images/foto13.jpg', date: '14/06,juni,2026', desc: 'DI SMC MAKASSAR' },
+    { id: 16, type: 'img', src: '/images/foto12.jpg', date: '14/06,juni,2026', desc: 'DI SMC MAKASSAR' },
     { id: 11, type: 'img', src: '/images/foto11.jpg', date: '10/06,juni,2026', desc: 'warkop gunung nona indah' },
     { id: 12, type: 'video', src: '/video/Nostalgia.mp4', date: '09/06,juni,2026', desc: 'kid miss u' },
     { id: 10, type: 'img', src: '/images/foto10.jpg', date: '08/06,juni,2026', desc: 'toraja' },
