@@ -288,7 +288,7 @@ function EltriPutnzs() {
         <i className="fa-brands fa-html5 skill-icon-logo html-color"></i>
       </div>
       <div className="skill-card-header">
-        <span className="skill-title">HTML5</span>
+        <span className="skill-title">HTML</span>
         <span className="card-level">Lv.95</span>
       </div>
       <div className="card-progress-bar">
@@ -316,7 +316,7 @@ function EltriPutnzs() {
         <i className="fa-brands fa-css3-alt skill-icon-logo css-color"></i>
       </div>
       <div className="skill-card-header">
-        <span className="skill-title">CSS3</span>
+        <span className="skill-title">CSS</span>
         <span className="card-level">Lv.95</span>
       </div>
       <div className="card-progress-bar">
@@ -359,13 +359,13 @@ function EltriPutnzs() {
 <section className="profile-section">
   <div className="container-flex">
     <div className="image-wrapper">
-      <img src="  /gereja.jpg" className="img-main" alt="Gereja" />
+      <img src="  /alkitab.jpg" className="img-main" alt="Gereja" />
       <div className="floating-logo">
 <img src="./images/logo.png" alt="Floating Logo" />
       </div>
     </div>
     <div className="text-wrapper">
-      <span className="label-eltri">ELTRI</span>
+      <span className="label-eltri">Server sebelah</span>
       <h2 className="name-title">ELTRI PUTRA ROMBEBUA</h2>
       <div className="visi-content">
         <p className="visi-text">"Tuhan Yang Maha Esa"</p>
