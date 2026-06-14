@@ -139,7 +139,7 @@ return (
               
               <div className="side-content" style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '18px' }}>
                 <h3 style={{ color: '#00d8ff', fontSize: '13px', fontWeight: '800', letterSpacing: '2px', margin: 0, textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '8px', filter: 'drop-shadow(0 0 8px rgba(0, 216, 255, 0.5))' }}>
-                  <i className="fas fa-user-circle" style={{ fontSize: '16px' }}></i> JKT48 PROFIL AKTIF ONLINE
+                  <i className="fas fa-user-circle" style={{ fontSize: '16px' }}></i> UNDEAD PROFIL AKTIF ONLINE
                 </h3>
                 
                 <div style={{ background: 'rgba(0, 0, 0, 0.4)', border: '1px solid rgba(255, 255, 255, 0.07)', padding: '10px 22px', borderRadius: '30px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '12px', boxShadow: 'inset 0 3px 10px rgba(0,0,0,0.6)', maxWidth: '95%' }}>
