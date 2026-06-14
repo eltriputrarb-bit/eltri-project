@@ -134,7 +134,7 @@ return (
             <div className="side-bar rpg-profile-sidebar" style={{ flex: 1, minWidth: '280px', maxWidth: '360px', background: 'rgba(10, 15, 26, 0.75)', border: '1px solid rgba(0, 136, 204, 0.2)', padding: '40px 25px', borderRadius: '20px', textAlign: 'center', boxSizing: 'border-box', backdropFilter: 'blur(10px)', boxShadow: '0 15px 35px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0, 136, 204, 0.05)', margin: '0 auto' }}>
               
               <div className="photo-frame" style={{ width: '170px', height: '170px', margin: '0 auto 25px auto', borderRadius: '50%', overflow: 'hidden', border: '3px solid #00d8ff', position: 'relative', animation: 'neonPulse 3s infinite ease-in-out' }}>
-                <img src="images/profileE.jpg" alt="Eltri Putra" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> 
+                <img src="images/eltri.jpg" alt="Eltri Putra" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> 
               </div>
               
               <div className="side-content" style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '18px' }}>

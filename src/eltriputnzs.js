@@ -378,7 +378,7 @@ function EltriPutnzs() {
         } />
 
         <Route path="/proyek" element={<PublicProfile />} />
-        {/* HALAMAN GALLERY */}
+
         <Route path="/gallery" element={<Gallery />} />
 
         <Route path="/ErrorPage" element={<ErrorPage />} />
