@@ -419,15 +419,19 @@ body {
         padding: 25px 30px;
         flex-wrap: nowrap;
         
-        /* 1. Background gradasi gelap agar efek kubus menyala kontras */
-        background: linear-gradient(135deg, #020024 0%, #05053d 40%, #005c8a 100%);
+        /* 
+           🔥 FIX BACKGROUND TOTAL:
+           Ujung kanan kita paksa menggelap pekat (#050522) agar warna biru bodi utama 
+           tidak bocor menembus ke dalam kotak jam, sehingga transisinya rata & bersih.
+        */
+        background: linear-gradient(135deg, #020024 0%, #05053d 50%, #050522 100%);
+        
         border-radius: 16px;
         border: 1px solid rgba(255, 255, 255, 0.08);
         max-width: 800px;
         margin: 50px auto;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Shadow sedikit dipertegas */
         
-        /* 2. Sangat Penting: Membuat ruang terisolasi untuk animasi */
         position: relative;
         overflow: hidden;
 }
@@ -803,96 +807,108 @@ body {
     }
 }
 /* ==========================================================================
-   9. FOOTER DESIGN & INTERACTIVE SOCIAL MEDIA
+   9. FOOTER DESIGN & INTERACTIVE SOCIAL MEDIA (FIXED)
    ========================================================================== */
 .social-footer {
-        background-color: rgba(0, 0, 0, 0.5) !important;
-        padding: 30px 0;
-        text-align: center;
-        width: 100%;
-        border-top: 1px solid rgba(255, 255, 255, 0.08);
+    width: 100%;
+    padding: 40px 0;
+    /* 🔥 FIX TOTAL BACKGROUND: 
+       Kita paksa menggelap pekat agar balok biru raksasa di atas terputus 
+       dan melebur bersih sebelum masuk ke bagian Jam & Skill!
+    */
+    background: #020024 !important; 
+    position: relative;
+    z-index: 2;
+    text-align: center;
 }
 
 .social-footer h3 {
-        margin-bottom: 20px;
-        font-family: "Yellowtail", cursive;
-        color: #ff8c00;
-        font-size: 28px;
-        letter-spacing: 1px;
+    margin-bottom: 25px;
+    font-family: "Yellowtail", cursive;
+    color: #ff8c00;
+    font-size: 28px;
+    letter-spacing: 1px;
 }
 
 .social-icons {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
 }
 
-.social-icons a {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
-        text-decoration: none;
-        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+/* FIX: Sinkronisasi selector .icon agar gaya tombolnya terbaca sempurna */
+.social-icons a.icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.social-icons a i {
-        color: #ffffff !important;
-        font-size: 24px !important;
+.social-icons a.icon i {
+    color: #ffffff !important;
+    font-size: 24px !important;
 }
 
-.social-icons a.instagram { background-color: #e4405f !important; }
+/* FIX TOMBOL INSTAGRAM */
+.social-icons a.instagram { 
+    background-color: #e4405f !important; 
+}
 .social-icons a.instagram:hover {
-        background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888) !important;
-        box-shadow: 0 0 20px rgba(228, 64, 95, 0.6);
-        transform: translateY(-4px) scale(1.05);
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888) !important;
+    box-shadow: 0 0 25px rgba(228, 64, 95, 0.7);
+    transform: translateY(-5px) scale(1.08);
 }
 
-.social-icons a.x-logo { background-color: #000000 !important; border: 1px solid rgba(255, 255, 255, 0.2); }
-.social-icons a.x-logo:hover {
-        background-color: #ffffff !important;
-        box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
-        transform: translateY(-4px) scale(1.05);
+/* FIX TOMBOL X (TWITTER) */
+.social-icons a.x-logo { 
+    background-color: #000000 !important; 
+    border: 1px solid rgba(255, 255, 255, 0.2) !important; 
 }
-.social-icons a.x-logo:hover .svg-x { fill: #000000 !important; }
-.social-icons a.x-logo .svg-x { fill: #ffffff; width: 22px; height: 22px; transition: 0.3s; }
+.social-icons a.x-logo:hover {
+    background-color: #ffffff !important;
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.7);
+    transform: translateY(-5px) scale(1.08);
+}
+.social-icons a.x-logo:hover .svg-x { 
+    fill: #000000 !important; 
+}
+
+/* Base style SVG X */
+.social-icons a.x-logo .svg-x { 
+    transition: 0.3s ease; 
+}
 
 .main-footer {
-        text-align: center;
-        padding: 30px;
-        background: #000000 !important;
-        color: #ffffff !important;
-        font-size: 13px;
-        width: 100%;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+    padding: 30px;
+    background: #000000 !important;
+    color: #ffffff !important;
+    font-size: 13px;
+    width: 100%;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* === SAKTI RESPONSIVE MEDIA QUERY UNTUK LAYAR HP === */
+/* === RESPONSIVE MEDIA QUERY UNTUK HP === */
 @media screen and (max-width: 600px) {
-        .hero-title {
-                font-size: 1.6rem !important; /* Paksa teks nama mengecil rapi di HP */
-                letter-spacing: 1px !important;
-                line-height: 1.3;
-        }
-        
-        .social-footer {
-                padding: 30px 0 !important;
-        }
+    .social-footer {
+        padding: 30px 0 !important;
+    }
 
-        .social-footer h3 {
-                font-size: 18px !important; /* Perkecil teks Project Sosial di HP */
-                letter-spacing: 1px !important;
-                margin-bottom: 15px !important;
-        }
+    .social-footer h3 {
+        font-size: 22px !important;
+        margin-bottom: 18px !important;
+    }
 
-        .social-icons a {
-                width: 44px !important; /* Ukuran tombol sosmed sedikit disesuaikan untuk jempol layar HP */
-                height: 44px !important;
-        }
+    .social-icons a.icon {
+        width: 46px !important;
+        height: 46px !important;
+    }
 }
 
 /* GREEN ONLINE INDICATOR DOT */
