@@ -8,49 +8,54 @@ body, html, #root {
     color: #ffffff;
     overflow-x: hidden;
 }
-
-/* 1. Induk utama section dibuat transparan agar menyatu dengan bg website */
-.skills-section-wrapper {
-  position: relative;
-  width: 100%;
-  max-width: 1200px; /* Sesuaikan dengan max-width layout kamu */
-  margin: 40px auto;
-  padding: 30px;
-  background: transparent; /* Menghapus background kotak biru kaku */
-  overflow: hidden; /* Mencegah kubus keluar jalur kontainer */
-  border-radius: 16px;
-}
-
-/* 2. Kontainer grid kartu harus berada di lapisan atas kubus */
+/* Memaksa kontainer skill berbaris horizontal, rata tengah, dan tidak turun ke bawah */
 .skills-grid-container {
-  position: relative;
-  z-index: 2; /* Memaksa kartu berada di depan kubus melayang */
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-}
-
-/* 3. Atur posisi animasi kubus agar tepat di belakang kartu */
-.cubes-fixed {
-  position: absolute;
-  top: 0;
-  left: 0;
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 20px !important;
+  flex-wrap: nowrap !important; /* Mencegah kartu turun ke bawah (menge-grid) */
   width: 100%;
-  height: 100%;
-  overflow: hidden;
-  z-index: 1; /* Di bawah .skills-grid-container tapi di atas background dasar */
-  pointer-events: none; /* Agar kubus tidak mengganggu klik pada kartu */
+  padding: 20px;
+  box-sizing: border-box;
 }
 
-/* 4. Pastikan kubus menggunakan warna semi-transparan (opsional, sesuaikan style kamu) */
-.cubes-fixed li {
-  position: absolute;
-  display: block;
-  list-style: none;
-  background: rgba(255, 255, 255, 0.08); /* Putih tipis transparan */
-  border: 1px solid rgba(255, 255, 255, 0.15); /* Garis tepi tipis */
-  bottom: -150px;
-  /* ... pertahankan properti animasi @keyframes bawaan proyek kamu di bawah sini ... */
+/* Biar pas di layar HP atau monitor kecil dia bisa di-scroll manual ke samping pakai jari/mouse */
+@media screen and (max-width: 1024px) {
+  .skills-grid-container {
+    justify-content: flex-start !important;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
+
+/* ==========================================================================
+   FIX ANIMASI KUBUS HERO HERO SECTION
+   ========================================================================== */
+.cubes {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: 2;
+        pointer-events: none;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+}
+
+.cubes li {
+        position: absolute;
+        display: block;
+        border: 2px solid rgba(0, 188, 212, 0.4) !important;
+        background: rgba(0, 188, 212, 0.05) !important;
+        bottom: -150px;
+        animation: flyUp 18s linear infinite !important; /* Gunakan !important jika tertimpa */
+        border-radius: 6px;
+        box-shadow: 0 0 15px rgba(0, 188, 212, 0.2);
 }
 
 /* Pengaturan Posisi & Ukuran Kubus */

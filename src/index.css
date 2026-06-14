@@ -576,12 +576,18 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(135deg, #020024 0%, #05053d 40%, #005c8a 100%);
+    
+    /* 🔥 FIX BACKGROUND TOTAL:
+       Warna biru terang (#005c8a) dibuang total dan diganti ke warna gelap pekat (#050522).
+       Sekarang gradasinya menyatu mulus dari atas sampai bawah tanpa potongan warna kaku!
+    */
+    background: linear-gradient(135deg, #020024 0%, #05053d 50%, #050522 100%) !important;
+    
     border-radius: 16px;
     border: 1px solid rgba(255, 255, 255, 0.08);
     max-width: 1200px;
     margin: 0 auto 50px auto;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Shadow dipertegas agar makin premium */
     position: relative;
     overflow: hidden;
     box-sizing: border-box;
