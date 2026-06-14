@@ -107,10 +107,11 @@ function EltriPutnzs() {
   return (
     <div className="EltriPutnzs">
 {/* NAVBAR */}
-      <nav className="container-navbar">
+<nav className="container-navbar">
         <div className="nav-left">
           <Link to="/" className="logo-link">
-            <img src={`${process.env.PUBLIC_URL}/logo.png`} className="logo" alt="Logo" />
+            {/* Jalur diperbarui ke /images/logo.png */}
+            <img src={`${process.env.PUBLIC_URL}/images/logo.png`} className="logo" alt="Logo" />
             <span className="brand-text">ELTRI PROJECT</span>
           </Link>
         </div>
@@ -360,7 +361,7 @@ function EltriPutnzs() {
     <div className="image-wrapper">
       <img src="  /gereja.jpg" className="img-main" alt="Gereja" />
       <div className="floating-logo">
-        <img src="logo.png" alt="Floating Logo" />
+<img src="./images/logo.png" alt="Floating Logo" />
       </div>
     </div>
     <div className="text-wrapper">
