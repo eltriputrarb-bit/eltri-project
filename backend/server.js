@@ -68,7 +68,7 @@ app.listen(PORT, () => {
   const dataEdit = {
     "10": 1,
     "14": 6,
-    "15": 3
+    "15": 4
   };
   writeViews(dataEdit);
   console.log("✏️ Database cloud views.json berhasil di-update!");
