@@ -29,6 +29,12 @@ const readViews = () => {
   if (!fs.existsSync(VIEWS_FILE)) {
     fs.writeFileSync(VIEWS_FILE, JSON.stringify({}));
   }
+
+  // 🚨 INJEKSI DATA MANUAL SEMENTARA (Biar data lamamu balik)
+  // Setelah berhasil, bagian di bawah ini nanti kita hapus lagi ya bro.
+  const dataManual = { "10": 1, "14": 6, "15": 3 };
+  fs.writeFileSync(VIEWS_FILE, JSON.stringify(dataManual, null, 2));
+  
   const data = fs.readFileSync(VIEWS_FILE, 'utf-8');
   return JSON.parse(data);
 };
