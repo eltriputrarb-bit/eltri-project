@@ -24,7 +24,7 @@ app.use(cors({
 
 app.use(express.json());
 
-// Helper: baca views.json (SUDAH BERSIH & NORMAL)
+// Helper: baca views.json
 const readViews = () => {
   if (!fs.existsSync(VIEWS_FILE)) {
     fs.writeFileSync(VIEWS_FILE, JSON.stringify({}));
@@ -63,4 +63,13 @@ app.post('/api/views/:id', (req, res) => {
 // Jalankan server berdasarkan Port yang disediakan Railway
 app.listen(PORT, () => {
   console.log(`✅ Views server running at port ${PORT}`);
+
+  // ✏️ EDIT SUNTIK DATA MANUAL KAMU DI SINI:
+  const dataEdit = {
+    "10": 1,
+    "14": 6,
+    "15": 3
+  };
+  writeViews(dataEdit);
+  console.log("✏️ Database cloud views.json berhasil di-update!");
 });
