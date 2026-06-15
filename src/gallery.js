@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import './gallery.css';
 
 // Ganti URL ini dengan URL Railway kamu setelah deploy backend
-const BACKEND_URL = 'https://GANTI-DENGAN-URL-RAILWAY-KAMU.up.railway.app';
+const BACKEND_URL = 'https://RUANG-BACKEND-KAMU-DI.up.railway.app';
 
 function Gallery() {
   const [currentPercent, setCurrentPercent] = useState(0);
