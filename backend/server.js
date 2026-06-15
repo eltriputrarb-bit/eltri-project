@@ -5,14 +5,23 @@ const path = require('path');
 
 const app = express();
 
-// 🚨 PERUBAHAN DISINI: Memakai Port dinamis dari Railway, kalau gak ada baru pakai 5000
+// 🚨 MEMAKAI PORT DINAMIS RAILWAY
 const PORT = process.env.PORT || 5000; 
 
-// Menggunakan folder /tmp/ untuk menyimpan data json di server cloud seperti Railway
-// Agar file views.json aman dari pembatasan sistem read-only di beberapa environment cloud
+// Folder /tmp/ agar aman dari pembatasan sistem di Railway
 const VIEWS_FILE = path.join('/tmp', 'views.json');
 
-app.use(cors());
+// 🚨 UPDATE DI SINI: Izinkan domain localhost dan Vercel kamu agar tidak "0 views"
+app.use(cors({
+  origin: [
+    'http://localhost:3000', 
+    'https://eltriputra4.vercel.app', 
+    'https://eltri-project.vercel.app'
+  ],
+  methods: ['GET', 'POST'],
+  credentials: true
+}));
+
 app.use(express.json());
 
 // Helper: baca views.json
