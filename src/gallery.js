@@ -111,7 +111,7 @@ function Gallery() {
           <div className="loader-content">
             <div className="loader-visual-zone">
               <div className="neon-spinner"></div>
-              <img src={`${process.env.PUBLIC_URL}/images/logo.png`} className="loader-center-logo" alt="Logo ELTRI" />
+              <img src={`${process.env.PUBLIC_URL}/images/Atlas.png`} className="loader-center-logo" alt="Logo ELTRI" />
             </div>
             <div className="loader-text">ELTRI ATLAS<span>.</span></div>
             <div className="loader-subtext">LOADING UPDATE SERVER [<span id="gdPercent">{currentPercent < 10 ? '0' : ''}{currentPercent}%</span>]</div>

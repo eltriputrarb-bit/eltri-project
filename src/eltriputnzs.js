@@ -111,7 +111,7 @@ function EltriPutnzs() {
         <div className="nav-left">
           <Link to="/" className="logo-link">
             {/* Jalur diperbarui ke /images/logo.png */}
-            <img src={`${process.env.PUBLIC_URL}/images/logo.png`} className="logo" alt="Logo" />
+            <img src={`${process.env.PUBLIC_URL}/images/Atlas.png`} className="logo" alt="Logo" />
             <span className="brand-text">ELTRI ATLAS</span>
           </Link>
         </div>
