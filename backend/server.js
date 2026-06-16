@@ -65,8 +65,13 @@ app.listen(PORT, () => {
   console.log(`✅ Views server running at port ${PORT}`);
 
   // ✏️ EDIT SUNTIK DATA MANUAL KAMU DI SINI:
+// ✏️ UPDATE DATA TERBARU:
   const dataEdit = {
-    "10": 1,
+    "3": 1,
+    "10": 2,
+    "11": 1,
+    "12": 1,
+    "13": 1,
     "14": 6,
     "15": 4
   };
