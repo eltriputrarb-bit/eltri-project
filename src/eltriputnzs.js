@@ -352,6 +352,34 @@ function EltriPutnzs() {
       </div>
     </div>
 
+    {/* 7. NODE JS */}
+    <div className="rpg-skill-card node-card-glow">
+      <div className="skill-card-logo-zone">
+        <i className="fa-brands fa-node-js skill-icon-logo node-color"></i>
+      </div>
+      <div className="skill-card-header">
+    <span className="skill-title">NODE JS</span>
+    <span className="card-level node-level-color">Lv.42</span>
+  </div>
+  <div className="card-progress-bar">
+    <div className="progress-fill node-progress-fill" style={{ width: '42%' }}></div>
+  </div>
+</div>
+
+    {/* 8. GIT */}
+    <div className="rpg-skill-card git-card-glow">
+      <div className="skill-card-logo-zone">
+        <i className="fa-brands fa-git-alt skill-icon-logo git-color"></i>
+      </div>
+       <div className="skill-card-header">
+      <span className="skill-title">GIT</span>
+      <span className="card-level git-level-color">Lv.21</span>
+   </div>
+   <div className="card-progress-bar">
+    <div className="progress-fill git-progress-fill" style={{ width: '21%' }}></div>
+  </div>
+</div>
+
   </div>
 </div>
 

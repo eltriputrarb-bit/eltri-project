@@ -748,6 +748,48 @@ body {
     box-shadow: 0 0 10px rgba(76, 166, 76, 0.6);
 }
 
+/* Efek Khusus Node JS */
+.node-color { 
+    color: #339933; 
+    filter: drop-shadow(0 0 8px rgba(51, 153, 51, 0.7)); 
+}
+.node-level-color { 
+    color: #66cc66 !important; 
+    font-weight: 900; 
+}
+.node-progress-fill { 
+    background: linear-gradient(90deg, #339933, #66cc66) !important;
+    box-shadow: 0 0 12px rgba(51, 153, 51, 0.8) !important;
+}
+.node-card-glow { 
+    border-color: rgba(51, 153, 51, 0.25) !important; 
+}
+.node-card-glow:hover {
+    border-color: rgba(51, 153, 51, 0.6) !important;
+    box-shadow: 0 0 20px rgba(51, 153, 51, 0.3) !important;
+}
+
+/* Efek Khusus Git */
+.git-color { 
+    color: #f05032; 
+    filter: drop-shadow(0 0 8px rgba(240, 80, 50, 0.7)); 
+}
+.git-level-color { 
+    color: #ff765e !important; 
+    font-weight: 900; 
+}
+.git-progress-fill { 
+    background: linear-gradient(90deg, #f05032, #ff765e) !important;
+    box-shadow: 0 0 12px rgba(240, 80, 50, 0.8) !important;
+}
+.git-card-glow { 
+    border-color: rgba(240, 80, 50, 0.25) !important; 
+}
+.git-card-glow:hover {
+    border-color: rgba(240, 80, 50, 0.6) !important;
+    box-shadow: 0 0 20px rgba(240, 80, 50, 0.3) !important;
+}
+
 /* ==========================================================================
    PENYELAMAT LAYOUT MOBILE / ANDROID (OPTIMIZED)
    ========================================================================== */
@@ -806,6 +848,16 @@ body {
     
     .skills-section-wrapper .php-color {
         font-size: 1.8rem !important; /* Mencegah logo PHP mobile overflow */
+    }
+
+    /* 🟢 TAMBAHAN SUNTIKAN MOBILE NODE JS BIAR PAS */
+    .skills-section-wrapper .node-color {
+        font-size: 1.8rem !important; /* Ukuran pas untuk HP, seimbang dengan PHP */
+    }
+
+    /* 🔴 TAMBAHAN SUNTIKAN MOBILE GIT BIAR PAS */
+    .skills-section-wrapper .git-color {
+        font-size: 1.8rem !important; /* Ukuran presisi pas layar HP Android */
     }
 
     .skills-section-wrapper .card-progress-bar {
