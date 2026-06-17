@@ -73,7 +73,7 @@ app.listen(PORT, () => {
 
     const currentViews = readViews();
 
-    // ✏️ SUNTIK DATA AWAL KAMU SECARA AMAN:
+    // ✏️ SUNTIK DATA AWAL BERSIH DARI 0:
     const dataEdit = {
       "3": 0,
       "10": 0,
@@ -84,8 +84,8 @@ app.listen(PORT, () => {
       "15": 0,
     };
 
-    // 🔒 UPDATE FIX: Menggunakan Spread Operator (...) 
-    // Ini memastikan dataEdit menjadi nilai default, tapi kalau di currentViews sudah ada angka baru (misal hasil klik), angka baru itu yang dipakai!
+    // 🔒 UPDATE FIX: Menggunakan Spread Operator (...)
+    // Menjamin data live hasil klik tombol (currentViews) tidak hilang saat server restart!
     const finalViews = { ...dataEdit, ...currentViews };
     writeViews(finalViews);
 
