@@ -169,17 +169,26 @@ app.delete('/api/gallery/:id', (req, res) => {
 app.listen(PORT, () => {
   console.log(`✅ Views server running at port ${PORT}`);
 
-  // ✏️ EDIT SUNTIK DATA MANUAL KAMU DI SINI:
-// ✏️ UPDATE DATA TERBARU:
-  const dataEdit = {
-    "3": 1,
-    "10": 2,
-    "11": 1,
-    "12": 1,
-    "13": 1,
-    "14": 6,
-    "15": 4
-  };
-  writeViews(dataEdit);
-  console.log("✏️ Database cloud views.json berhasil di-update!");
+  try {
+    // 🛡️ AMAN: Pastikan filenya dibuat dulu sebelum disuntik data baru agar tidak crash
+    if (!fs.existsSync(VIEWS_FILE)) {
+      fs.writeFileSync(VIEWS_FILE, JSON.stringify({}));
+    }
+
+    // ✏️ UPDATE DATA TERBARU KAMU:
+    const dataEdit = {
+      "3": 1,
+      "10": 2,
+      "11": 1,
+      "12": 1,
+      "13": 1,
+      "14": 6,
+      "15": 4
+    };
+    
+    writeViews(dataEdit);
+    console.log("✏️ Database cloud views.json berhasil di-update!");
+  } catch (error) {
+    console.log("⚠️ Gagal suntik data otomatis, tetapi server tetap aman berjalan:", error.message);
+  }
 });
