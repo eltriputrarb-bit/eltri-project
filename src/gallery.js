@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import './gallery.css';
 
-// URL backend Railway kamu
+// Ganti URL ini dengan URL Railway kamu setelah deploy backend
 const BACKEND_URL = 'https://eltri-project-production.up.railway.app';
 
 function Gallery() {
@@ -89,19 +89,13 @@ function Gallery() {
     if (headerGaleri) headerGaleri.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // 🔒 FIX: Klik gambar HANYA memperbesar media (TIDAK AKAN nambah views)
-  const openModal = (type, src) => {
+  const openModal = (type, src, id) => {
     setModalMedia({ type, src });
     setModalOpen(true);
-  };
-
-  // 🔒 FIX: SATU-SATUNYA CARA MENAMBAH VIEWS (Hanya dipicu saat tombol badge teks views diklik)
-  const handleBadgeClick = (e, id) => {
-    e.stopPropagation(); // Biar efek klik gambar tidak ikut kepicu
     fetch(`${BACKEND_URL}/api/views/${id}`, { method: 'POST' })
       .then(res => res.json())
       .then(data => setMediaViews(prev => ({ ...prev, [id]: data.views })))
-      .catch(err => console.error('Gagal update views via badge click:', err));
+      .catch(err => console.error('Gagal update views:', err));
   };
 
   const closeModal = () => {
@@ -145,7 +139,7 @@ function Gallery() {
                     src={`${process.env.PUBLIC_URL}${item.src}`}
                     alt={item.desc || 'Gallery Visual'}
                     className="clickable-media"
-                    onClick={() => openModal('img', `${process.env.PUBLIC_URL}${item.src}`)}
+                    onClick={() => openModal('img', `${process.env.PUBLIC_URL}${item.src}`, item.id)}
                   />
                 ) : (
                   <video
@@ -153,21 +147,16 @@ function Gallery() {
                     autoPlay muted loop playsInline
                     controlsList="nodownload"
                     className="clickable-media"
-                    onClick={() => openModal('video', `${process.env.PUBLIC_URL}${item.src}`)}
+                    onClick={() => openModal('video', `${process.env.PUBLIC_URL}${item.src}`, item.id)}
                   ></video>
                 )}
               </div>
               <div className="card-info">
                 <h3>{item.date}</h3>
                 <p>{item.desc}</p>
-                {/* 🔒 Tombol Klik Views Utama */}
-                <button 
-                  className="views-badge" 
-                  onClick={(e) => handleBadgeClick(e, item.id)}
-                  style={{ cursor: 'pointer', background: 'none', border: 'none', textAlign: 'left', padding: 0, font: 'inherit', color: 'inherit' }}
-                >
+                <span className="views-badge">
                   👁 {mediaViews[item.id] || 0} views
-                </button>
+                </span>
               </div>
             </div>
           ))}
