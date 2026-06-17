@@ -75,17 +75,18 @@ app.listen(PORT, () => {
 
     // ✏️ SUNTIK DATA AWAL KAMU SECARA AMAN:
     const dataEdit = {
-      "3": 1,
-      "10": 2,
-      "11": 1,
-      "12": 1,
-      "13": 1,
-      "14": 6,
-      "15": 4
+      "3": 0,
+      "10": 0,
+      "11": 0,
+      "12": 0,
+      "13": 0,
+      "14": 0,
+      "15": 0,
     };
 
-    // 🔒 FIX UTAMA: Gunakan Object.assign agar data lama tidak hilang atau terhapus kasar saat diklik
-    const finalViews = Object.assign({}, dataEdit, currentViews);
+    // 🔒 UPDATE FIX: Menggunakan Spread Operator (...) 
+    // Ini memastikan dataEdit menjadi nilai default, tapi kalau di currentViews sudah ada angka baru (misal hasil klik), angka baru itu yang dipakai!
+    const finalViews = { ...dataEdit, ...currentViews };
     writeViews(finalViews);
 
     console.log("✏️ Database cloud views.json berhasil disinkronisasikan!");
