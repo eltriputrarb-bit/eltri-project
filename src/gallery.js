@@ -89,9 +89,15 @@ function Gallery() {
     if (headerGaleri) headerGaleri.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const openModal = (type, src, id) => {
+  // Buka modal SAJA, tidak menambah views
+  const openModal = (type, src) => {
     setModalMedia({ type, src });
     setModalOpen(true);
+  };
+
+  // Klik badge views: tambah views SAJA, tidak membuka modal
+  const handleViewClick = (e, id) => {
+    e.stopPropagation(); // mencegah klik badge ikut memicu klik gambar/video di belakangnya
     fetch(`${BACKEND_URL}/api/views/${id}`, { method: 'POST' })
       .then(res => res.json())
       .then(data => setMediaViews(prev => ({ ...prev, [id]: data.views })))
@@ -139,7 +145,7 @@ function Gallery() {
                     src={`${process.env.PUBLIC_URL}${item.src}`}
                     alt={item.desc || 'Gallery Visual'}
                     className="clickable-media"
-                    onClick={() => openModal('img', `${process.env.PUBLIC_URL}${item.src}`, item.id)}
+                    onClick={() => openModal('img', `${process.env.PUBLIC_URL}${item.src}`)}
                   />
                 ) : (
                   <video
@@ -147,14 +153,19 @@ function Gallery() {
                     autoPlay muted loop playsInline
                     controlsList="nodownload"
                     className="clickable-media"
-                    onClick={() => openModal('video', `${process.env.PUBLIC_URL}${item.src}`, item.id)}
+                    onClick={() => openModal('video', `${process.env.PUBLIC_URL}${item.src}`)}
                   ></video>
                 )}
               </div>
               <div className="card-info">
                 <h3>{item.date}</h3>
                 <p>{item.desc}</p>
-                <span className="views-badge">
+                <span
+                  className="views-badge"
+                  onClick={(e) => handleViewClick(e, item.id)}
+                  style={{ cursor: 'pointer' }}
+                  title="Klik untuk menambah views"
+                >
                   👁 {mediaViews[item.id] || 0} views
                 </span>
               </div>
