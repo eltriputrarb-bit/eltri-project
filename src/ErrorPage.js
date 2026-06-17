@@ -171,7 +171,7 @@ const ErrorPage = () => {
         <h1 className="error-text" style={{ margin: '20px 0 0 0' }}>404</h1>
         <h2 className="message" style={{ color: '#fff', margin: '15px 0 10px 0', fontSize: '1.8rem', fontWeight: '700' }}>Halaman Tidak Ditemukan!</h2>
         <p className="submessage" style={{ color: '#8fa0b5', maxWidth: '500px', margin: '0 auto 30px auto', fontSize: '14.5px', lineHeight: '1.6' }}>
-          Mungkin halaman alamat rumah / Eltri Project sedang dipindahkan atau link yang Anda tuju salah.
+          Mungkin halaman alamat rumah / Eltri Atlas sedang dipindahkan atau link yang Anda tuju salah.
         </p>
 
         {/* CONTROLLER TOMBOL & JAM DIGITAL */}

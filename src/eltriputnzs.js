@@ -3,8 +3,7 @@ import { Routes, Route, Link } from 'react-router-dom';
 import './App.css';
 import Gallery from './gallery'; 
 import PublicProfile from './proyek'; 
-import ErrorPage from './ErrorPage';   
-
+import ErrorPage from './ErrorPage'; 
 
 function EltriPutnzs() {
 
@@ -138,6 +137,7 @@ function EltriPutnzs() {
                 <i className="fas fa-exclamation-triangle"></i> ErrorPage
               </Link>
             </li>
+            <li></li>
           </ul>
         </div>
 

@@ -247,7 +247,7 @@ return (
       </div>
 
       <footer className="main-footer" style={{ textAlign: 'center', padding: '30px', color: '#666', fontSize: '13px', fontWeight: '600', letterSpacing: '1px', borderTop: '1px solid rgba(255,255,255,0.02)', marginTop: '50px' }}>
-        Copyright © 2026 ELTRI PROJECT - All Rights Reserved
+        Copyright © 2026 ELTRI ATLAS - All Rights Reserved
       </footer>
     </div>
   );

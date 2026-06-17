@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
 import './gallery.css';
-import UploadForm from './UploadForm';
 
 // Ganti URL ini dengan URL Railway kamu setelah deploy backend
 const BACKEND_URL = 'https://eltri-project-production.up.railway.app';
@@ -14,10 +13,6 @@ function Gallery() {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMedia, setModalMedia] = useState({ type: '', src: '' });
   const [mediaViews, setMediaViews] = useState({});
-
-  // State baru: foto yang diupload lewat form (digabung dengan galleryItems statis)
-  const [uploadedItems, setUploadedItems] = useState([]);
-  const [showUploadForm, setShowUploadForm] = useState(false);
 
   const videoRef = useRef(null);
   const itemsPerPage = 12;
@@ -39,7 +34,6 @@ function Gallery() {
 
   // Gabungkan foto upload (dari backend) dengan foto statis (hardcode di atas)
   // Foto upload ditaruh di paling atas karena biasanya yang terbaru
-  const allItems = [...uploadedItems, ...galleryItems];
 
   // Loader
   useEffect(() => {
@@ -86,27 +80,10 @@ function Gallery() {
       .catch(err => console.error('Gagal fetch views:', err));
   }, []);
 
-  // Fetch foto yang sudah diupload lewat form saat halaman load
-  useEffect(() => {
-    fetch(`${BACKEND_URL}/api/gallery`)
-      .then(res => res.json())
-      .then(data => {
-        // Backend kirim src relatif (/uploads/xxx.jpg), gabung dengan BACKEND_URL biar bisa diakses
-        const formatted = data.map(item => ({
-          ...item,
-          src: `${BACKEND_URL}${item.src}`,
-          isUploaded: true // tandai supaya tidak ditambah process.env.PUBLIC_URL nanti
-        }));
-        setUploadedItems(formatted);
-      })
-      .catch(err => console.error('Gagal fetch gallery upload:', err));
-  }, []);
-
-  // Pagination (sekarang pakai allItems, bukan galleryItems lagi)
-  const totalPages = Math.ceil(allItems.length / itemsPerPage);
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = allItems.slice(indexOfFirstItem, indexOfLastItem);
+const totalPages = Math.ceil(galleryItems.length / itemsPerPage);
+const indexOfLastItem = currentPage * itemsPerPage;
+const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+const currentItems = galleryItems.slice(indexOfFirstItem, indexOfLastItem);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -127,19 +104,7 @@ function Gallery() {
     if (videoRef.current) videoRef.current.pause();
     setModalOpen(false);
     setModalMedia({ type: '', src: '' });
-  };
-
-  // Dipanggil saat upload sukses dari UploadForm
-  const handleUploadSuccess = (newItem) => {
-    const formatted = {
-      ...newItem,
-      src: `${BACKEND_URL}${newItem.src}`,
-      isUploaded: true
-    };
-    setUploadedItems(prev => [formatted, ...prev]);
-    setCurrentPage(1); // balik ke halaman 1 biar foto baru kelihatan
-  };
-
+  };  
   return (
     <div className="gallery-view">
       {showLoader && (
@@ -164,18 +129,6 @@ function Gallery() {
         <header className="gallery-header">
           <h1>MY <span>GALLERY</span></h1>
           <p>Tapi saya sendiri yang mengambil foto developernya dari ELTRI PROJECT</p>
-
-          <button
-            className="page-btn"
-            style={{ marginTop: '16px' }}
-            onClick={() => setShowUploadForm(!showUploadForm)}
-          >
-            {showUploadForm ? 'Tutup Form Upload' : '+ Upload Foto Baru'}
-          </button>
-
-          {showUploadForm && (
-            <UploadForm onUploadSuccess={handleUploadSuccess} />
-          )}
         </header>
 
         <section className="gallery-grid">

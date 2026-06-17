@@ -25,7 +25,7 @@ app.use(cors({
     'http://localhost:3000', 
     'https://eltriputra4.vercel.app', 
     'https://eltri-project.vercel.app'
-  ],
+  ],  
   methods: ['GET', 'POST', 'DELETE'],
   credentials: true
 }));
