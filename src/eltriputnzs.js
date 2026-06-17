@@ -389,7 +389,7 @@ function EltriPutnzs() {
     <div className="image-wrapper">
       <img src="  /alkitab.jpg" className="img-main" alt="Gereja" />
       <div className="floating-logo">
-<img src="./images/logo.png" alt="Floating Logo" />
+<img src="./images/Atlas.png" alt="Floating Logo" />
       </div>
     </div>
     <div className="text-wrapper">

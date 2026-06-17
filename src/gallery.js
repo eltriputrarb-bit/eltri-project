@@ -18,7 +18,7 @@ function Gallery() {
   const itemsPerPage = 12;
 
   const galleryItems = [
-    { id: 14, type: 'img', src: '/images/foto13.jpg', date: '14/06,jun  i,2026', desc: 'DI SMC MAKASSAR' },
+    { id: 14, type: 'img', src: '/images/foto13.jpg', date: '14/06,juni,2026', desc: 'DI SMC MAKASSAR' },
     { id: 15, type: 'img', src: '/images/foto12.jpg', date: '14/06,juni,2026', desc: 'DI SMC MAKASSAR' },
     { id: 11, type: 'img', src: '/images/foto11.jpg', date: '10/06,juni,2026', desc: 'warkop gunung nona indah' },
     { id: 12, type: 'video', src: '/video/Nostalgia.mp4', date: '09/06,juni,2026', desc: 'kid miss u' },
@@ -31,9 +31,6 @@ function Gallery() {
     { id: 4, type: 'img', src: '/images/foto4.jpg', date: '14/03,MARET,2026', desc: 'Parkiran Roda mobil' },
     { id: 3, type: 'img', src: '/images/foto3.jpg', date: '07/12,DESEMBER,2018', desc: 'SAYA FOTO PAKAI CAMERA SMAKARA' },
   ];
-
-  // Gabungkan foto upload (dari backend) dengan foto statis (hardcode di atas)
-  // Foto upload ditaruh di paling atas karena biasanya yang terbaru
 
   // Loader
   useEffect(() => {
@@ -80,10 +77,11 @@ function Gallery() {
       .catch(err => console.error('Gagal fetch views:', err));
   }, []);
 
-const totalPages = Math.ceil(galleryItems.length / itemsPerPage);
-const indexOfLastItem = currentPage * itemsPerPage;
-const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-const currentItems = galleryItems.slice(indexOfFirstItem, indexOfLastItem);
+  // Pagination
+  const totalPages = Math.ceil(galleryItems.length / itemsPerPage);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = galleryItems.slice(indexOfFirstItem, indexOfLastItem);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -104,7 +102,8 @@ const currentItems = galleryItems.slice(indexOfFirstItem, indexOfLastItem);
     if (videoRef.current) videoRef.current.pause();
     setModalOpen(false);
     setModalMedia({ type: '', src: '' });
-  };  
+  };
+
   return (
     <div className="gallery-view">
       {showLoader && (
@@ -137,18 +136,18 @@ const currentItems = galleryItems.slice(indexOfFirstItem, indexOfLastItem);
               <div className="card-img-wrapper">
                 {item.type === 'img' ? (
                   <img
-                    src={item.isUploaded ? item.src : `${process.env.PUBLIC_URL}${item.src}`}
+                    src={`${process.env.PUBLIC_URL}${item.src}`}
                     alt={item.desc || 'Gallery Visual'}
                     className="clickable-media"
-                    onClick={() => openModal('img', item.isUploaded ? item.src : `${process.env.PUBLIC_URL}${item.src}`, item.id)}
+                    onClick={() => openModal('img', `${process.env.PUBLIC_URL}${item.src}`, item.id)}
                   />
                 ) : (
                   <video
-                    src={item.isUploaded ? item.src : `${process.env.PUBLIC_URL}${item.src}`}
+                    src={`${process.env.PUBLIC_URL}${item.src}`}
                     autoPlay muted loop playsInline
                     controlsList="nodownload"
                     className="clickable-media"
-                    onClick={() => openModal('video', item.isUploaded ? item.src : `${process.env.PUBLIC_URL}${item.src}`, item.id)}
+                    onClick={() => openModal('video', `${process.env.PUBLIC_URL}${item.src}`, item.id)}
                   ></video>
                 )}
               </div>
