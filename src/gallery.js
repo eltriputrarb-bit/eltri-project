@@ -89,23 +89,18 @@ function Gallery() {
     if (headerGaleri) headerGaleri.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // Membuka modal gambar/video (Tetap mencatat view saat dibuka)
-  const openModal = (type, src, id) => {
+  // Buka modal SAJA, tidak lagi otomatis menambah views
+  const openModal = (type, src) => {
     setModalMedia({ type, src });
     setModalOpen(true);
-    fetch(`${BACKEND_URL}/api/views/${id}`, { method: 'POST' })
-      .then(res => res.json())
-      .then(data => setMediaViews(prev => ({ ...prev, [id]: data.views })))
-      .catch(err => console.error('Gagal update views via modal:', err));
   };
 
-  // 🔒 UPDATE FIX: Fungsi klik langsung pada tombol badge views di kartu
-  const handleBadgeClick = (e, id) => {
-    e.stopPropagation(); // Mencegah modal terbuka saat tombol views diklik
+  // Tambah views HANYA dipanggil saat badge views diklik manual
+  const addView = (id) => {
     fetch(`${BACKEND_URL}/api/views/${id}`, { method: 'POST' })
       .then(res => res.json())
       .then(data => setMediaViews(prev => ({ ...prev, [id]: data.views })))
-      .catch(err => console.error('Gagal update views via badge click:', err));
+      .catch(err => console.error('Gagal update views:', err));
   };
 
   const closeModal = () => {
@@ -149,7 +144,7 @@ function Gallery() {
                     src={`${process.env.PUBLIC_URL}${item.src}`}
                     alt={item.desc || 'Gallery Visual'}
                     className="clickable-media"
-                    onClick={() => openModal('img', `${process.env.PUBLIC_URL}${item.src}`, item.id)}
+                    onClick={() => openModal('img', `${process.env.PUBLIC_URL}${item.src}`)}
                   />
                 ) : (
                   <video
@@ -157,21 +152,21 @@ function Gallery() {
                     autoPlay muted loop playsInline
                     controlsList="nodownload"
                     className="clickable-media"
-                    onClick={() => openModal('video', `${process.env.PUBLIC_URL}${item.src}`, item.id)}
+                    onClick={() => openModal('video', `${process.env.PUBLIC_URL}${item.src}`)}
                   ></video>
                 )}
               </div>
               <div className="card-info">
                 <h3>{item.date}</h3>
                 <p>{item.desc}</p>
-                {/* 🔒 UPDATE FIX: Menjadikan badge sebagai tombol klik interaktif yang aman */}
-                <button 
-                  className="views-badge" 
-                  onClick={(e) => handleBadgeClick(e, item.id)}
-                  style={{ cursor: 'pointer', background: 'none', border: 'none', textAlign: 'left', padding: 0 }}
+                <span
+                  className="views-badge"
+                  onClick={(e) => { e.stopPropagation(); addView(item.id); }}
+                  style={{ cursor: 'pointer' }}
+                  title="Klik untuk menambah views"
                 >
                   👁 {mediaViews[item.id] || 0} views
-                </button>
+                </span>
               </div>
             </div>
           ))}
