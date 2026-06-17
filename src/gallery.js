@@ -23,7 +23,7 @@ function Gallery() {
   const itemsPerPage = 12;
 
   const galleryItems = [
-    { id: 14, type: 'img', src: '/images/foto13.jpg', date: '14/06,juni,2026', desc: 'DI SMC MAKASSAR' },
+    { id: 14, type: 'img', src: '/images/foto13.jpg', date: '14/06,jun  i,2026', desc: 'DI SMC MAKASSAR' },
     { id: 15, type: 'img', src: '/images/foto12.jpg', date: '14/06,juni,2026', desc: 'DI SMC MAKASSAR' },
     { id: 11, type: 'img', src: '/images/foto11.jpg', date: '10/06,juni,2026', desc: 'warkop gunung nona indah' },
     { id: 12, type: 'video', src: '/video/Nostalgia.mp4', date: '09/06,juni,2026', desc: 'kid miss u' },
