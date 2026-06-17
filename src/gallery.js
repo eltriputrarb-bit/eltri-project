@@ -89,14 +89,9 @@ function Gallery() {
     if (headerGaleri) headerGaleri.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // Buka modal SAJA, tidak lagi otomatis menambah views
-  const openModal = (type, src) => {
+  const openModal = (type, src, id) => {
     setModalMedia({ type, src });
     setModalOpen(true);
-  };
-
-  // Tambah views HANYA dipanggil saat badge views diklik manual
-  const addView = (id) => {
     fetch(`${BACKEND_URL}/api/views/${id}`, { method: 'POST' })
       .then(res => res.json())
       .then(data => setMediaViews(prev => ({ ...prev, [id]: data.views })))
@@ -144,7 +139,7 @@ function Gallery() {
                     src={`${process.env.PUBLIC_URL}${item.src}`}
                     alt={item.desc || 'Gallery Visual'}
                     className="clickable-media"
-                    onClick={() => openModal('img', `${process.env.PUBLIC_URL}${item.src}`)}
+                    onClick={() => openModal('img', `${process.env.PUBLIC_URL}${item.src}`, item.id)}
                   />
                 ) : (
                   <video
@@ -152,19 +147,14 @@ function Gallery() {
                     autoPlay muted loop playsInline
                     controlsList="nodownload"
                     className="clickable-media"
-                    onClick={() => openModal('video', `${process.env.PUBLIC_URL}${item.src}`)}
+                    onClick={() => openModal('video', `${process.env.PUBLIC_URL}${item.src}`, item.id)}
                   ></video>
                 )}
               </div>
               <div className="card-info">
                 <h3>{item.date}</h3>
                 <p>{item.desc}</p>
-                <span
-                  className="views-badge"
-                  onClick={(e) => { e.stopPropagation(); addView(item.id); }}
-                  style={{ cursor: 'pointer' }}
-                  title="Klik untuk menambah views"
-                >
+                <span className="views-badge">
                   👁 {mediaViews[item.id] || 0} views
                 </span>
               </div>
