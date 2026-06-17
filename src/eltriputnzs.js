@@ -387,13 +387,13 @@ function EltriPutnzs() {
 <section className="profile-section">
   <div className="container-flex">
     <div className="image-wrapper">
-      <img src="  /alkitab.jpg" className="img-main" alt="Gereja" />
+      <img src="  /jesuschristkatolik.jpg" className="img-main" alt="Gereja" />
       <div className="floating-logo">
 <img src="./images/Atlas.png" alt="Floating Logo" />
       </div>
     </div>
     <div className="text-wrapper">
-      <span className="label-eltri">Server sebelah</span>
+      <span className="label-eltri">Lukas 1:37</span>
       <h2 className="name-title">ELTRI PUTRA ROMBEBUA</h2>
       <div className="visi-content">
         <p className="visi-text">"Tuhan Yang Maha Esa"</p>
