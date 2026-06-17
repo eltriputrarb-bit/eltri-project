@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 5000;
 // Folder /tmp/ agar aman dari pembatasan sistem di Railway
 const VIEWS_FILE = path.join('/tmp', 'views.json');
 
-// 🚨 UPDATE DI SINI: Izinkan domain localhost dan Vercel kamu agar tidak "0 views"
+// 🚨 Izinkan domain localhost dan Vercel kamu agar tidak "0 views"
 app.use(cors({
   origin: [
     'http://localhost:3000', 
@@ -47,15 +47,16 @@ app.get('/api/views', (req, res) => {
 // GET /api/views/:id — ambil views 1 item
 app.get('/api/views/:id', (req, res) => {
   const views = readViews();
-  const id = req.params.id;
+  const id = req.params.id.toString(); // 🔒 FIX: Paksa jadi string agar sinkron dengan ID tombol frontend
   res.json({ id, views: views[id] || 0 });
 });
 
-// POST /api/views/:id — tambah 1 view untuk item tertentu
+// POST /api/views/:id — tambah 1 view untuk item tertentu saat tombol diklik
 app.post('/api/views/:id', (req, res) => {
   const views = readViews();
-  const id = req.params.id;
-  views[id] = (views[id] || 0) + 1;
+  const id = req.params.id.toString(); // 🔒 FIX: Paksa jadi string agar sinkron dengan ID tombol frontend
+  
+  views[id] = (Number(views[id]) || 0) + 1; // Pastikan dikonversi ke angka sebelum ditambah 1
   writeViews(views);
   res.json({ id, views: views[id] });
 });
@@ -64,17 +65,31 @@ app.post('/api/views/:id', (req, res) => {
 app.listen(PORT, () => {
   console.log(`✅ Views server running at port ${PORT}`);
 
-  // ✏️ EDIT SUNTIK DATA MANUAL KAMU DI SINI:
-// ✏️ UPDATE DATA TERBARU:
-  const dataEdit = {
-    "3": 1,
-    "10": 2,
-    "11": 1,
-    "12": 1,
-    "13": 1,
-    "14": 6,
-    "15": 4
-  };
-  writeViews(dataEdit);
-  console.log("✏️ Database cloud views.json berhasil di-update!");
+  try {
+    // Pastikan file views.json ada di folder /tmp
+    if (!fs.existsSync(VIEWS_FILE)) {
+      fs.writeFileSync(VIEWS_FILE, JSON.stringify({}));
+    }
+
+    const currentViews = readViews();
+
+    // ✏️ SUNTIK DATA AWAL KAMU SECARA AMAN:
+    const dataEdit = {
+      "3": 1,
+      "10": 2,
+      "11": 1,
+      "12": 1,
+      "13": 1,
+      "14": 6,
+      "15": 4
+    };
+
+    // 🔒 FIX UTAMA: Gunakan Object.assign agar data lama tidak hilang atau terhapus kasar saat diklik
+    const finalViews = Object.assign({}, dataEdit, currentViews);
+    writeViews(finalViews);
+
+    console.log("✏️ Database cloud views.json berhasil disinkronisasikan!");
+  } catch (error) {
+    console.log("⚠️ Gagal sinkronisasi data awal:", error.message);
+  }
 });
