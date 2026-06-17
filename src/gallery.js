@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import './gallery.css';
+import UploadForm from './UploadForm';
 
 // Ganti URL ini dengan URL Railway kamu setelah deploy backend
 const BACKEND_URL = 'https://eltri-project-production.up.railway.app';
@@ -13,6 +14,10 @@ function Gallery() {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMedia, setModalMedia] = useState({ type: '', src: '' });
   const [mediaViews, setMediaViews] = useState({});
+
+  // State baru: foto yang diupload lewat form (digabung dengan galleryItems statis)
+  const [uploadedItems, setUploadedItems] = useState([]);
+  const [showUploadForm, setShowUploadForm] = useState(false);
 
   const videoRef = useRef(null);
   const itemsPerPage = 12;
@@ -31,6 +36,10 @@ function Gallery() {
     { id: 4, type: 'img', src: '/images/foto4.jpg', date: '14/03,MARET,2026', desc: 'Parkiran Roda mobil' },
     { id: 3, type: 'img', src: '/images/foto3.jpg', date: '07/12,DESEMBER,2018', desc: 'SAYA FOTO PAKAI CAMERA SMAKARA' },
   ];
+
+  // Gabungkan foto upload (dari backend) dengan foto statis (hardcode di atas)
+  // Foto upload ditaruh di paling atas karena biasanya yang terbaru
+  const allItems = [...uploadedItems, ...galleryItems];
 
   // Loader
   useEffect(() => {
@@ -77,11 +86,27 @@ function Gallery() {
       .catch(err => console.error('Gagal fetch views:', err));
   }, []);
 
-  // Pagination
-  const totalPages = Math.ceil(galleryItems.length / itemsPerPage);
+  // Fetch foto yang sudah diupload lewat form saat halaman load
+  useEffect(() => {
+    fetch(`${BACKEND_URL}/api/gallery`)
+      .then(res => res.json())
+      .then(data => {
+        // Backend kirim src relatif (/uploads/xxx.jpg), gabung dengan BACKEND_URL biar bisa diakses
+        const formatted = data.map(item => ({
+          ...item,
+          src: `${BACKEND_URL}${item.src}`,
+          isUploaded: true // tandai supaya tidak ditambah process.env.PUBLIC_URL nanti
+        }));
+        setUploadedItems(formatted);
+      })
+      .catch(err => console.error('Gagal fetch gallery upload:', err));
+  }, []);
+
+  // Pagination (sekarang pakai allItems, bukan galleryItems lagi)
+  const totalPages = Math.ceil(allItems.length / itemsPerPage);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = galleryItems.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = allItems.slice(indexOfFirstItem, indexOfLastItem);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -102,6 +127,17 @@ function Gallery() {
     if (videoRef.current) videoRef.current.pause();
     setModalOpen(false);
     setModalMedia({ type: '', src: '' });
+  };
+
+  // Dipanggil saat upload sukses dari UploadForm
+  const handleUploadSuccess = (newItem) => {
+    const formatted = {
+      ...newItem,
+      src: `${BACKEND_URL}${newItem.src}`,
+      isUploaded: true
+    };
+    setUploadedItems(prev => [formatted, ...prev]);
+    setCurrentPage(1); // balik ke halaman 1 biar foto baru kelihatan
   };
 
   return (
@@ -128,6 +164,18 @@ function Gallery() {
         <header className="gallery-header">
           <h1>MY <span>GALLERY</span></h1>
           <p>Tapi saya sendiri yang mengambil foto developernya dari ELTRI PROJECT</p>
+
+          <button
+            className="page-btn"
+            style={{ marginTop: '16px' }}
+            onClick={() => setShowUploadForm(!showUploadForm)}
+          >
+            {showUploadForm ? 'Tutup Form Upload' : '+ Upload Foto Baru'}
+          </button>
+
+          {showUploadForm && (
+            <UploadForm onUploadSuccess={handleUploadSuccess} />
+          )}
         </header>
 
         <section className="gallery-grid">
@@ -136,18 +184,18 @@ function Gallery() {
               <div className="card-img-wrapper">
                 {item.type === 'img' ? (
                   <img
-                    src={`${process.env.PUBLIC_URL}${item.src}`}
+                    src={item.isUploaded ? item.src : `${process.env.PUBLIC_URL}${item.src}`}
                     alt={item.desc || 'Gallery Visual'}
                     className="clickable-media"
-                    onClick={() => openModal('img', `${process.env.PUBLIC_URL}${item.src}`, item.id)}
+                    onClick={() => openModal('img', item.isUploaded ? item.src : `${process.env.PUBLIC_URL}${item.src}`, item.id)}
                   />
                 ) : (
                   <video
-                    src={`${process.env.PUBLIC_URL}${item.src}`}
+                    src={item.isUploaded ? item.src : `${process.env.PUBLIC_URL}${item.src}`}
                     autoPlay muted loop playsInline
                     controlsList="nodownload"
                     className="clickable-media"
-                    onClick={() => openModal('video', `${process.env.PUBLIC_URL}${item.src}`, item.id)}
+                    onClick={() => openModal('video', item.isUploaded ? item.src : `${process.env.PUBLIC_URL}${item.src}`, item.id)}
                   ></video>
                 )}
               </div>
