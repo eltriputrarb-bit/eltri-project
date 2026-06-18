@@ -106,47 +106,58 @@ function EltriPutnzs() {
   return (
     <div className="EltriPutnzs">
 {/* NAVBAR */}
+{/* NAVBAR */}
 <nav className="container-navbar">
-        <div className="nav-left">
-          <Link to="/" className="logo-link">
-            {/* Jalur diperbarui ke /images/logo.png */}
-            <img src={`${process.env.PUBLIC_URL}/images/Atlas.png`} className="logo" alt="Logo" />
-            <span className="brand-text">ELTRI ATLAS</span>
-          </Link>
-        </div>
+  <div className="nav-left">
+    <Link to="/" className="logo-link">
+      <img src={`${process.env.PUBLIC_URL}/images/Atlas.png`} className="logo" alt="Logo" />
+      <span className="brand-text">ELTRI ATLAS</span>
+    </Link>
+  </div>
 
-<div className="nav-right">
-          <ul className="ul-navbar" id="nav-links">
-            <li>
-              <Link to="/" className="menu-item-btn btn-gahar" onClick={toggleMenu}>
-                <i className="fas fa-home"></i> HOME
-              </Link>
-            </li>
-            <li>
-              <Link to="/gallery" className="menu-item-btn btn-gahar" onClick={toggleMenu}>
-                <i className="fas fa-images"></i> GALLERY
-              </Link>
-            </li>
-            <li>
-              <Link to="/proyek" className="menu-item-btn btn-gahar" onClick={toggleMenu}>
-                <i className="fas fa-user"></i> PublicProfile
-              </Link>
-            </li>
-            <li>
-              <Link to="/ErrorPage" className="menu-item-btn btn-gahar" onClick={toggleMenu}>
-                <i className="fas fa-exclamation-triangle"></i> ErrorPage
-              </Link>
-            </li>
-            <li></li>
-          </ul>
-        </div>
+  <div className="nav-right">
+    <ul className="ul-navbar" id="nav-links">
+      <li>
+        <Link to="/" className="menu-item-btn btn-gahar" onClick={toggleMenu}>
+          <i className="fas fa-home"></i> HOME
+        </Link>
+      </li>
+      <li>
+        <Link to="/gallery" className="menu-item-btn btn-gahar" onClick={toggleMenu}>
+          <i className="fas fa-images"></i> GALLERY
+        </Link>
+      </li>
+      <li>
+        <Link to="/proyek" className="menu-item-btn btn-gahar" onClick={toggleMenu}>
+          <i className="fas fa-user"></i> PublicProfile
+        </Link>
+      </li>
+      
+      {/* 🔒 SUBMENU SETTINGS DI SINI */}
+      <li className="nav-dropdown">
+        <button className="menu-item-btn btn-gahar dropdown-toggle">
+          <i className="fas fa-cog"></i> SETTINGS <i className="fas fa-caret-down"></i>
+        </button>
+        <ul className="dropdown-menu">
+          <li>
+            <Link to="/ErrorPage" className="dropdown-item" onClick={toggleMenu}>
+              <i className="fas fa-exclamation-triangle"></i> ErrorPage
+            </Link>
+          </li>
+          {/* Kamu bisa tambah menu setting lain di sini nanti, bro */}
+        </ul>
+      </li>
+      
+      <li></li>
+    </ul>
+  </div>
 
-        <div className="menu-toggle" id="mobile-menu" onClick={toggleMenu}>
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-      </nav>
+  <div className="menu-toggle" id="mobile-menu" onClick={toggleMenu}>
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</nav>
 
       {/* SISTEM ROUTING UTAMA */}
       <Routes>

@@ -1094,3 +1094,54 @@ body {
       90% { opacity: 1; }
       100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; border-radius: 50%; }
     }
+
+/* Styling Dropdown Container */
+.nav-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Menyembunyikan Dropdown Menu secara default */
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #1a1a1a; /* Sesuaikan dengan warna tema gelap gahar kamu */
+  min-width: 160px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  border-radius: 4px;
+  padding: 5px 0;
+  list-style: none;
+  border: 1px solid #333;
+}
+
+/* Menampilkan Dropdown Menu saat di-hover */
+.nav-dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+/* Styling isi item dropdown */
+.dropdown-item {
+  color: #fff;
+  padding: 10px 15px;
+  text-decoration: none;
+  display: block;
+  font-size: 14px;
+  transition: background 0.3s ease;
+}
+
+/* Efek Hover untuk Item Dropdown */
+.dropdown-item:hover {
+  background-color: #ff0055; /* Sesuaikan dengan warna neon/gahar andalan proyekmu */
+  color: #fff;
+}
+
+/* Memperbaiki tombol toggle agar tidak merusak struktur link */
+.dropdown-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
