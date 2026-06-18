@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 5000;
 // Folder /tmp/ agar aman dari pembatasan sistem di Railway
 const VIEWS_FILE = path.join('/tmp', 'views.json');
 
-// 🚨 Izinkan domain localhost dan Vercel kamu agar tidak "0 views"
+// 🚨 UPDATE DI SINI: Izinkan domain localhost dan Vercel kamu agar tidak "0 views"
 app.use(cors({
   origin: [
     'http://localhost:3000', 
@@ -47,16 +47,15 @@ app.get('/api/views', (req, res) => {
 // GET /api/views/:id — ambil views 1 item
 app.get('/api/views/:id', (req, res) => {
   const views = readViews();
-  const id = req.params.id.toString(); // 🔒 FIX: Paksa jadi string agar sinkron dengan ID tombol frontend
+  const id = req.params.id;
   res.json({ id, views: views[id] || 0 });
 });
 
-// POST /api/views/:id — tambah 1 view untuk item tertentu saat tombol diklik
+// POST /api/views/:id — tambah 1 view untuk item tertentu
 app.post('/api/views/:id', (req, res) => {
   const views = readViews();
-  const id = req.params.id.toString(); // 🔒 FIX: Paksa jadi string agar sinkron dengan ID tombol frontend
-  
-  views[id] = (Number(views[id]) || 0) + 1; // Pastikan dikonversi ke angka sebelum ditambah 1
+  const id = req.params.id;
+  views[id] = (views[id] || 0) + 1;
   writeViews(views);
   res.json({ id, views: views[id] });
 });
@@ -65,32 +64,17 @@ app.post('/api/views/:id', (req, res) => {
 app.listen(PORT, () => {
   console.log(`✅ Views server running at port ${PORT}`);
 
-  try {
-    // Pastikan file views.json ada di folder /tmp
-    if (!fs.existsSync(VIEWS_FILE)) {
-      fs.writeFileSync(VIEWS_FILE, JSON.stringify({}));
-    }
-
-    const currentViews = readViews();
-
-    // ✏️ SUNTIK DATA AWAL KAMU SECARA AMAN:
-    const dataEdit = {
-      "3": 0,
-      "10": 0,
-      "11": 0,
-      "12": 0,
-      "13": 0,
-      "14": 0,
-      "15": 0,
-    };
-
-    // 🔒 UPDATE FIX: Menggunakan Spread Operator (...) 
-    // Ini memastikan dataEdit menjadi nilai default, tapi kalau di currentViews sudah ada angka baru (misal hasil klik), angka baru itu yang dipakai!
-    const finalViews = { ...dataEdit, ...currentViews };
-    writeViews(finalViews);
-
-    console.log("✏️ Database cloud views.json berhasil disinkronisasikan!");
-  } catch (error) {
-    console.log("⚠️ Gagal sinkronisasi data awal:", error.message);
-  }
+  // ✏️ EDIT SUNTIK DATA MANUAL KAMU DI SINI:
+// ✏️ UPDATE DATA TERBARU:
+  const dataEdit = {
+    "3": 0,
+    "10": 0,
+    "11": 0,
+    "12": 0,
+    "13": 0,
+    "14": 0,
+    "15": 0
+  };
+  writeViews(dataEdit);
+  console.log("✏️ Database cloud views.json berhasil di-update!");
 });
