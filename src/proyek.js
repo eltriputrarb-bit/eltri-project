@@ -87,6 +87,7 @@ return (
           box-shadow: 0 0 15px rgba(0, 136, 204, 0.4); 
           bottom: -150px;
           animation: flyUpwards 20s linear infinite; border-radius: 6px;
+          will-change: transform, opacity;
         }
         .cubes-fixed li:nth-child(1) { left: 10%; width: 80px; height: 80px; animation-delay: 0s; animation-duration: 18s; }
         .cubes-fixed li:nth-child(2) { left: 25%; width: 35px; height: 35px; animation-delay: 2s; animation-duration: 12s; }
@@ -98,11 +99,25 @@ return (
         .cubes-fixed li:nth-child(8) { left: 48%; width: 30px; height: 30px; animation-delay: 9s; animation-duration: 11s; }
         .cubes-fixed li:nth-child(9) { left: 78%; width: 75px; height: 75px; animation-delay: 2s; animation-duration: 19s; }
 
+        /* OPTIMASI FPS: border-radius (50% di akhir) dihapus dari keyframe — sama
+           seperti file-file CSS sebelumnya, ini biang lag utama karena border-radius
+           bukan properti yang bisa di-composite GPU (beda dengan transform/opacity),
+           jadi browser harus repaint tiap frame. Bentuk kubus tetap rounded (6px)
+           secara statis dari base style li di atas. */
         @keyframes flyUpwards {
           0% { transform: translateY(0) rotate(0deg); opacity: 0; }
           10% { opacity: 0.8; }
           90% { opacity: 0.8; }
-          100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; border-radius: 50%; }
+          100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* OPTIMASI FPS MOBILE: kubus dekorasi dimatikan total di HP, konsisten
+           dengan index.css / gallery.css / errorpage.css — paling berat di GPU
+           mobile low-end, dan cuma elemen dekoratif (gak ganggu fungsi apapun). */
+        @media screen and (max-width: 768px) {
+          .cubes-fixed {
+            display: none !important;
+          }
         }
 
         /* Styling Judul - Menghasilkan Tampilan Padat Tegak Super Tebal */
@@ -131,7 +146,7 @@ return (
           <div className="profile-container" style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: '30px', padding: '20px', alignItems: 'flex-start' }}>
             
             {/* SIDEBAR PROFILE */}
-            <div className="side-bar rpg-profile-sidebar" style={{ flex: 1, minWidth: '280px', maxWidth: '360px', background: 'rgba(10, 15, 26, 0.75)', border: '1px solid rgba(0, 136, 204, 0.2)', padding: '40px 25px', borderRadius: '20px', textAlign: 'center', boxSizing: 'border-box', backdropFilter: 'blur(10px)', boxShadow: '0 15px 35px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0, 136, 204, 0.05)', margin: '0 auto' }}>
+            <div className="side-bar rpg-profile-sidebar" style={{ flex: 1, minWidth: '280px', maxWidth: '360px', background: 'rgba(10, 15, 26, 0.75)', border: '1px solid rgba(0, 136, 204, 0.2)', padding: '40px 25px', borderRadius: '20px', textAlign: 'center', boxSizing: 'border-box', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', boxShadow: '0 15px 35px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0, 136, 204, 0.05)', margin: '0 auto' }}>
               
               <div className="photo-frame" style={{ width: '170px', height: '170px', margin: '0 auto 25px auto', borderRadius: '50%', overflow: 'hidden', border: '3px solid #00d8ff', position: 'relative', animation: 'neonPulse 3s infinite ease-in-out' }}>
                 <img src="images/mario.jpg" alt="Eltri Putra" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> 
@@ -152,7 +167,7 @@ return (
             </div>
 
             {/* MAIN CONTENT */}
-            <div className="main-content" style={{ flex: 2, minWidth: '300px', maxWidth: '100%', background: 'rgba(10, 15, 26, 0.75)', border: '1px solid rgba(0, 136, 204, 0.15)', padding: '35px', borderRadius: '20px', boxSizing: 'border-box', backdropFilter: 'blur(10px)', boxShadow: '0 15px 35px rgba(0, 0, 0, 0.5)' }}>
+            <div className="main-content" style={{ flex: 2, minWidth: '300px', maxWidth: '100%', background: 'rgba(10, 15, 26, 0.75)', border: '1px solid rgba(0, 136, 204, 0.15)', padding: '35px', borderRadius: '20px', boxSizing: 'border-box', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', boxShadow: '0 15px 35px rgba(0, 0, 0, 0.5)' }}>
               
               <h1 className="profile-name" style={{ fontSize: '2.2rem', fontWeight: '900', letterSpacing: '1.5px', marginBottom: '5px', color: '#fff', wordBreak: 'break-word' }}>
                 ELTRI PUTRA ROMBEBUA
