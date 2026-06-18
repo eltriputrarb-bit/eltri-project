@@ -103,6 +103,35 @@ function EltriPutnzs() {
     }
   };
 
+  useEffect(() => {
+  // Bersihkan konsol bawaan dulu biar rapi
+  console.clear();
+
+  // Styling teks utama dengan gaya Cyberpunk / Neon khas ELTRI PROJECT
+  const styleUtama = `
+    background: #111111; 
+    color: #ff0055; 
+    font-size: 18px; 
+    font-weight: bold; 
+    padding: 10px 20px; 
+    border-radius: 5px; 
+    border: 2px solid #00ffcc;
+    font-family: sans-serif;
+    text-shadow: 0 0 10px #ff0055, 0 0 20px #00ffcc;
+  `;
+
+  const styleSub = `
+    color: #00ffcc; 
+    font-size: 14px; 
+    font-weight: 500;
+    font-family: sans-serif;
+  `;
+
+  // Tembakkan ke konsol browser
+  console.log("%c🚀 ELTRI ATLAS v2.0 — ACCESS GRANTED", styleUtama);
+  console.log("%cCreated with ❤️ by ELTRI ATLAS Developer", styleSub);
+}, []);
+
   return (
     <div className="EltriPutnzs">
 {/* NAVBAR */}
