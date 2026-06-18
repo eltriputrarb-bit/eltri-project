@@ -118,6 +118,7 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.2);
     bottom: -150px; /* Mulai dari luar bawah layar */
     animation: gerakKeAtas 25s linear infinite;
+    will-change: transform, opacity;
 }
 
 /* VARIASI UKURAN, POSISI DAN DURASI KUBUS (Agar Estetik & Tidak Barengan) */
@@ -132,16 +133,18 @@ body {
 .cubes li:nth-child(9) { left: 20%; width: 15px; height: 15px; animation-delay: 2s; animation-duration: 35s; }
 
 /* LOGIKA JALURNYA ANIMASI */
+/* OPTIMASI FPS: border-radius DIHAPUS dari keyframe.
+   Animasi border-radius memaksa browser repaint tiap frame (tidak bisa di-composite GPU),
+   beda dengan transform/opacity yang murah. Efek visual "berubah jadi bulat" nyaris tak
+   kelihatan karena bertepatan dengan opacity menuju 0, jadi aman dihapus demi performa. */
 @keyframes gerakKeAtas {
     0% {
         transform: translateY(0) rotate(0deg);
         opacity: 1;
-        border-radius: 0;
     }
     100% {
         transform: translateY(-1000px) rotate(720deg); /* Terbang ke atas sejauh 1000px sambil berputar */
         opacity: 0;
-        border-radius: 50%; /* Berubah jadi lingkaran saat menghilang di atas */
     }
 }
 /* ==========================================================================
@@ -434,6 +437,7 @@ body {
         
         position: relative;
         overflow: hidden;
+        contain: layout paint;
 }
 
 /* --- SISTEM UTAMA KUBUS MELAYANG --- */
@@ -461,6 +465,7 @@ body {
         border: 1px solid rgba(255, 255, 255, 0.12);
         animation: animateClockCubes 12s linear infinite;
         bottom: -50px;
+        will-change: transform, opacity;
 }
 
 /* Variasi acak posisi horizontal, ukuran, dan delay kubus */
@@ -469,16 +474,15 @@ body {
 .world-clock-container .cubes li:nth-child(3) { left: 68%; width: 15px; height: 15px; animation-delay: 4s; }
 .world-clock-container .cubes li:nth-child(4) { left: 88%; width: 30px; height: 30px; animation-delay: 1.5s; animation-duration: 10s; }
 
+/* OPTIMASI FPS: border-radius dihapus dari keyframe (lihat catatan di bagian #1) */
 @keyframes animateClockCubes {
         0% {
                 transform: translateY(0) rotate(0deg);
                 opacity: 1;
-                border-radius: 0;
         }
         100% {
                 transform: translateY(-350px) rotate(360deg);
                 opacity: 0;
-                border-radius: 50%;
         }
 }
 
@@ -491,12 +495,16 @@ body {
         min-width: 140px;
         padding: 12px;
         border-radius: 10px;
-        background: rgba(255, 255, 255, 0.03);
+        background: rgba(255, 255, 255, 0.05);
         border: 1px solid rgba(255, 255, 255, 0.03);
-        backdrop-filter: blur(4px); /* Efek kaca transparan premium */
+        /* OPTIMASI FPS: blur dikurangi dari 4px -> 3px dan background sedikit dipekatkan
+           (0.03 -> 0.05) agar tetap "kaca" tanpa terlalu membebani backdrop-filter,
+           yang harus dihitung ulang tiap frame karena kubus bergerak di belakangnya. */
+        backdrop-filter: blur(3px);
         transition: transform 0.3s ease, background 0.3s ease;
         position: relative;
         z-index: 5; /* Wajib di atas angka 1 */
+        will-change: transform;
 }
 
 .clock-card:hover {
@@ -542,12 +550,22 @@ body {
                 flex-wrap: unset !important;
         }
 
+        /* OPTIMASI FPS MOBILE: kubus latar dimatikan total di HP.
+           Elemen ini cuma dekorasi, tapi paling berat dikombinasikan dengan
+           backdrop-filter di .clock-card. GPU mobile paling kerasa lag-nya di sini. */
+        .world-clock-container .cubes {
+                display: none !important;
+        }
+
         .clock-card {
                 min-width: 0 !important;
                 flex: none !important;
                 padding: 10px 5px !important;
-                background: rgba(255, 255, 255, 0.04) !important;
+                background: rgba(255, 255, 255, 0.06) !important;
                 border-radius: 8px !important;
+                /* OPTIMASI FPS MOBILE: backdrop-filter dimatikan di HP, diganti background
+                   sedikit lebih pekat di atas supaya tampilan "kaca" tetap kebaca tanpa biaya blur. */
+                backdrop-filter: none !important;
         }
 
         .city-name {
@@ -591,6 +609,7 @@ body {
     position: relative;
     overflow: hidden;
     box-sizing: border-box;
+    contain: layout paint;
 }
 
 /* --- Animasi Kubus Latar Belakang --- */
@@ -617,6 +636,7 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.1);
     animation: animateSkillCubes 14s linear infinite;
     bottom: -50px;
+    will-change: transform, opacity;
 }
 
 .skills-section-wrapper .cubes li:nth-child(1) { left: 15%; width: 40px; height: 40px; animation-delay: 0s; }
@@ -624,9 +644,10 @@ body {
 .skills-section-wrapper .cubes li:nth-child(3) { left: 65%; width: 25px; height: 25px; animation-delay: 1.5s; }
 .skills-section-wrapper .cubes li:nth-child(4) { left: 85%; width: 35px; height: 35px; animation-delay: 4s; animation-duration: 11s; }
 
+/* OPTIMASI FPS: border-radius dihapus dari keyframe (lihat catatan di bagian #1) */
 @keyframes animateSkillCubes {
-    0% { transform: translateY(0) rotate(0deg); opacity: 1; border-radius: 0; }
-    100% { transform: translateY(-450px) rotate(360deg); opacity: 0; border-radius: 50%; }
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(-450px) rotate(360deg); opacity: 0; }
 }
 
 /* Container Utama Kartu (Desktop Mode) */
@@ -644,19 +665,22 @@ body {
 
 /* Base Style Kartu RPG */
 .skills-section-wrapper .rpg-skill-card {
-    background: rgba(15, 23, 42, 0.5) !important;
+    background: rgba(15, 23, 42, 0.6) !important;
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
     border-radius: 12px !important;
     padding: 20px !important;
     width: 200px !important;
     height: 140px !important;
-    backdrop-filter: blur(8px);
+    /* OPTIMASI FPS: blur dikurangi dari 8px -> 5px, background dipekatkan sedikit
+       (0.5 -> 0.6) untuk menutupi penurunan blur secara visual tanpa nambah beban GPU. */
+    backdrop-filter: blur(5px);
     font-family: "Courier New", monospace;
     box-sizing: border-box !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: space-between !important;
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    will-change: transform;
 }
 
 .skills-section-wrapper .rpg-skill-card:hover {
@@ -678,13 +702,13 @@ body {
 }
 
 /* Efek Warna Icon Global */
-.python-color { color: #3776ab; filter: drop-shadow(0 0 8px rgba(55, 118, 171, 0.6)); }
-.html-color   { color: #e34f26; filter: drop-shadow(0 0 8px rgba(227, 79, 38, 0.6)); }
-.js-color     { color: #f7df1e; background: #000; border-radius: 4px; padding: 1px 4px; font-size: 1.7rem !important; filter: drop-shadow(0 0 8px rgba(247, 223, 30, 0.5)); }
-.css-color    { color: #1572b6; filter: drop-shadow(0 0 8px rgba(21, 114, 182, 0.6)); }
+.python-color { color: #3776ab; filter: drop-shadow(0 0 6px rgba(55, 118, 171, 0.6)); }
+.html-color   { color: #e34f26; filter: drop-shadow(0 0 6px rgba(227, 79, 38, 0.6)); }
+.js-color     { color: #f7df1e; background: #000; border-radius: 4px; padding: 1px 4px; font-size: 1.7rem !important; filter: drop-shadow(0 0 6px rgba(247, 223, 30, 0.5)); }
+.css-color    { color: #1572b6; filter: drop-shadow(0 0 6px rgba(21, 114, 182, 0.6)); }
 
 /* Efek Khusus React JS */
-.react-color { color: #61dafb; filter: drop-shadow(0 0 8px rgba(97, 218, 251, 0.7)); }
+.react-color { color: #61dafb; filter: drop-shadow(0 0 6px rgba(97, 218, 251, 0.7)); }
 .react-level-color { color: #61dafb !important; font-weight: 900; }
 .react-progress-fill { 
     background: linear-gradient(90deg, #61dafb, #00bfff) !important;
@@ -699,7 +723,7 @@ body {
 /* Efek Khusus PHP */
 .php-color { 
     color: #777bb4; 
-    filter: drop-shadow(0 0 8px rgba(119, 123, 180, 0.7)); 
+    filter: drop-shadow(0 0 6px rgba(119, 123, 180, 0.7)); 
     font-size: 2.2rem !important;
 }
 .php-level-color { 
@@ -751,7 +775,7 @@ body {
 /* Efek Khusus Node JS */
 .node-color { 
     color: #339933; 
-    filter: drop-shadow(0 0 8px rgba(51, 153, 51, 0.7)); 
+    filter: drop-shadow(0 0 6px rgba(51, 153, 51, 0.7)); 
 }
 .node-level-color { 
     color: #66cc66 !important; 
@@ -772,7 +796,7 @@ body {
 /* Efek Khusus Git */
 .git-color { 
     color: #f05032; 
-    filter: drop-shadow(0 0 8px rgba(240, 80, 50, 0.7)); 
+    filter: drop-shadow(0 0 6px rgba(240, 80, 50, 0.7)); 
 }
 .git-level-color { 
     color: #ff765e !important; 
@@ -800,6 +824,12 @@ body {
         padding: 25px 12px !important;
     }
 
+    /* OPTIMASI FPS MOBILE: kubus latar skill section dimatikan total di HP,
+       sama seperti world-clock — paling berat dikombinasi dengan backdrop-filter kartu. */
+    .skills-section-wrapper .cubes {
+        display: none !important;
+    }
+
     /* Grid Murni 2 Kolom Kompak */
     .skills-section-wrapper .skills-grid-container {
         display: grid !important;
@@ -815,6 +845,9 @@ body {
         height: 130px !important;
         padding: 14px 12px !important;
         border-radius: 10px !important;
+        /* OPTIMASI FPS MOBILE: backdrop-filter dimatikan di HP, ganti background lebih pekat */
+        backdrop-filter: none !important;
+        background: rgba(15, 23, 42, 0.85) !important;
     }
 
     /* Penyelamatan Header Kartu di Mobile */
@@ -991,6 +1024,7 @@ body {
         border-radius: 50%;
         transform: translate(-50%, -50%);
         animation: pulseEffect 2s infinite ease-in-out;
+        will-change: width, height, opacity;
 }
 
 @keyframes pulseEffect {
@@ -1038,7 +1072,8 @@ body {
 
 /* Efek Hover smooth untuk Sidebar */
 .rpg-profile-sidebar {
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.4s ease, box-shadow 0.4s ease, background 0.4s ease !important;
+    will-change: transform;
 }
 .rpg-profile-sidebar:hover {
     transform: translateY(-8px);
@@ -1049,8 +1084,9 @@ body {
 
 /* Efek Hover geser untuk List Pendidikan */
 .education-item {
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease !important;
     position: relative;
+    will-change: transform;
 }
 .education-item:hover {
     transform: translateX(8px);
@@ -1077,6 +1113,7 @@ body {
       background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(0, 212, 255, 0.4);
       box-shadow: 0 0 10px rgba(0, 212, 255, 0.2); bottom: -150px;
       animation: flyUpwards 20s linear infinite; border-radius: 4px;
+      will-change: transform, opacity;
     }
     .cubes-fixed li:nth-child(1) { left: 10%; width: 80px; height: 80px; animation-delay: 0s; animation-duration: 18s; }
     .cubes-fixed li:nth-child(2) { left: 25%; width: 35px; height: 35px; animation-delay: 2s; animation-duration: 12s; }
@@ -1088,12 +1125,21 @@ body {
     .cubes-fixed li:nth-child(8) { left: 48%; width: 30px; height: 30px; animation-delay: 9s; animation-duration: 11s; }
     .cubes-fixed li:nth-child(9) { left: 78%; width: 75px; height: 75px; animation-delay: 2s; animation-duration: 19s; }
 
+    /* OPTIMASI FPS: border-radius dihapus dari keyframe (lihat catatan di bagian #1).
+       border-radius: 4px statis di base style li tetap aman karena tidak dianimasikan. */
     @keyframes flyUpwards {
       0% { transform: translateY(0) rotate(0deg); opacity: 0; }
       10% { opacity: 1; }
       90% { opacity: 1; }
-      100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; border-radius: 50%; }
+      100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
     }
+
+/* OPTIMASI FPS MOBILE: kubus dekorasi cubes-fixed dimatikan total di HP */
+@media screen and (max-width: 768px) {
+    .cubes-fixed {
+        display: none !important;
+    }
+}
 
 /* Styling Dropdown Container */
 .nav-dropdown {
