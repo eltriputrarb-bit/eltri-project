@@ -10,12 +10,21 @@ module.exports = {
           stringArray: true,
           stringArrayThreshold: 0.75,
           compact: true,
-          controlFlowFlattening: false, // Dimatikan sedikit agar tidak konflik dengan minifier Webpack 5
+          controlFlowFlattening: false,
           deadCodeInjection: false,
-          debugProtection: true, // 🔒 Tetap mengunci otomatis devtools pembajak!
+          debugProtection: false, // disarankan false, lihat catatan di bawah
           disableConsoleOutput: false
         }, [])
       ] : []
+    }
+  },
+  style: {
+    css: {
+      loaderOptions: {
+        modules: {
+          localIdentName: '[hash:base64:8]'
+        }
+      }
     }
   }
 };

@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
-import './App.css';
+import './App.module.css';
 import Gallery from './gallery'; 
 import PublicProfile from './proyek'; 
 import ErrorPage from './ErrorPage'; 
+
 
 function EltriPutnzs() {
 
