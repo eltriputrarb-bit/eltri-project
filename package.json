@@ -14,9 +14,9 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "craco start",
-    "build": "craco build",
-    "test": "craco test",
+    "start": "react-scripts start",
+    "build": "react-scripts build && javascript-obfuscator ./build/static/js --output ./build/static/js --compact true --string-array true --string-array-encoding base64 --debug-protection true && node -e \"const fs = require('fs'); const path = './build/static/js'; const file = fs.readdirSync(path).find(f => f.startsWith('main.') && f.endsWith('.js')); if(file) { fs.renameSync(path + '/' + file, path + '/eltrihidee.js'); const htmlPath = './build/index.html'; let html = fs.readFileSync(htmlPath, 'utf8'); html = html.replace(file, 'eltrihidee.js'); fs.writeFileSync(htmlPath, html, 'utf8'); console.log('✅ KODE DIACAK & BUNDLE DIUBAH MENJADI eltrihidee.js!'); }\"",
+    "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
