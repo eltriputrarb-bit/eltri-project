@@ -1,23 +1,39 @@
 const fs = require('fs');
+const path = require('path');
 
 const htmlPath = './build/index.html';
 let html = fs.readFileSync(htmlPath, 'utf8');
 
-const jsPath = './build/module/js';
-const cssPath = './build/module/css';
+// CRA default output paths
+const jsPath = './build/static/js';
+const cssPath = './build/static/css';
 
 // Rename JS
-const jsFile = fs.readdirSync(jsPath).find(f => f.startsWith('main.') && f.endsWith('.js'));
+const jsDir = fs.readdirSync(jsPath);
+const jsFile = jsDir.find(f => f.startsWith('main.') && f.endsWith('.js'));
 if (jsFile) {
-  fs.renameSync(jsPath + '/' + jsFile, jsPath + '/eltrihideen.js');
-  html = html.replace(new RegExp('/module/js/' + jsFile, 'g'), '/static/js/eltrihideen.js');
+  fs.renameSync(
+    path.join(jsPath, jsFile),
+    path.join(jsPath, 'eltrihideen.js')
+  );
+  html = html.replace(
+    new RegExp('/static/js/' + jsFile.replace('.', '\\.'), 'g'),
+    '/static/js/eltrihideen.js'
+  );
 }
 
 // Rename CSS
-const cssFile = fs.readdirSync(cssPath).find(f => f.startsWith('main.') && f.endsWith('.css'));
+const cssDir = fs.readdirSync(cssPath);
+const cssFile = cssDir.find(f => f.startsWith('main.') && f.endsWith('.css'));
 if (cssFile) {
-  fs.renameSync(cssPath + '/' + cssFile, cssPath + '/eltriKatolik.css');
-  html = html.replace(new RegExp('/module/css/' + cssFile, 'g'), '/static/css/eltriKatolik.css');
+  fs.renameSync(
+    path.join(cssPath, cssFile),
+    path.join(cssPath, 'eltriKatolik.css')
+  );
+  html = html.replace(
+    new RegExp('/static/css/' + cssFile.replace('.', '\\.'), 'g'),
+    '/static/css/eltriKatolik.css'
+  );
 }
 
 fs.writeFileSync(htmlPath, html, 'utf8');
