@@ -13,12 +13,17 @@ if (jsFile) {
   html = html.replace(new RegExp('/static/js/' + jsFile, 'g'), '/static/js/eltrihideen.js');
 }
 
-// Rename CSS
+// Rename CSS + hapus source map comment
 const cssFile = fs.readdirSync(cssPath).find(f => f.startsWith('main.') && f.endsWith('.css'));
 if (cssFile) {
   fs.renameSync(cssPath + '/' + cssFile, cssPath + '/eltriKatolik.css');
   html = html.replace(new RegExp('/static/css/' + cssFile, 'g'), '/static/css/eltriKatolik.css');
+  
+  // Hapus source map reference
+  let css = fs.readFileSync(cssPath + '/eltriKatolik.css', 'utf8');
+  css = css.replace(/\/\*#\s*sourceMappingURL=.*?\*\//g, '');
+  fs.writeFileSync(cssPath + '/eltriKatolik.css', css, 'utf8');
 }
 
 fs.writeFileSync(htmlPath, html, 'utf8');
-console.log('✅ Done!');
+console.log('✅ Done! JS & CSS renamed, source map removed!');
