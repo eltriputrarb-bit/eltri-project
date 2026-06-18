@@ -13,7 +13,7 @@ function Gallery() {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMedia, setModalMedia] = useState({ type: '', src: '' });
   const [mediaViews, setMediaViews] = useState({});
-
+  
   const videoRef = useRef(null);
   const itemsPerPage = 12;
 
