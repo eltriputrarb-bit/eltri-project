@@ -4,36 +4,41 @@ const path = require('path');
 const htmlPath = './build/index.html';
 let html = fs.readFileSync(htmlPath, 'utf8');
 
-// CRA default output paths
-const jsPath = './build/static/js';
-const cssPath = './build/static/css';
+const jsPath  = './build/module/js';
+const cssPath = './build/module/css';
 
 // Rename JS
-const jsDir = fs.readdirSync(jsPath);
-const jsFile = jsDir.find(f => f.startsWith('main.') && f.endsWith('.js'));
-if (jsFile) {
-  fs.renameSync(
-    path.join(jsPath, jsFile),
-    path.join(jsPath, 'eltrihideen.js')
-  );
-  html = html.replace(
-    new RegExp('/static/js/' + jsFile.replace('.', '\\.'), 'g'),
-    '/static/js/eltrihideen.js'
-  );
+if (fs.existsSync(jsPath)) {
+  const jsFile = fs.readdirSync(jsPath).find(f => f.startsWith('main.') && f.endsWith('.js'));
+  if (jsFile) {
+    fs.renameSync(
+      path.join(jsPath, jsFile),
+      path.join(jsPath, 'eltrihideen.js')
+    );
+    html = html.replace(
+      new RegExp('/module/js/' + jsFile.replace(/\./g, '\\.'), 'g'),
+      '/module/js/eltrihideen.js'
+    );
+  }
+} else {
+  console.warn('⚠️  folder module/js tidak ditemukan, skip JS rename');
 }
 
 // Rename CSS
-const cssDir = fs.readdirSync(cssPath);
-const cssFile = cssDir.find(f => f.startsWith('main.') && f.endsWith('.css'));
-if (cssFile) {
-  fs.renameSync(
-    path.join(cssPath, cssFile),
-    path.join(cssPath, 'eltriKatolik.css')
-  );
-  html = html.replace(
-    new RegExp('/static/css/' + cssFile.replace('.', '\\.'), 'g'),
-    '/static/css/eltriKatolik.css'
-  );
+if (fs.existsSync(cssPath)) {
+  const cssFile = fs.readdirSync(cssPath).find(f => f.startsWith('main.') && f.endsWith('.css'));
+  if (cssFile) {
+    fs.renameSync(
+      path.join(cssPath, cssFile),
+      path.join(cssPath, 'eltriKatolik.css')
+    );
+    html = html.replace(
+      new RegExp('/module/css/' + cssFile.replace(/\./g, '\\.'), 'g'),
+      '/module/css/eltriKatolik.css'
+    );
+  }
+} else {
+  console.warn('⚠️  folder module/css tidak ditemukan, skip CSS rename');
 }
 
 fs.writeFileSync(htmlPath, html, 'utf8');
