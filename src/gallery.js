@@ -13,11 +13,12 @@ function Gallery() {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMedia, setModalMedia] = useState({ type: '', src: '' });
   const [mediaViews, setMediaViews] = useState({});
-  
+
   const videoRef = useRef(null);
   const itemsPerPage = 12;
 
   const galleryItems = [
+    { id: 16, type: 'video', src: '/video/kotae.mp4', date: '04/06,juni,2026', desc: '⛅️' },    
     { id: 14, type: 'img', src: '/images/foto13.jpg', date: '14/06,juni,2026', desc: 'DI SMC MAKASSAR' },
     { id: 15, type: 'img', src: '/images/foto12.jpg', date: '14/06,juni,2026', desc: 'DI SMC MAKASSAR' },
     { id: 11, type: 'img', src: '/images/foto11.jpg', date: '10/06,juni,2026', desc: 'warkop gunung nona indah' },
@@ -119,7 +120,7 @@ function Gallery() {
         </div>
       )}
 
-      <ul className="cubes">
+      <ul className="cubes-fixed">
         <li></li><li></li><li></li><li></li><li></li>
         <li></li><li></li><li></li><li></li>
       </ul>
