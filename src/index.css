@@ -1091,6 +1091,17 @@ body {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* FIX TOMBOL TIKTOK */
+.social-icons a.tiktok { 
+    background-color: #000000 !important; 
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+.social-icons a.tiktok:hover {
+    background: linear-gradient(45deg, #25F4EE, #000000, #FE2C55) !important;
+    box-shadow: 0 0 25px rgba(254, 44, 85, 0.7);
+    transform: translateY(-5px) scale(1.08);
+}
+
 /* === RESPONSIVE MEDIA QUERY UNTUK HP === */
 @media screen and (max-width: 600px) {
     .social-footer {
