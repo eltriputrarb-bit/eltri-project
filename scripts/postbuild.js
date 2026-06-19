@@ -21,36 +21,51 @@ if (jsFile) {
     '/module/js/eltrihideen.js'
   );
 
-  // Rename .map JS jika ada
   const jsMap = jsFile + '.map';
   if (fs.existsSync(path.join(staticJs, jsMap))) {
+    // Fix "file" field di dalam .map
+    let jsMapContent = fs.readFileSync(path.join(staticJs, jsMap), 'utf8');
+    jsMapContent = jsMapContent.replace(
+      /"file"\s*:\s*"[^"]*"/,
+      '"file":"module/js/eltrihideen.js"'
+    );
+    fs.writeFileSync(path.join(staticJs, jsMap), jsMapContent, 'utf8');
     fs.renameSync(path.join(staticJs, jsMap), path.join(moduleJs, 'eltrihideen.js.map'));
   }
   console.log(`✅ JS: ${jsFile} → eltrihideen.js`);
 }
 
 // ── CSS ─────────────────────────────────────────────
-const cssFile = fs.readdirSync(staticCss).find(f => f.startsWith('main.') && f.endsWith('.css') && !f.endsWith('.map'));
-if (cssFile) {
-  // Baca CSS dulu untuk fix sourceMappingURL
-  const cssFilePath = path.join(staticCss, cssFile);
-  let cssContent = fs.readFileSync(cssFilePath, 'utf8');
+const cssFile = fs.readdirSync(staticCss)
+  .find(f => f.startsWith('main.') && f.endsWith('.css') && !f.endsWith('.map'));
 
-  // Rename .map CSS jika ada
+if (cssFile) {
   const cssMap = cssFile + '.map';
+
+  // Fix .map dulu sebelum CSS di-rename
   if (fs.existsSync(path.join(staticCss, cssMap))) {
-    fs.renameSync(path.join(staticCss, cssMap), path.join(moduleCss, 'eltriKatolik.css.map'));
-    // Fix referensi sourceMappingURL di dalam CSS
-    cssContent = cssContent.replace(
-      new RegExp(cssMap.replace(/\./g, '\\.'), 'g'),
-      'eltriKatolik.css.map'
+    let mapContent = fs.readFileSync(path.join(staticCss, cssMap), 'utf8');
+
+    // Fix field "file" di dalam .map
+    mapContent = mapContent.replace(
+      /"file"\s*:\s*"[^"]*"/,
+      '"file":"module/css/eltriKatolik.css"'
     );
+
+    fs.writeFileSync(path.join(staticCss, cssMap), mapContent, 'utf8');
+    fs.renameSync(path.join(staticCss, cssMap), path.join(moduleCss, 'eltriKatolik.css.map'));
     console.log(`✅ CSS Map: ${cssMap} → eltriKatolik.css.map`);
   }
 
-  // Tulis CSS yang sudah difix, lalu pindah ke module
-  fs.writeFileSync(cssFilePath, cssContent, 'utf8');
-  fs.renameSync(cssFilePath, path.join(moduleCss, 'eltriKatolik.css'));
+  // Fix sourceMappingURL di dalam CSS, lalu rename
+  let cssContent = fs.readFileSync(path.join(staticCss, cssFile), 'utf8');
+  cssContent = cssContent.replace(
+    /\/\*#\s*sourceMappingURL=[^\s*]+\s*\*\//,
+    '/*# sourceMappingURL=eltriKatolik.css.map */'
+  );
+
+  fs.writeFileSync(path.join(staticCss, cssFile), cssContent, 'utf8');
+  fs.renameSync(path.join(staticCss, cssFile), path.join(moduleCss, 'eltriKatolik.css'));
 
   html = html.replace(
     new RegExp('/static/css/' + cssFile.replace(/\./g, '\\.'), 'g'),
