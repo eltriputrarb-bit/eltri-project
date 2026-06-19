@@ -268,7 +268,7 @@ function EltriPutnzs() {
     </a>
 
     <a 
-      href="https://www.tiktok.com/tiktok.com/@programtins" 
+      href="https://www.tiktok.com/@programtins" 
       className="icon tiktok" 
       target="_blank" 
       rel="noopener noreferrer"
