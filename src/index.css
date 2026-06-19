@@ -1,4 +1,47 @@
 /* ==========================================================================
+   0. ROOT VARIABLES (DESIGN TOKENS — disalin dari eltriKatolik.css
+      supaya index.css mandiri, gak perlu cek file lain buat tau variable apa aja yang ada)
+   ========================================================================== */
+:root {
+        /* Brand Colors */
+        --color-cyan: #00d8ff;
+        --color-cyan-soft: #00bcd4;
+        --color-blue: #0088cc;
+        --color-blue-short: #08c;
+        --color-blue-deep: #020024;
+        --color-blue-mid: #090979;
+
+        /* Neutrals */
+        --color-white: #fff;
+        --color-black: #0c0c0c;
+        --color-bg-dark: #040814;
+        --color-bg-darker: #03001e;
+        --color-bg-panel: #0a0f1a;
+
+        /* Accent Colors */
+        --color-gold: #fa0;
+        --color-gold-warm: #ff8c00;
+        --color-green: #0f8;
+        --color-red: #ff2a4b;
+
+        /* Text */
+        --text-muted: #aaa;
+        --text-faint: #666;
+        --text-soft: #ccc;
+
+        /* Shadows / Glows */
+        --glow-cyan: 0 0 15px rgba(0, 188, 212, 0.4);
+        --glow-blue: 0 0 12px rgba(0, 136, 204, 0.85);
+        --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.5);
+        --shadow-deep: 0 15px 35px rgba(0, 0, 0, 0.5);
+
+        /* Fonts */
+        --font-main: 'Montserrat', sans-serif;
+        --font-mono: 'Share Tech Mono', monospace;
+        --font-display: 'Playfair Display', Georgia, serif;
+}
+
+/* ==========================================================================
    1. RESET, GENERAL STYLE, & PAGE TRANSITIONS (VIEW TRANSITIONS API)
    ========================================================================== */
 * {
@@ -43,11 +86,31 @@
         to { transform: translateY(0); }
 }
 
+/* OPTIMASI FPS MOBILE: di HP low-end, animasi page-transition full (scale+slide+fade
+   yang jalan barengan dengan semua kubus & blur di halaman baru/lama) bisa bikin
+   "freeze" sesaat tiap pindah menu. Kita sederhanakan jadi fade doang di mobile,
+   dan hormati prefers-reduced-motion kalau user mengaktifkannya di sistem HP-nya. */
+@media screen and (max-width: 768px) {
+        ::view-transition-old(root) {
+                animation: fade-out 0.2s ease both;
+        }
+        ::view-transition-new(root) {
+                animation: fade-in 0.25s ease both;
+        }
+}
+
+@media (prefers-reduced-motion: reduce) {
+        ::view-transition-old(root),
+        ::view-transition-new(root) {
+                animation: none !important;
+        }
+}
+
 body {
-        background-color: #0c0c0c !important; /* Dasar halaman dikunci hitam gahar murni */
-        background: #0c0c0c !important;
-        font-family: "Montserrat", sans-serif;
-        color: #ffffff !important; /* FIX: Dikembangkan ke putih agar tulisan terbaca gahar */
+        background-color: var(--color-black) !important; /* Dasar halaman dikunci hitam gahar murni */
+        background: var(--color-black) !important;
+        font-family: var(--font-main);
+        color: var(--color-white) !important; /* FIX: Dikembangkan ke putih agar tulisan terbaca gahar */
         margin: 0;
         padding: 0;
         width: 100%;
@@ -63,10 +126,11 @@ body {
     min-height: 100vh;      /* Memastikan tinggi hero memenuhi 1 layar penuh */
     width: 100%;
     overflow: hidden;       /* Menyembunyikan kubus saat dia terbang melewati batas atas layar */
-    background: linear-gradient(135deg, #020024 0%, #090979 35%, #00d4ff 100%); /* Contoh background gradient gelap gahar kamu */
+    background: linear-gradient(135deg, var(--color-blue-deep) 0%, var(--color-blue-mid) 35%, var(--color-cyan) 100%); /* Contoh background gradient gelap gahar kamu */
     display: flex;
     justify-content: center;
     align-items: center;
+    contain: layout paint; /* OPTIMASI FPS: isolasi repaint hero biar gak nular ke section lain */
 }
 
 /* --- FIX UKURAN TEKS: RESPONSIF & GAGAH DI SEMUA LAYAR --- */
@@ -80,9 +144,9 @@ body {
 }
 
 .hero-content h1 {
-        font-family: "Montserrat", sans-serif !important;
+        font-family: var(--font-main) !important;
         font-weight: 900 !important;
-        color: #ffffff !important;
+        color: var(--color-white) !important;
         text-shadow: 0 0 30px rgba(0, 136, 204, 0.85),
                      0 4px 15px rgba(0, 0, 0, 0.9) !important;
         letter-spacing: 4px;
@@ -91,6 +155,16 @@ body {
         font-size: clamp(22px, 5vw, 56px) !important;
         line-height: 1.2;
         white-space: nowrap; /* Memaksa teks tetap 1 baris, anti-patah di HP! */
+}
+
+/* OPTIMASI FPS MOBILE: text-shadow ganda blur besar di judul utama itu mahal
+   buat di-repaint, apalagi pas page-transition lagi jalan bareng. Kita tipiskan
+   blur radius-nya di HP tanpa bikin tulisannya hilang gahar. */
+@media screen and (max-width: 768px) {
+        .hero-content h1 {
+                text-shadow: 0 0 12px rgba(0, 136, 204, 0.85),
+                             0 2px 6px rgba(0, 0, 0, 0.9) !important;
+        }
 }
 
 /* CONTAINER UTAMA KUBUS */
@@ -105,6 +179,7 @@ body {
     list-style: none;
     padding: 0;
     margin: 0;
+    contain: strict; /* OPTIMASI FPS: area kubus terisolasi total dari repaint luar */
 }
 
 /* BASE STYLE UNTUK SETIAP KUBUS */
@@ -131,6 +206,22 @@ body {
 .cubes li:nth-child(7) { left: 35%; width: 150px; height: 150px; animation-delay: 7s; }
 .cubes li:nth-child(8) { left: 50%; width: 25px; height: 25px; animation-delay: 15s; animation-duration: 45s; }
 .cubes li:nth-child(9) { left: 20%; width: 15px; height: 15px; animation-delay: 2s; animation-duration: 35s; }
+
+/* OPTIMASI FPS MOBILE: hero adalah section PERTAMA yang dilihat user, jadi kubusnya
+   tidak kita matikan total (biar tetap estetik di awal kesan pertama) — tapi kita
+   pangkas jumlah kubus aktif dari 9 jadi 5 di HP low-end, dan kubus besar (yang
+   area repaint-nya paling luas) kita kecilkan. Ini titik tengah: estetik tetap
+   kelihatan, tapi beban GPU di section paling kritis ini turun signifikan. */
+@media screen and (max-width: 768px) {
+    .cubes li:nth-child(6),
+    .cubes li:nth-child(7),
+    .cubes li:nth-child(8),
+    .cubes li:nth-child(9) {
+        display: none !important;
+    }
+    .cubes li:nth-child(1) { width: 50px; height: 50px; }
+    .cubes li:nth-child(4) { width: 40px; height: 40px; }
+}
 
 /* LOGIKA JALURNYA ANIMASI */
 /* OPTIMASI FPS: border-radius DIHAPUS dari keyframe.
@@ -163,7 +254,12 @@ body {
         width: 100%;
         z-index: 100000 !important;
         border-bottom: 1px solid rgba(0, 136, 204, 0.1) !important;
-        transition: all 0.4s ease-in-out !important;
+        /* OPTIMASI FPS: "all" diganti properti spesifik. transition:all bikin browser
+           harus cek SEMUA properti CSS tiap frame buat tau apa yang berubah, padahal
+           cuma background/height/border/shadow yang animasi. Ini elemen FIXED yang
+           kena repaint terus tiap scroll, jadi perubahan ini paling kerasa efeknya. */
+        transition: background 0.4s ease-in-out, height 0.4s ease-in-out,
+                border-bottom-color 0.4s ease-in-out, box-shadow 0.4s ease-in-out !important;
 }
 
 .container-navbar.navbar-scrolled {
@@ -193,7 +289,7 @@ body {
 }
 
 .brand-text {
-        color: white !important;
+        color: var(--color-white) !important;
         font-weight: 900 !important;
         text-transform: uppercase !important;
         letter-spacing: 1.5px !important;
@@ -211,14 +307,14 @@ body {
 .ul-navbar .btn-gahar,
 .menu-item-btn.btn-gahar,
 .ul-navbar li a.btn-gahar {
-        font-family: "Montserrat", sans-serif !important;
+        font-family: var(--font-main) !important;
         font-weight: 800 !important;
         font-size: 13px !important;
         letter-spacing: 1.5px !important;
         text-transform: uppercase !important;
-        color: #ffffff !important;
+        color: var(--color-white) !important;
         background: rgba(15, 15, 15, 0.7) !important;
-        border: 2px solid #0088cc !important;
+        border: 2px solid var(--color-blue) !important;
         border-radius: 50px !important;
         padding: 12px 24px !important;
         text-decoration: none !important;
@@ -230,16 +326,20 @@ body {
         width: auto !important;
         text-shadow: 0 0 5px rgba(0, 136, 204, 0.6) !important;
         box-shadow: 0 0 12px rgba(0, 136, 204, 0.3) !important;
-        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        /* OPTIMASI FPS: "all" -> properti spesifik (cuma background/color/shadow/transform
+           yang benar2 berubah saat hover). Tombol ini banyak & sering disentuh di mobile. */
+        transition: background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 .ul-navbar li a:hover,
 .ul-navbar .btn-gahar:hover,
 .menu-item-btn.btn-gahar:hover,
 .ul-navbar li a.btn-gahar:hover {
-        background: #0088cc !important;
-        background-color: #0088cc !important;
-        color: #ffffff !important;
+        background: var(--color-blue) !important;
+        background-color: var(--color-blue) !important;
+        color: var(--color-white) !important;
         box-shadow: 0 0 25px rgba(0, 136, 204, 0.9) !important;
         transform: translateY(-2px) !important;
 }
@@ -280,15 +380,15 @@ body {
                 display: block !important;
                 width: 28px !important;
                 height: 3px !important;
-                background-color: #0088cc !important;
+                background-color: var(--color-blue) !important;
                 border-radius: 2px !important;
                 transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
                 box-shadow: 0 0 8px rgba(0, 136, 204, 0.7) !important;
         }
 
         .menu-toggle.is-active span {
-                background-color: #ffffff !important;
-                background: #ffffff !important;
+                background-color: var(--color-white) !important;
+                background: var(--color-white) !important;
                 box-shadow: 0 0 10px rgba(255, 255, 255, 0.9) !important;
         }
 
@@ -314,6 +414,7 @@ body {
                 list-style: none !important;
                 z-index: 100001 !important;
                 box-shadow: -10px 0 30px rgba(0, 0, 0, 0.8) !important;
+                will-change: right; /* OPTIMASI FPS: drawer mobile sering dibuka-tutup */
         }
 
         .ul-navbar.active {
@@ -343,7 +444,7 @@ body {
 .profile-section {
         background-color: transparent !important;
         padding: 60px 10%;
-        color: #ffffff !important;
+        color: var(--color-white) !important;
 }
 
 .container-flex {
@@ -387,7 +488,7 @@ body {
 }
 
 .label-eltri {
-        color: #ffaa00;
+        color: var(--color-gold);
         font-weight: bold;
         letter-spacing: 2px;
         text-transform: uppercase;
@@ -397,15 +498,15 @@ body {
         font-size: 35px;
         margin: 10px 0;
         font-weight: 900;
-        color: #ffffff;
+        color: var(--color-white);
 }
 
 .visi-text {
-        font-family: "Playfair Display", Georgia, serif;
+        font-family: var(--font-display);
         font-size: 24px;
         font-style: italic;
         font-weight: 700;
-        color: #d4af37;
+        color: #d4af37; /* CATATAN: warna gold khusus ini tidak ada token persis di :root (beda dari --color-gold/#fa0), dibiarkan hex agar nuansa tidak berubah */
         text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
         margin-top: 5px;
 }
@@ -427,7 +528,7 @@ body {
            Ujung kanan kita paksa menggelap pekat (#050522) agar warna biru bodi utama 
            tidak bocor menembus ke dalam kotak jam, sehingga transisinya rata & bersih.
         */
-        background: linear-gradient(135deg, #020024 0%, #05053d 50%, #050522 100%);
+        background: linear-gradient(135deg, var(--color-blue-deep) 0%, #05053d 50%, #050522 100%);
         
         border-radius: 16px;
         border: 1px solid rgba(255, 255, 255, 0.08);
@@ -524,7 +625,7 @@ body {
 .time-display {
         font-size: 1.75rem;
         font-weight: 700;
-        color: #00bcd4;
+        color: var(--color-cyan-soft);
         text-shadow: 0 0 12px rgba(0, 188, 212, 0.4);
         font-family: "Courier New", monospace;
 }
@@ -599,7 +700,7 @@ body {
        Warna biru terang (#005c8a) dibuang total dan diganti ke warna gelap pekat (#050522).
        Sekarang gradasinya menyatu mulus dari atas sampai bawah tanpa potongan warna kaku!
     */
-    background: linear-gradient(135deg, #020024 0%, #05053d 50%, #050522 100%) !important;
+    background: linear-gradient(135deg, var(--color-blue-deep) 0%, #05053d 50%, #050522 100%) !important;
     
     border-radius: 16px;
     border: 1px solid rgba(255, 255, 255, 0.08);
@@ -746,7 +847,7 @@ body {
 .skills-section-wrapper .skill-title {
     font-size: 1.1rem;
     font-weight: 700;
-    color: #ffffff;
+    color: var(--color-white);
     letter-spacing: 1px;
 }
 
@@ -907,7 +1008,7 @@ body {
        Kita paksa menggelap pekat agar balok biru raksasa di atas terputus 
        dan melebur bersih sebelum masuk ke bagian Jam & Skill!
     */
-    background: #020024 !important; 
+    background: var(--color-blue-deep) !important; 
     position: relative;
     z-index: 2;
     text-align: center;
@@ -916,7 +1017,7 @@ body {
 .social-footer h3 {
     margin-bottom: 25px;
     font-family: "Yellowtail", cursive;
-    color: #ff8c00;
+    color: var(--color-gold-warm);
     font-size: 28px;
     letter-spacing: 1px;
 }
@@ -937,12 +1038,17 @@ body {
     height: 52px;
     border-radius: 50%;
     text-decoration: none;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    /* OPTIMASI FPS: cubic-bezier custom dipertahankan tapi target properti
+       dipersempit (cukup background/box-shadow/transform yang berubah di hover) */
+    transition: background-color 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+            background 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+            box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+            transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .social-icons a.icon i {
-    color: #ffffff !important;
+    color: var(--color-white) !important;
     font-size: 24px !important;
 }
 
@@ -962,7 +1068,7 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.2) !important; 
 }
 .social-icons a.x-logo:hover {
-    background-color: #ffffff !important;
+    background-color: var(--color-white) !important;
     box-shadow: 0 0 25px rgba(255, 255, 255, 0.7);
     transform: translateY(-5px) scale(1.08);
 }
@@ -972,14 +1078,14 @@ body {
 
 /* Base style SVG X */
 .social-icons a.x-logo .svg-x { 
-    transition: 0.3s ease; 
+    transition: fill 0.3s ease; /* OPTIMASI FPS: "0.3s ease" tanpa properti = transition:all tersembunyi */
 }
 
 .main-footer {
     text-align: center;
     padding: 30px;
-    background: #000000 !important;
-    color: #ffffff !important;
+    background: var(--color-black) !important;
+    color: var(--color-white) !important;
     font-size: 13px;
     width: 100%;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -1006,11 +1112,11 @@ body {
 .status-dot-fixed {
         width: 10px;
         height: 10px;
-        background-color: #00ff88;
+        background-color: var(--color-green);
         border-radius: 50%;
         position: relative;
         display: inline-block;
-        box-shadow: 0 0 10px #00ff88;
+        box-shadow: 0 0 10px var(--color-green);
         flex-shrink: 0;
 }
 .status-dot-fixed::after {
@@ -1020,16 +1126,19 @@ body {
         left: 50%;
         width: 100%;
         height: 100%;
-        background-color: #00ff88;
+        background-color: var(--color-green);
         border-radius: 50%;
         transform: translate(-50%, -50%);
         animation: pulseEffect 2s infinite ease-in-out;
         will-change: width, height, opacity;
 }
 
+/* OPTIMASI FPS: keyframe pulseEffect ASLI animasi width/height — itu trigger
+   layout reflow tiap frame (paling mahal di seluruh file ini!). Diganti pakai
+   transform:scale + opacity yang murni GPU-composite, hasil visual identik. */
 @keyframes pulseEffect {
-        0% { width: 100%; height: 100%; opacity: 0.8; }
-        100% { width: 300%; height: 300%; opacity: 0; }
+        0% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+        100% { transform: translate(-50%, -50%) scale(3); opacity: 0; }
 }
 
 /* ==========================================================================
@@ -1049,7 +1158,7 @@ body {
 .info-section h2, 
 .side-bar h3,
 .maps-link {
-    font-family: 'Share Tech Mono', -apple-system, BlinkMacSystemFont, monospace !important;
+    font-family: var(--font-mono), -apple-system, BlinkMacSystemFont !important;
     letter-spacing: 1px;
 }
 
@@ -1070,9 +1179,27 @@ body {
     100% { transform: scale(1); opacity: 1; box-shadow: 0 0 8px #00ff66, 0 0 15px #00ff66; }
 }
 
+/* OPTIMASI FPS MOBILE: neonPulse & onlineBlink mengandung box-shadow yang dianimasikan —
+   ini SELALU repaint tiap frame (gak bisa di-GPU-composite), beda dari transform/opacity
+   biasa. Kalau elemen ini dipakai berulang (misal banyak status dot di satu halaman),
+   di HP low-end bisa berat. Kita redam blur radius-nya khusus mobile tanpa hapus animasinya. */
+@media screen and (max-width: 768px) {
+    @keyframes neonPulse {
+        0% { box-shadow: 0 0 8px rgba(0, 216, 255, 0.5), inset 0 0 5px rgba(0, 216, 255, 0.3); }
+        50% { box-shadow: 0 0 14px rgba(0, 216, 255, 0.8), inset 0 0 8px rgba(0, 216, 255, 0.5); }
+        100% { box-shadow: 0 0 8px rgba(0, 216, 255, 0.5), inset 0 0 5px rgba(0, 216, 255, 0.3); }
+    }
+    @keyframes onlineBlink {
+        0% { transform: scale(1); opacity: 1; box-shadow: 0 0 4px #00ff66, 0 0 8px #00ff66; }
+        50% { transform: scale(1.1); opacity: 0.7; box-shadow: 0 0 2px #00ff66, 0 0 4px #00ff66; }
+        100% { transform: scale(1); opacity: 1; box-shadow: 0 0 4px #00ff66, 0 0 8px #00ff66; }
+    }
+}
+
 /* Efek Hover smooth untuk Sidebar */
 .rpg-profile-sidebar {
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.4s ease, box-shadow 0.4s ease, background 0.4s ease !important;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+            border-color 0.4s ease, box-shadow 0.4s ease, background 0.4s ease !important;
     will-change: transform;
 }
 .rpg-profile-sidebar:hover {
@@ -1084,13 +1211,14 @@ body {
 
 /* Efek Hover geser untuk List Pendidikan */
 .education-item {
-    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease !important;
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+            border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease !important;
     position: relative;
     will-change: transform;
 }
 .education-item:hover {
     transform: translateX(8px);
-    border-color: #00d8ff !important;
+    border-color: var(--color-cyan) !important;
     /* UPDATE AMAN: Hapus url gambarnya dari sini agar React tidak pusing compile */
     background: rgba(12, 20, 38, 0.85) !important;
     box-shadow: 0 8px 25px rgba(0, 216, 255, 0.15) !important;
@@ -1107,6 +1235,7 @@ body {
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
       overflow: hidden; z-index: 1; list-style: none; padding: 0; margin: 0;
+      contain: strict; /* OPTIMASI FPS: isolasi penuh, sama seperti .cubes utama */
     }
     .cubes-fixed li {
       position: absolute; display: block; list-style: none; width: 25px; height: 25px;
@@ -1170,18 +1299,18 @@ body {
 
 /* Styling isi item dropdown */
 .dropdown-item {
-  color: #fff;
+  color: var(--color-white);
   padding: 10px 15px;
   text-decoration: none;
   display: block;
   font-size: 14px;
-  transition: background 0.3s ease;
+  transition: background-color 0.3s ease; /* OPTIMASI FPS: spesifik, bukan "background" generik */
 }
 
 /* Efek Hover untuk Item Dropdown */
 .dropdown-item:hover {
-  background-color: #ff0055; /* Sesuaikan dengan warna neon/gahar andalan proyekmu */
-  color: #fff;
+  background-color: #ff0055; /* CATATAN: warna pink-neon khusus dropdown, tidak ada token persis di :root (beda dari --color-red/#ff2a4b), dibiarkan hex */
+  color: var(--color-white);
 }
 
 /* Memperbaiki tombol toggle agar tidak merusak struktur link */
