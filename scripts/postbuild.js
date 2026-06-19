@@ -1,12 +1,16 @@
 const fs = require('fs');
 const path = require('path');
 
-const htmlPath  = './build/index.html';
-const staticJs  = './build/static/js';
-const staticCss = './build/static/css';
-const moduleJs  = './build/module/js';
-const moduleCss = './build/module/css';
-const customCss = './eltriKatolik.css';
+// ✅ Pakai __dirname supaya path relatif ke lokasi script, bukan CWD
+const scriptDir = __dirname;
+const rootDir   = path.join(scriptDir, '..');
+
+const htmlPath  = path.join(rootDir, 'build/index.html');
+const staticJs  = path.join(rootDir, 'build/static/js');
+const staticCss = path.join(rootDir, 'build/static/css');
+const moduleJs  = path.join(rootDir, 'build/module/js');
+const moduleCss = path.join(rootDir, 'build/module/css');
+const customCss = path.join(scriptDir, 'eltriKatolik.css'); // ✅ taruh di folder scripts/
 
 fs.mkdirSync(moduleJs,  { recursive: true });
 fs.mkdirSync(moduleCss, { recursive: true });
@@ -26,20 +30,18 @@ if (jsFile) {
   console.log(`✅ JS: ${jsFile} → eltrihideen.js`);
 }
 
-// ── CSS: merge → module, hapus static ───────────────
+// ── CSS ─────────────────────────────────────────────
 const cssFile = fs.readdirSync(staticCss).find(f => f.startsWith('main.') && f.endsWith('.css') && !f.endsWith('.map'));
 if (cssFile) {
   const craCssPath = path.join(staticCss, cssFile);
   const cssMapPath = path.join(staticCss, cssFile + '.map');
 
-  const craCss      = fs.readFileSync(craCssPath, 'utf8');
+  const craCss        = fs.readFileSync(craCssPath, 'utf8');
   const customContent = fs.readFileSync(customCss, 'utf8');
-  const merged      = customContent + '\n\n' + craCss;
+  const merged        = customContent + '\n\n' + craCss;
 
-  // Tulis hasil merge
   fs.writeFileSync(path.join(moduleCss, 'eltriKatolik.css'), merged, 'utf8');
 
-  // ✅ Hapus file static supaya bersih
   fs.unlinkSync(craCssPath);
   if (fs.existsSync(cssMapPath)) fs.unlinkSync(cssMapPath);
 
@@ -47,7 +49,7 @@ if (cssFile) {
     new RegExp('/static/css/' + cssFile.replace(/\./g, '\\.'), 'g'),
     '/module/css/eltriKatolik.css'
   );
-  console.log(`✅ CSS merged + static dihapus → module/css/eltriKatolik.css`);
+  console.log(`✅ CSS merged → module/css/eltriKatolik.css`);
 }
 
 fs.writeFileSync(htmlPath, html, 'utf8');
