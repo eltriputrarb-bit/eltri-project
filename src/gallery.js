@@ -18,7 +18,7 @@ function Gallery() {
   const itemsPerPage = 12;
 
   const galleryItems = [
-    { id: 16, type: 'video', src: '/video/kotae.mp4', date: '04/06,juni,2026', desc: '⛅️' },    
+    { id: 16, type: 'video', src: '/video/kotae.mp4', date: '19/06,juni,2026', desc: '⛅️' },    
     { id: 14, type: 'img', src: '/images/foto13.jpg', date: '14/06,juni,2026', desc: 'DI SMC MAKASSAR' },
     { id: 15, type: 'img', src: '/images/foto12.jpg', date: '14/06,juni,2026', desc: 'DI SMC MAKASSAR' },
     { id: 11, type: 'img', src: '/images/foto11.jpg', date: '10/06,juni,2026', desc: 'warkop gunung nona indah' },
