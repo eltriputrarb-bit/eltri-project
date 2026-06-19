@@ -1,7 +1,10 @@
 const fs = require('fs');
 const path = require('path');
 
-const htmlPath = './build/index.html';
+const htmlPath    = './build/index.html';
+// CSS variabel kamu yang baru (taruh di src/ atau root project)
+const varCssPath  = './src/variables.css'; 
+
 let html = fs.readFileSync(htmlPath, 'utf8');
 
 const staticJs  = './build/static/js';
@@ -23,7 +26,6 @@ if (jsFile) {
 
   const jsMap = jsFile + '.map';
   if (fs.existsSync(path.join(staticJs, jsMap))) {
-    // Fix "file" field di dalam .map
     let jsMapContent = fs.readFileSync(path.join(staticJs, jsMap), 'utf8');
     jsMapContent = jsMapContent.replace(
       /"file"\s*:\s*"[^"]*"/,
@@ -41,23 +43,39 @@ const cssFile = fs.readdirSync(staticCss)
 
 if (cssFile) {
   const cssMap = cssFile + '.map';
+  const cssMapPath = path.join(staticCss, cssMap);
 
-  // Fix .map dulu sebelum CSS di-rename
-  if (fs.existsSync(path.join(staticCss, cssMap))) {
-    let mapContent = fs.readFileSync(path.join(staticCss, cssMap), 'utf8');
+  if (fs.existsSync(cssMapPath)) {
+    let mapObj = JSON.parse(fs.readFileSync(cssMapPath, 'utf8'));
 
-    // Fix field "file" di dalam .map
-    mapContent = mapContent.replace(
-      /"file"\s*:\s*"[^"]*"/,
-      '"file":"module/css/eltriKatolik.css"'
-    );
+    // ✅ Fix field "file"
+    mapObj.file = 'module/css/eltriKatolik.css';
 
-    fs.writeFileSync(path.join(staticCss, cssMap), mapContent, 'utf8');
-    fs.renameSync(path.join(staticCss, cssMap), path.join(moduleCss, 'eltriKatolik.css.map'));
+    // ✅ Inject CSS variabel ke sourcesContent[0]
+    // sourcesContent adalah array isi tiap source file
+    // index 0 biasanya adalah file CSS utama (index.css / App.css)
+    if (fs.existsSync(varCssPath)) {
+      const varCssContent = fs.readFileSync(varCssPath, 'utf8');
+      if (mapObj.sourcesContent && mapObj.sourcesContent.length > 0) {
+        // Prepend variabel ke source pertama supaya DevTools bisa baca
+        mapObj.sourcesContent[0] = varCssContent + '\n\n' + mapObj.sourcesContent[0];
+        console.log('✅ CSS variables injected into sourcesContent[0]');
+      }
+    }
+
+    // ✅ Fix nama file di array "sources" jika ada
+    if (mapObj.sources) {
+      mapObj.sources = mapObj.sources.map(s =>
+        s.replace('static/css/', 'module/css/')
+      );
+    }
+
+    fs.writeFileSync(cssMapPath, JSON.stringify(mapObj), 'utf8');
+    fs.renameSync(cssMapPath, path.join(moduleCss, 'eltriKatolik.css.map'));
     console.log(`✅ CSS Map: ${cssMap} → eltriKatolik.css.map`);
   }
 
-  // Fix sourceMappingURL di dalam CSS, lalu rename
+  // ✅ Fix sourceMappingURL di CSS lalu rename
   let cssContent = fs.readFileSync(path.join(staticCss, cssFile), 'utf8');
   cssContent = cssContent.replace(
     /\/\*#\s*sourceMappingURL=[^\s*]+\s*\*\//,
