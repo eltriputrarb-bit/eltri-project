@@ -18,6 +18,7 @@ function Gallery() {
   const itemsPerPage = 12;
 
   const galleryItems = [
+    { id: 17, type: 'video', src: '/video/elin.mp4', date: '20/06,juni,2026', desc: 'servis honda' },
     { id: 16, type: 'video', src: '/video/kotae.mp4', date: '19/06,juni,2026', desc: '⛅️' },    
     { id: 14, type: 'img', src: '/images/foto13.jpg', date: '14/06,juni,2026', desc: 'DI SMC MAKASSAR' },
     { id: 15, type: 'img', src: '/images/foto12.jpg', date: '14/06,juni,2026', desc: 'DI SMC MAKASSAR' },
