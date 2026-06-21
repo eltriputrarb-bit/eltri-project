@@ -73,7 +73,8 @@ app.listen(PORT, () => {
     "12": 0,
     "13": 0,
     "14": 0,
-    "15": 0
+    "15": 0,
+    "17": 1,
   };
   writeViews(dataEdit);
   console.log("✏️ Database cloud views.json berhasil di-update!");
