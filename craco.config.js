@@ -10,10 +10,16 @@ module.exports = {
           stringArray: true,
           stringArrayThreshold: 0.75,
           compact: true,
+          identifierNamesGenerator: 'hexadecimal',
           controlFlowFlattening: false,
           deadCodeInjection: false,
-          debugProtection: false, // disarankan false, lihat catatan di bawah
-          disableConsoleOutput: false
+          selfDefending: false,
+          disableConsoleOutput: false,
+          debugProtection: false,
+          // Nama kamu tersembunyi di sini 😎
+          domainLock: [],
+          reservedNames: ['EltriPutnzs', 'EltriAtlas'],
+          seed: 0x317 // seed unik: ELTRI
         }, [])
       ] : []
     }
