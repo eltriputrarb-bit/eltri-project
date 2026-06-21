@@ -2,10 +2,10 @@ const JavaScriptObfuscator = require('javascript-obfuscator');
 const fs = require('fs');
 const path = require('path');
 
-const buildJsDir = path.join(__dirname, 'build', 'static', 'js');
+const buildJsDir = path.join(__dirname, 'build', 'module', 'js');
 
 if (!fs.existsSync(buildJsDir)) {
-  console.log('⚠️ Folder build/static/js tidak ditemukan. Jalankan "npm run build" dulu sebelum obfuscate.');
+  console.log('⚠️ Folder build/module/js tidak ditemukan. Jalankan "npm run build" dulu sebelum obfuscate.');
   process.exit(1);
 }
 
