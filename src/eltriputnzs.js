@@ -9,28 +9,7 @@ import ErrorPage from './ErrorPage';
 function EltriPutnzs() {
 
   useEffect(() => {
-    // 1. Protokol Sistem Keamanan Master Eltri
-    const handleContextMenu = (e) => {
-      e.preventDefault();
-      alert("❌ PROTOKOL KEAMANAN: Hak Akses Hanya Untuk Master Eltri!");
-    };
-
-    const handleKeyDown = (e) => {
-      if (e.keyCode === 123) {
-        e.preventDefault();
-      }
-      if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) {
-        e.preventDefault();
-      }
-      if (e.ctrlKey && e.keyCode === 85) {
-        e.preventDefault();
-      }
-    };
-
-    document.addEventListener('contextmenu', handleContextMenu);
-    document.addEventListener('keydown', handleKeyDown);
-
-    // 2. Logika Jam Digital Dunia (World Clock)
+    // 1. Logika Jam Digital Dunia (World Clock)
     const updateWorldClocks = () => {
       const formatOptions = (timeZone) => {
         return new Intl.DateTimeFormat('en-US', {
@@ -71,9 +50,9 @@ function EltriPutnzs() {
     };
 
     const clockInterval = setInterval(updateWorldClocks, 1000);
-    updateWorldClocks(); 
+    updateWorldClocks();
 
-    // 3. Sticky Navbar saat di-scroll
+    // 2. Sticky Navbar saat di-scroll
     const handleScroll = () => {
       const navbar = document.querySelector('.container-navbar');
       if (navbar) {
@@ -88,8 +67,6 @@ function EltriPutnzs() {
     window.addEventListener('scroll', handleScroll);
 
     return () => {
-      document.removeEventListener('contextmenu', handleContextMenu);
-      document.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('scroll', handleScroll);
       clearInterval(clockInterval);
     };
@@ -104,31 +81,31 @@ function EltriPutnzs() {
     }
   };
 
-useEffect(() => {
-  if (process.env.NODE_ENV !== 'production') {
-    const styleUtama = `
-      background: #111111; 
-      color: #ff0055; 
-      font-size: 18px; 
-      font-weight: bold; 
-      padding: 10px 20px; 
-      border-radius: 5px; 
-      border: 2px solid #00ffcc;
-      font-family: sans-serif;
-      text-shadow: 0 0 10px #ff0055, 0 0 20px #00ffcc;
-    `;
+  useEffect(() => {
+    if (process.env.NODE_ENV !== 'production') {
+      const styleUtama = `
+        background: #111111; 
+        color: #ff0055; 
+        font-size: 18px; 
+        font-weight: bold; 
+        padding: 10px 20px; 
+        border-radius: 5px; 
+        border: 2px solid #00ffcc;
+        font-family: sans-serif;
+        text-shadow: 0 0 10px #ff0055, 0 0 20px #00ffcc;
+      `;
 
-    const styleSub = `
-      color: #00ffcc; 
-      font-size: 14px; 
-      font-weight: 500;
-      font-family: sans-serif;
-    `;
+      const styleSub = `
+        color: #00ffcc; 
+        font-size: 14px; 
+        font-weight: 500;
+        font-family: sans-serif;
+      `;
 
-    console.log("%c🚀 ELTRI ATLAS v2.0 — ACCESS GRANTED", styleUtama);
-    console.log("%cCreated with ❤️ by ELTRI ATLAS Developer", styleSub);
-  }
-}, []);
+      console.log("%c🚀 ELTRI ATLAS v2.0 — ACCESS GRANTED", styleUtama);
+      console.log("%cCreated with ❤️ by ELTRI ATLAS Developer", styleSub);
+    }
+  }, []);
 
   return (
     <div className="EltriPutnzs">
@@ -446,6 +423,30 @@ useEffect(() => {
         <p className="visi-text">"Tuhan Yang Maha Esa"</p>
       </div>
     </div>
+  </div>
+</section>
+
+{/* ==========================================================================
+   LOKASI MAPS — MAKASSAR, INDONESIA
+   Taruh blok ini di bagian JSX eltriputnzs.js, di tempat yang kamu mau
+   ========================================================================== */}
+<section className="location-section">
+  <div className="location-header">
+    <i className="fas fa-map-marker-alt"></i>
+    <h3>Makassar, Indonesia</h3>
+  </div>
+
+  <div className="map-container">
+    <iframe
+      title="Lokasi Makassar Indonesia"
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63634.45!2d119.4221!3d-5.1477!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNcsKvDA4JzUxLjciUyAxMTnCsDI1JzE5LjYiRQ!5e0!3m2!1sen!2sid!4v1700000000000"
+      width="100%"
+      height="350"
+      style={{ border: 0 }}
+      allowFullScreen=""
+      loading="lazy"
+      referrerPolicy="no-referrer-when-downgrade"
+    ></iframe>
   </div>
 </section>
 
