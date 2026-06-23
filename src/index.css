@@ -1332,176 +1332,206 @@ body {
   font-family: inherit;
 }
 
-/* Masukkan font-family ke container utama agar semua teks di card ikut berubah rapi */
+/* Container Utama Halaman Home */
 .profile-container {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  width: 100%;
-  padding: 40px 15px;
-  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif !important;
+  max-width: 1100px !important;
+  margin: 0 auto !important;
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  gap: 30px !important;
+  padding: 60px 20px !important;
+  align-items: center !important;
   position: relative;
   z-index: 10;
+  box-sizing: border-box;
 }
 
-/* Card Utama (Glassmorphism) */
+/* Card Utama Home - Customization Match to Public Profile */
 .profile-card {
+  width: 100% !important;
   max-width: 1000px;
   margin: 0 auto;
-  background-color: rgba(10, 18, 44, 0.6);
-  border: 1px solid rgba(6, 182, 212, 0.3);
-  border-radius: 16px;
-  padding: 30px 20px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  gap: 30px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-  flex-wrap: wrap-reverse; /* Default di mobile: logo di atas, teks di bawah */
-}
-
-/* Sisi Kiri: Teks Profil */
-.profile-info {
-  flex: 1 1 280px;
-  text-align: left;
-}
-
-.profile-tagline {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  color: #06b6d4;
-  display: block;
-  margin-bottom: 6px;
-  text-transform: uppercase;
-}
-
-.profile-name {
-  font-size: 28px;
-  font-weight: bold; /* Pakai bold bawaan dulu */
-  letter-spacing: 1px;
-  color: #a7a7a7;
-  margin: 0 0 10px 0;
-  text-transform: uppercase;
-  line-height: 1.2;
-
-  /* 🔥 TRIK SAKTI: Membuat teks jadi Extra Bold secara manual */
-  text-shadow: 
-    1px 0px 0px #a7a7a7, 
-    -1px 0px 0px #a7a7a7, 
-    0px 1px 0px #ffffff, 
-    0px -1px 0px #ffffff,
-    0.5px 0.5px 0px #ffffff;
-}
-
-.profile-desc {
-  font-size: 13px;
-  color: #cbd5e1;
-  line-height: 1.6;
-  margin: 0 0 16px 0;
-  font-weight: 300;
-}
-
-/* Tombol Email */
-.email-button-container {
-  margin-top: 15px;
-}
-
-.email-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background-color: rgba(6, 182, 212, 0.15);
-  color: #22d3ee;
-  font-size: 12px;
-  font-weight: 600;
-  text-decoration: none;
-  padding: 10px 16px;
-  border-radius: 8px;
-  border: 1px solid rgba(6, 182, 212, 0.4);
-  letter-spacing: 0.5px;
-  word-break: break-word;
-  transition: all 0.3s ease;
-}
-
-.email-button:hover {
-  background-color: rgba(6, 182, 212, 0.3);
-  color: #ffffff;
-  border-color: rgba(6, 182, 212, 0.8);
-}
-
-/* Sisi Kanan: Logo Bulat */
-.profile-logo-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto;
-}
-
-.profile-logo-circle {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  background-color: #070d24;
-  border: 2px solid rgba(6, 182, 212, 0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 0 15px rgba(6, 182, 212, 0.2);
+  
+  border: 1px solid rgba(0, 136, 204, 0.25) !important;
+  border-left: 5px solid #00d8ff !important; /* Garis aksen neon tebal kiri */
+  border-radius: 0 20px 20px 0 !important; /* Sisi kiri flat, sisi kanan melengkung halus */
+  padding: 40px 35px !important;
+  
+  /* Efek Glassmorphism Blur Mewah */
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 40px !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6) !important;
+  box-sizing: border-box !important;
+  position: relative;
   overflow: hidden;
 }
 
+/* KONTEN INFORMASI (SISI KIRI) */
+.profile-info {
+  flex: 1 !important;
+  text-align: left !important;
+  position: relative !important;
+  z-index: 5 !important;
+}
+
+.profile-tagline {
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.2em !important;
+  color: #00d8ff !important; 
+  display: block !important;
+  margin-bottom: 10px !important;
+  text-transform: uppercase !important;
+  font-family: 'Share Tech Mono', monospace !important;
+}
+
+/* Judul Nama Glow Neon Solid */
+.profile-info h2.profile-name {
+  font-family: 'SF Pro Display Black', -apple-system, BlinkMacSystemFont, 'Inter', sans-serif !important;
+  font-size: 32px !important; 
+  font-weight: 900 !important; 
+  letter-spacing: 1.5px !important;
+  color: #ffffff !important; 
+  text-transform: uppercase !important;
+  line-height: 1.2 !important;
+  margin: 0 0 20px 0 !important;
+  text-shadow: 
+    1px 0px 0px #ffffff, 
+    -1px 0px 0px #ffffff, 
+    0px 1px 0px #ffffff, 
+    0px -1px 0px #ffffff,
+    0 0 15px rgba(255, 255, 255, 0.3),
+    0 0 25px rgba(0, 216, 255, 0.3) !important;
+}
+
+.profile-desc {
+  font-size: 14px !important;
+  color: #cbd5e1 !important;
+  line-height: 1.6 !important;
+  margin: 0 0 25px 0 !important;
+  font-weight: 300 !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+.email-button-container {
+  margin-top: 15px !important;
+  position: relative !important;
+  z-index: 6 !important;
+}
+
+/* Tombol Email Link Aktif */
+.email-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  background-color: rgba(0, 136, 204, 0.15) !important;
+  color: #00d8ff !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  text-decoration: none !important;
+  padding: 12px 20px !important;
+  border-radius: 8px !important;
+  border: 1px solid rgba(0, 216, 255, 0.35) !important;
+  letter-spacing: 0.5px !important;
+  transition: all 0.3s ease !important;
+  font-family: 'Share Tech Mono', monospace !important;
+  cursor: pointer !important; /* Memaksa kursor tangan muncul */
+}
+
+.email-button:hover {
+  background-color: rgba(0, 216, 255, 0.25) !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.8) !important;
+  box-shadow: 0 0 15px rgba(0, 216, 255, 0.5) !important;
+}
+
+/* AREA EMBLEM LOGO BULAT (SISI KANAN) */
+.profile-logo-wrapper {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  position: relative !important;
+  z-index: 5 !important;
+}
+
+.profile-logo-circle {
+  width: 160px !important; 
+  height: 160px !important;
+  border-radius: 50% !important;
+  background-color: #070d24 !important;
+  border: 3px solid #00d8ff !important;
+  box-shadow: 0 0 20px rgba(0, 216, 255, 0.5) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+  transition: all 0.3s ease !important;
+}
+
 .profile-logo-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  transition: transform 0.4s ease !important;
+}
+
+.profile-logo-circle:hover {
+  border-color: #ffffff !important;
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.6) !important;
 }
 
 .profile-logo-circle:hover .profile-logo-img {
-  transform: scale(1.08);
+  transform: scale(1.1) !important;
 }
 
-/* Footer Section */
+/* FOOTER */
 .profile-footer {
-  width: 100%;
-  text-align: center;
-  margin-top: 50px;
-  padding: 20px 10px 0 10px;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  width: 100% !important;
+  text-align: center !important;
+  margin-top: 60px !important;
+  padding: 25px 10px 0 10px !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.03) !important;
 }
 
 .profile-footer-text {
-  font-size: 10px;
-  color: #64748b;
-  letter-spacing: 0.2em;
-  margin: 0;
-  text-transform: uppercase;
-  line-height: 1.5;
+  font-size: 11px !important;
+  color: #64748b !important;
+  letter-spacing: 0.2em !important;
+  margin: 0 !important;
+  text-transform: uppercase !important;
+  line-height: 1.5 !important;
+  font-family: 'Share Tech Mono', monospace !important;
 }
 
 .profile-footer-brand {
-  color: #94a3b8;
-  font-weight: 700;
+  color: #ffffff !important;
+  font-weight: 700 !important;
 }
 
-/* 📱 MEDIA QUERIES (Aman untuk Layar Desktop & Tablet Besar) */
-@media (min-width: 768px) {
+/* RESPONSIVE LAYOUT (MOBILE OPTIMIZED) */
+@media (max-width: 768px) {
   .profile-card {
-    flex-wrap: nowrap; /* Desktop jalurnya lurus horizontal (teks kiri, logo kanan) */
-    padding: 30px;
+    flex-direction: column-reverse !important; 
+    padding: 35px 25px !important;
+    gap: 25px !important;
+    border-radius: 12px !important;
+    border-left: 1px solid rgba(0, 136, 204, 0.2) !important;
+    border-top: 4px solid #00d8ff !important; 
   }
-  
   .profile-info {
-    text-align: left;
+    text-align: center !important;
   }
-  
-  .profile-name {
-    font-size: 28px; /* Ukuran nama lebih besar di desktop */
-  }
-  
-  .profile-logo-wrapper {
-    margin: 0; /* Tarik logo ke sebelah kanan pas di desktop */
+  .profile-info h2.profile-name {
+    font-size: 26px !important;
+    text-align: center !important;
   }
 }
