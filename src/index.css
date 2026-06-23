@@ -1331,3 +1331,177 @@ body {
   cursor: pointer;
   font-family: inherit;
 }
+
+/* Masukkan font-family ke container utama agar semua teks di card ikut berubah rapi */
+.profile-container {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  width: 100%;
+  padding: 40px 15px;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 10;
+}
+
+/* Card Utama (Glassmorphism) */
+.profile-card {
+  max-width: 1000px;
+  margin: 0 auto;
+  background-color: rgba(10, 18, 44, 0.6);
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  border-radius: 16px;
+  padding: 30px 20px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  flex-wrap: wrap-reverse; /* Default di mobile: logo di atas, teks di bawah */
+}
+
+/* Sisi Kiri: Teks Profil */
+.profile-info {
+  flex: 1 1 280px;
+  text-align: left;
+}
+
+.profile-tagline {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: #06b6d4;
+  display: block;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.profile-name {
+  font-size: 28px;
+  font-weight: bold; /* Pakai bold bawaan dulu */
+  letter-spacing: 1px;
+  color: #a7a7a7;
+  margin: 0 0 10px 0;
+  text-transform: uppercase;
+  line-height: 1.2;
+
+  /* 🔥 TRIK SAKTI: Membuat teks jadi Extra Bold secara manual */
+  text-shadow: 
+    1px 0px 0px #a7a7a7, 
+    -1px 0px 0px #a7a7a7, 
+    0px 1px 0px #ffffff, 
+    0px -1px 0px #ffffff,
+    0.5px 0.5px 0px #ffffff;
+}
+
+.profile-desc {
+  font-size: 13px;
+  color: #cbd5e1;
+  line-height: 1.6;
+  margin: 0 0 16px 0;
+  font-weight: 300;
+}
+
+/* Tombol Email */
+.email-button-container {
+  margin-top: 15px;
+}
+
+.email-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: rgba(6, 182, 212, 0.15);
+  color: #22d3ee;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(6, 182, 212, 0.4);
+  letter-spacing: 0.5px;
+  word-break: break-word;
+  transition: all 0.3s ease;
+}
+
+.email-button:hover {
+  background-color: rgba(6, 182, 212, 0.3);
+  color: #ffffff;
+  border-color: rgba(6, 182, 212, 0.8);
+}
+
+/* Sisi Kanan: Logo Bulat */
+.profile-logo-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.profile-logo-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: #070d24;
+  border: 2px solid rgba(6, 182, 212, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 15px rgba(6, 182, 212, 0.2);
+  overflow: hidden;
+}
+
+.profile-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.profile-logo-circle:hover .profile-logo-img {
+  transform: scale(1.08);
+}
+
+/* Footer Section */
+.profile-footer {
+  width: 100%;
+  text-align: center;
+  margin-top: 50px;
+  padding: 20px 10px 0 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.profile-footer-text {
+  font-size: 10px;
+  color: #64748b;
+  letter-spacing: 0.2em;
+  margin: 0;
+  text-transform: uppercase;
+  line-height: 1.5;
+}
+
+.profile-footer-brand {
+  color: #94a3b8;
+  font-weight: 700;
+}
+
+/* 📱 MEDIA QUERIES (Aman untuk Layar Desktop & Tablet Besar) */
+@media (min-width: 768px) {
+  .profile-card {
+    flex-wrap: nowrap; /* Desktop jalurnya lurus horizontal (teks kiri, logo kanan) */
+    padding: 30px;
+  }
+  
+  .profile-info {
+    text-align: left;
+  }
+  
+  .profile-name {
+    font-size: 28px; /* Ukuran nama lebih besar di desktop */
+  }
+  
+  .profile-logo-wrapper {
+    margin: 0; /* Tarik logo ke sebelah kanan pas di desktop */
+  }
+}
