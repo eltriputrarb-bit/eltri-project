@@ -428,25 +428,25 @@ function EltriPutnzs() {
 
 <div className="profile-container">
       
-      {/* 🟦 CARD UTAMA */}
-      <div className="profile-card">
+      {/* 🔥 FIX UTAMA: Background dipasang di sini dengan kombinasi linear-gradient bawaan */}
+      <div 
+        className="profile-card" 
+        style={{ 
+          background: "linear-gradient(rgba(10, 15, 26, 0.8), rgba(10, 15, 26, 0.8)), url('/images/lmz.jpg') no-repeat center center / cover"
+        }}
+      >
         
         {/* SISI KIRI: TEKS DATA DIRI */}
         <div className="profile-info">
-          <span className="profile-tagline">
-            ELTRI ATLAS
-          </span>
-          <h2 className="profile-name">
-            ELTRI PUTRA ROMBEBUA    
-          </h2>
+          <span className="profile-tagline">ELTRI ATLAS</span>
+          <h2 className="profile-name">ELTRI PUTRA ROMBEBUA</h2>
           <p className="profile-desc">
             Full-Stack Developer specializing in secure web applications, automated builds, and highly customized interface deployment.
           </p>
 
-          {/* TOMBOL EMAIL */}
           <div className="email-button-container">
             <a href="mailto:eltriputrarb@gmail.com" className="email-button">
-              <span>✉️</span> eltriputrarb@gmail.com
+              <i className="fas fa-envelope"></i> eltriputrarb@gmail.com
             </a>
           </div>
         </div>
@@ -455,7 +455,7 @@ function EltriPutnzs() {
         <div className="profile-logo-wrapper">
           <div className="profile-logo-circle">
             <img 
-              src="images/lmz.jpg" 
+              src="/images/lmz.jpg" 
               alt="EP ATLAS LOGO" 
               className="profile-logo-img"
             />
