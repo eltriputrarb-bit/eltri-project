@@ -426,29 +426,105 @@ function EltriPutnzs() {
   </div>
 </section>
 
-{/* ==========================================================================
-   LOKASI MAPS — MAKASSAR, INDONESIA
-   Taruh blok ini di bagian JSX eltriputnzs.js, di tempat yang kamu mau
-   ========================================================================== */}
-<section className="location-section">
-  <div className="location-header">
-    <i className="fas fa-map-marker-alt"></i>
-    <h3>Makassar, Indonesia</h3>
+<div style={{ width: '100%', padding: '40px 15px', boxSizing: 'border-box', position: 'relative', zIndex: 10 }}>
+      
+  {/* 🟦 CARD UTAMA - Super Responsif Desktop & Mobile */}
+  <div style={{
+    maxWidth: '1000px',
+    margin: '0 auto',
+    backgroundColor: 'rgba(10, 18, 44, 0.6)', /* Hitam kebiruan transparan */
+    border: '1px solid rgba(6, 182, 212, 0.3)', /* Border cyan tipis */
+    borderRadius: '16px',
+    padding: '30px 20px', /* Padding dinamis agar ramah di layar HP */
+    backdropFilter: 'blur(10px)',
+    WebkitBackdropFilter: 'blur(10px)',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: '30px',
+    boxShadow: '0 20px 40px rgba(0,0,0,0.5)',
+    flexWrap: 'wrap-reverse' /* Menggunakan wrap-reverse agar di mobile, gambar logo naik ke atas teks profil */
+  }}>
+    
+    {/* SISI KIRI: TEKS DATA DIRI */}
+    {/* Menggunakan minWidth 100% untuk mobile, dan flex-grow untuk desktop */}
+    <div style={{ flex: '1 1 280px', textAlign: 'left' }}>
+      <span style={{ fontSize: '10px', fontWeight: '700', letterSpacing: '0.2em', color: '#06b6d4', display: 'block', marginBottom: '6px', textTransform: 'uppercase' }}>
+        ELTRI ATLAS
+      </span>
+      <h2 style={{ fontSize: '24px', mdFontSize: '28px', fontWeight: '900', letterSpacing: '1px', color: '#ffffff', margin: '0 0 10px 0', textTransform: 'uppercase', lineHeight: '1.2' }}>
+        ELTRI PUTRA ROMBEBUA    
+      </h2>
+      <p style={{ fontSize: '13px', color: '#cbd5e1', lineHeight: '1.6', margin: '0 0 16px 0', fontWeight: '300' }}>
+        Full-Stack Developer specializing in secure web applications, automated builds, and highly customized interface deployment.
+      </p>
+
+      {/* TOMBOL EMAIL */}
+      <div style={{ marginTop: '15px' }}>
+        <a 
+          href="mailto:eltriputrarb@gmail.com" 
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            backgroundColor: 'rgba(6, 182, 212, 0.15)',
+            color: '#22d3ee',
+            fontSize: '12px',
+            fontWeight: '600',
+            textDecoration: 'none',
+            padding: '10px 16px',
+            borderRadius: '8px',
+            border: '1px solid rgba(6, 182, 212, 0.4)',
+            letterSpacing: '0.5px',
+            wordBreak: 'break-word' /* Mencegah teks email meluber keluar tombol di HP layar kecil */
+          }}
+        >
+          <span>✉️</span> eltriputrarb@gmail.com
+        </a>
+      </div>
+    </div>
+
+    {/* SISI KANAN: EMBLEM LOGO BULAT */}
+    {/* Menambahkan margin auto pada container flex agar logo otomatis berada di tengah pas layar HP */}
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto' }}>
+      <div style={{
+        width: '120px',
+        height: '120px',
+        borderRadius: '50%',
+        backgroundColor: '#070d24',
+        border: '2px solid rgba(6, 182, 212, 0.4)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        boxShadow: '0 0 15px rgba(6, 182, 212, 0.2)',
+        overflow: 'hidden'
+      }}>
+        <img 
+          src="images/lmz.jpg" 
+          alt="EP ATLAS LOGO" 
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            transition: 'transform 0.3s ease'
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.08)'}
+          onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+        />
+      </div>
+    </div>
+
   </div>
 
-  <div className="map-container">
-    <iframe
-      title="Lokasi Makassar Indonesia"
-      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63634.45!2d119.4221!3d-5.1477!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNcsKvDA4JzUxLjciUyAxMTnCsDI1JzE5LjYiRQ!5e0!3m2!1sen!2sid!4v1700000000000"
-      width="100%"
-      height="350"
-      style={{ border: 0 }}
-      allowFullScreen=""
-      loading="lazy"
-      referrerPolicy="no-referrer-when-downgrade"
-    ></iframe>
-  </div>
-</section>
+  {/* 🔒 FOOTER */}
+  <footer style={{ width: '100%', textAlign: 'center', marginTop: '50px', paddingTop: '20px', borderTop: '1px solid rgba(255,255,255,0.05)', paddingLeft: '10px', paddingRight: '10px' }}>
+    <p style={{ fontSize: '10px', color: '#64748b', letterSpacing: '0.2em', margin: 0, textTransform: 'uppercase', lineHeight: '1.5' }}>
+      Copyright © 2026 <span style={{ color: '#94a3b8', fontWeight: '700' }}>ELTRI ATLAS</span> - All Rights Reserved
+    </p>
+  </footer>
+
+</div>
 
           </>
         } />
