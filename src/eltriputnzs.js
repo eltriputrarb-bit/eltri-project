@@ -235,7 +235,7 @@ function EltriPutnzs() {
         viewBox="0 0 24 24" 
         aria-hidden="true" 
         className="svg-x" 
-        style={{ width: '22px', height: '22px', fill: 'white', verticalAlign: 'middle' }}
+          style={{ width: '22px', height: '22px', fill: 'white', verticalAlign: 'middle' }}
       >
         <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
       </svg>
@@ -407,51 +407,27 @@ function EltriPutnzs() {
   </div>
 </div>
 
-            {/* PROFILE SECTION */}
-<section className="profile-section">
-  <div className="container-flex">
-    <div className="image-wrapper">
-      <img src="  /jesuschristkatolik.jpg" className="img-main" alt="Gereja" />
-      <div className="floating-logo">
-<img src="./images/Atlas.png" alt="Floating Logo" />
-      </div>
-    </div>
-    <div className="text-wrapper">
-      <span className="label-eltri">Lukas 1:37</span>
-      <h2 className="name-title">ELTRI PUTRA ROMBEBUA</h2>
-      <div className="visi-content">
-        <p className="visi-text">"Tuhan Yang Maha Esa"</p>
-      </div>
-    </div>
-  </div>
-</section>
+<footer 
+      className="footer" 
+      style={{ backgroundImage: "linear-gradient(rgba(20, 20, 20, 0.85), rgba(20, 20, 20, 0.85)), url('/images/gundam.jpg')" }}
+    >
+      <div className="container">
+        
+        <div className="footer-content">
+          <span className="ayat-text">LUKAS 1:37 🕊️</span>
+          <h3 className="title">ELTRI PUTRA ROMBEBUA</h3>
+          <p className="slogan-text">"Tuhan Yang Maha Esa"</p>
+          <p className="email-text">
+            <i className="fas fa-envelope icon-spacing"></i> eltriputrarb@gmail.com
+          </p>
+        </div>
 
-<div className="eltriprofilez-container">
-  <div className="eltriprofilez-card"         style={{ 
-          background: "linear-gradient(rgba(10, 15, 26, 0.8), rgba(10, 15, 26, 0.8)), url('/images/lmz.jpg') no-repeat center center / cover"
-        }}>
-    <div className="eltriprofilez-info">
-      <span className="eltriprofilez-tagline">ELTRI ATLAS</span>
-      <h2 className="eltriprofilez-name">ELTRI PUTRA ROMBEBUA</h2>
-      <p className="eltriprofilez-desc">you order help?</p>
-      <div className="eltriprofilez-email-button-container">
-        <a href="mailto:eltriputrarb@gmail.com" className="eltriprofilez-email-button">
-          <i className="fas fa-envelope"></i> eltriputrarb@gmail.com
-        </a>
       </div>
-    </div>
-    <div className="eltriprofilez-logo-wrapper">
-      <div className="eltriprofilez-logo-circle">
-        <img src="/images/lmz.jpg" alt="EP ATLAS LOGO" className="eltriprofilez-logo-img" />
+      
+      <div className="copyright">
+Copyright © 2026 ELTRI ATLAS - All Rights Reserved
       </div>
-    </div>
-  </div>
-  <footer className="eltriprofilez-footer">
-    <p className="eltriprofilez-footer-text">
-      Copyright © 2026 <span className="eltriprofilez-footer-brand">ELTRI ATLAS</span> - All Rights Reserved
-    </p>
-  </footer>
-</div>
+    </footer>
 
           </>
         } />
