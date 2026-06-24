@@ -18,6 +18,8 @@ function Gallery() {
   const itemsPerPage = 12;
 
   const galleryItems = [
+    { id: 19, type: 'video', src: '/video/katolik.mp4', date: '23/06,juni,2026', desc: 'gereja katedral Makassar hati yesus yang mahakudus' },
+    { id: 18, type: 'video', src: '/video/jalan.mp4', date: '23/06,juni,2026', desc: 'jalan ke gereja' },
     { id: 17, type: 'video', src: '/video/elin.mp4', date: '20/06,juni,2026', desc: 'servis honda' },
     { id: 16, type: 'video', src: '/video/kotae.mp4', date: '19/06,juni,2026', desc: '⛅️' },    
     { id: 14, type: 'img', src: '/images/foto13.jpg', date: '14/06,juni,2026', desc: 'DI SMC MAKASSAR' },
