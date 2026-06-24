@@ -426,52 +426,32 @@ function EltriPutnzs() {
   </div>
 </section>
 
-<div className="profile-container">
-      
-      {/* 🔥 FIX UTAMA: Background dipasang di sini dengan kombinasi linear-gradient bawaan */}
-      <div 
-        className="profile-card" 
-        style={{ 
+<div className="eltriprofilez-container">
+  <div className="eltriprofilez-card"         style={{ 
           background: "linear-gradient(rgba(10, 15, 26, 0.8), rgba(10, 15, 26, 0.8)), url('/images/lmz.jpg') no-repeat center center / cover"
-        }}
-      >
-        
-        {/* SISI KIRI: TEKS DATA DIRI */}
-        <div className="profile-info">
-          <span className="profile-tagline">ELTRI ATLAS</span>
-          <h2 className="profile-name">ELTRI PUTRA ROMBEBUA</h2>
-          <p className="profile-desc">
-            Full-Stack Developer specializing in secure web applications, automated builds, and highly customized interface deployment.
-          </p>
-
-          <div className="email-button-container">
-            <a href="mailto:eltriputrarb@gmail.com" className="email-button">
-              <i className="fas fa-envelope"></i> eltriputrarb@gmail.com
-            </a>
-          </div>
-        </div>
-
-        {/* SISI KANAN: EMBLEM LOGO BULAT */}
-        <div className="profile-logo-wrapper">
-          <div className="profile-logo-circle">
-            <img 
-              src="/images/lmz.jpg" 
-              alt="EP ATLAS LOGO" 
-              className="profile-logo-img"
-            />
-          </div>
-        </div>
-
+        }}>
+    <div className="eltriprofilez-info">
+      <span className="eltriprofilez-tagline">ELTRI ATLAS</span>
+      <h2 className="eltriprofilez-name">ELTRI PUTRA ROMBEBUA</h2>
+      <p className="eltriprofilez-desc">you order help?</p>
+      <div className="eltriprofilez-email-button-container">
+        <a href="mailto:eltriputrarb@gmail.com" className="eltriprofilez-email-button">
+          <i className="fas fa-envelope"></i> eltriputrarb@gmail.com
+        </a>
       </div>
-
-      {/* 🔒 FOOTER */}
-      <footer className="profile-footer">
-        <p className="profile-footer-text">
-          Copyright © 2026 <span className="profile-footer-brand">ELTRI ATLAS</span> - All Rights Reserved
-        </p>
-      </footer>
-
     </div>
+    <div className="eltriprofilez-logo-wrapper">
+      <div className="eltriprofilez-logo-circle">
+        <img src="/images/lmz.jpg" alt="EP ATLAS LOGO" className="eltriprofilez-logo-img" />
+      </div>
+    </div>
+  </div>
+  <footer className="eltriprofilez-footer">
+    <p className="eltriprofilez-footer-text">
+      Copyright © 2026 <span className="eltriprofilez-footer-brand">ELTRI ATLAS</span> - All Rights Reserved
+    </p>
+  </footer>
+</div>
 
           </>
         } />
