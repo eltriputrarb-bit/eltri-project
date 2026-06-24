@@ -6,14 +6,8 @@ const PublicProfile = () => {
   const isScrolledRef = useRef(false);
   const tickingRef = useRef(false);
 
-  useEffect(() => {
+useEffect(() => {
     // --- STICKY NAVBAR ON SCROLL EFFECT (DIOPTIMASI) ---
-    // OPTIMASI: sebelumnya handleScroll jalan langsung di setiap event
-    // 'scroll' tanpa throttle, yang di mobile bisa terpanggil puluhan kali
-    // per detik dan memicu reflow berulang (classList.add/remove membaca
-    // & menulis layout). Sekarang kita pakai requestAnimationFrame supaya
-    // perubahan DOM cuma terjadi sekali per frame, selaras dengan refresh
-    // rate device (sinkron dengan repaint, bukan event scroll mentah).
     const applyNavbarState = () => {
       const navbar = document.querySelector('.container-navbar');
       if (navbar) {
@@ -33,38 +27,10 @@ const PublicProfile = () => {
       }
     };
 
-    // --- PROTOKOL KEAMANAN ANTI-INSPECT ---
-    const handleContextMenu = (e) => {
-      if (e.target.tagName !== 'IMG') {
-        e.preventDefault();
-        alert('Sistem keamanan Anti-Error! Dilarang mencuri kodingan ELTRI PROJECT!');
-      }
-    };
-
-    const handleKeyDown = (e) => {
-      if (
-        e.key === 'F12' ||
-        (e.ctrlKey && e.shiftKey && e.key === 'I') ||
-        (e.ctrlKey && e.shiftKey && e.key === 'C') ||
-        (e.ctrlKey && e.key === 'U')
-      ) {
-        e.preventDefault();
-        alert('Fitur Inspect Element Dikunci, Bang! 🦾🛡️');
-      }
-    };
-
-    // OPTIMASI: passive: true pada scroll listener memberi tahu browser
-    // bahwa kita tidak akan memanggil preventDefault() di sini, sehingga
-    // browser boleh langsung scroll tanpa menunggu listener selesai —
-    // ini mengurangi jank terutama di Android/iPhone saat scroll cepat.
     window.addEventListener('scroll', handleScroll, { passive: true });
-    document.addEventListener('contextmenu', handleContextMenu);
-    document.addEventListener('keydown', handleKeyDown);
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      document.removeEventListener('contextmenu', handleContextMenu);
-      document.removeEventListener('keydown', handleKeyDown);
     };
   }, []);
 
