@@ -208,6 +208,7 @@ function EltriPutnzs() {
     <li></li><li></li><li></li><li></li>
   </ul>
   
+
   <div className="hero-content" style={{ zIndex: 5, position: 'relative', width: '100%' }}>
     <h1 className="hero-title">ELTRI PUTRA ROMBEBUA</h1>
   </div>
@@ -408,26 +409,35 @@ function EltriPutnzs() {
 </div>
 
 <footer 
-      className="footer" 
-      style={{ backgroundImage: "linear-gradient(rgba(20, 20, 20, 0.85), rgba(20, 20, 20, 0.85)), url('/images/gundam.jpg')" }}
-    >
-      <div className="container">
-        
-        <div className="footer-content">
-          <span className="ayat-text">LUKAS 1:37 🕊️</span>
-          <h3 className="title">ELTRI PUTRA ROMBEBUA</h3>
-          <p className="slogan-text">"Tuhan Yang Maha Esa"</p>
-          <p className="email-text">
-            <i className="fas fa-envelope icon-spacing"></i> eltriputrarb@gmail.com
-          </p>
-        </div>
+  className="footer" 
+  style={{ backgroundImage: "linear-gradient(rgba(20, 20, 20, 0.85), rgba(20, 20, 20, 0.85)), url('/images/gundam.jpg')" }}
+>
+  <div className="container">
+    
+    {/* BAGIAN KIRI: Teks Informasi */}
+    <div className="footer-content">
+      <span className="ayat-text">LUKAS 1:37 🕊️</span>
+      <h3 className="title">ELTRI PUTRA ROMBEBUA</h3>
+      <p className="slogan-text">"Tuhan Yang Maha Esa"</p>
+      <p className="email-text">
+        <a href="mailto:eltriputrarb@gmail.com" className="email-link">
+          <i className="fas fa-envelope icon-spacing"></i> eltriputrarb@gmail.com
+        </a>
+      </p>
+    </div>
 
-      </div>
-      
-      <div className="copyright">
-Copyright © 2026 ELTRI ATLAS - All Rights Reserved
-      </div>
-    </footer>
+    {/* BAGIAN KANAN: Foto Profil Bulat Elegan */}
+    <div className="footer-profile">
+      {/* Ganti dengan file foto profil kamu di folder public/images/ */}
+      <img src="/images/lmz.jpg" alt="Eltri Profile" className="profile-img" />
+    </div>
+
+  </div>
+  
+  <div className="copyright">
+    Copyright © 2026 ELTRI ATLAS - All Rights Reserved
+  </div>
+</footer>
 
           </>
         } />
