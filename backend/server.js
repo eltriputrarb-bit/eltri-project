@@ -22,8 +22,10 @@ MongoClient.connect(MONGO_URI)
       "12": 0,
       "13": 0,
       "14": 0,
-      "15": 0,
+      "15": 1,
       "17": 1,
+      "18": 1,
+      "19": 2,
     };
 
     // Insert data awal hanya kalau collection kosong
