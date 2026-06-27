@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import './gallery.css';
 
-// Ganti URL ini dengan URL Railway kamu setelah deploy backend
-const BACKEND_URL = 'https://eltri-project-production.up.railway.app';
+// Ganti URL ini dengan nama kamu setelah deploy backend
+const BACKEND_URL = 'http://localhost:5000';
 
 function Gallery() {
   const [currentPercent, setCurrentPercent] = useState(0);
