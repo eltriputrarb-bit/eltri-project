@@ -4,8 +4,6 @@ import './App.module.css';
 import Gallery from './gallery'; 
 import PublicProfile from './proyek'; 
 import ErrorPage from './ErrorPage';
-import FloatingLines from './FloatingLines';
-import './index.css';
 
 
 function EltriPutnzs() {
@@ -171,18 +169,49 @@ function EltriPutnzs() {
         {/* HALAMAN HOME */}
         <Route path="/" element={
           <>
-<div className="hero-container">
-      {/* Komponen Latar Belakang Gelombang Serat */}
-      <FloatingLines animationSpeed={1.0} />
+{/* HERO SECTION WITH BUILT-IN ANIMATION FIX */}
+<section className="hero" style={{ position: 'relative', overflow: 'hidden', minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+  
+  {/* Suntikan Style CSS Langsung ke Dokumen */}
+  <style>{`
+.cubes-fixed {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      overflow: hidden; z-index: 1; list-style: none; padding: 0; margin: 0;
+    }
+    .cubes-fixed li {
+      position: absolute; display: block; list-style: none; width: 25px; height: 25px;
+      background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(0, 212, 255, 0.4);
+      box-shadow: 0 0 10px rgba(0, 212, 255, 0.2); bottom: -150px;
+      animation: flyUpwards 20s linear infinite; border-radius: 4px;
+    }
+    .cubes-fixed li:nth-child(1) { left: 10%; width: 80px; height: 80px; animation-delay: 0s; animation-duration: 18s; }
+    .cubes-fixed li:nth-child(2) { left: 25%; width: 35px; height: 35px; animation-delay: 2s; animation-duration: 12s; }
+    .cubes-fixed li:nth-child(3) { left: 40%; width: 65px; height: 65px; animation-delay: 4s; animation-duration: 22s; }
+    .cubes-fixed li:nth-child(4) { left: 55%; width: 20px; height: 20px; animation-delay: 1s; animation-duration: 15s; }
+    .cubes-fixed li:nth-child(5) { left: 70%; width: 90px; height: 90px; animation-delay: 5s; animation-duration: 25s; }
+    .cubes-fixed li:nth-child(6) { left: 85%; width: 40px; height: 40px; animation-delay: 3s; animation-duration: 14s; }
+    .cubes-fixed li:nth-child(7) { left: 18%; width: 50px; height: 50px; animation-delay: 7s; animation-duration: 16s; }
+    .cubes-fixed li:nth-child(8) { left: 48%; width: 30px; height: 30px; animation-delay: 9s; animation-duration: 11s; }
+    .cubes-fixed li:nth-child(9) { left: 78%; width: 75px; height: 75px; animation-delay: 2s; animation-duration: 19s; }
 
-      {/* Pembungkus Teks Konten */}
-      <div className="hero-text-wrapper">
-        {/* Nama Utama */}
-        <h1 className="hero-title">ELTRI PUTRA ROMBEBUA</h1>
-        
-      </div>
-    </div>
+    @keyframes flyUpwards {
+      0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; border-radius: 50%; }
+    }
+  `}</style>
 
+<ul className="cubes-fixed">
+    <li></li><li></li><li></li><li></li><li></li>
+    <li></li><li></li><li></li><li></li>
+  </ul>
+  
+  <div className="hero-content" style={{ zIndex: 5, position: 'relative', width: '100%' }}>
+    <h1 className="hero-title">ELTRI PUTRA ROMBEBUA</h1>
+  </div>
+</section>
 <section className="social-footer">
   <h3>Project Sosial</h3>
   <div className="social-icons">
