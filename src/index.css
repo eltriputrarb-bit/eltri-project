@@ -1155,73 +1155,65 @@ body {
     }
 }
 
-/* Efek Hover smooth untuk Sidebar */
-.rpg-profile-sidebar {
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-            border-color 0.4s ease, box-shadow 0.4s ease, background 0.4s ease !important;
-    will-change: transform;
-}
-.rpg-profile-sidebar:hover {
-    transform: translateY(-8px);
-    border-color: rgba(0, 216, 255, 0.5) !important;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 216, 255, 0.2) !important;
-    background: rgba(10, 15, 26, 0.85) !important;
-}
-
-/* Efek Hover geser untuk List Pendidikan */
-.education-item {
-    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
-            border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease !important;
-    position: relative;
-    will-change: transform;
-}
-.education-item:hover {
-    transform: translateX(8px);
-    border-color: var(--color-cyan) !important;
-    /* UPDATE AMAN: Hapus url gambarnya dari sini agar React tidak pusing compile */
-    background: rgba(12, 20, 38, 0.85) !important;
-    box-shadow: 0 8px 25px rgba(0, 216, 255, 0.15) !important;
-}
-.education-item::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(10, 15, 30, 0.7); /* Overlay hitam transparan agar teks selalu tajam dibaca */
-    z-index: 1;
+/* Container Utama Hero Section - FIX BACKGROUND KOSONG */
+.hero-container {
+  width: 100%;
+  width: 100vw;
+  min-height: 100vh;
+  min-height: 100dvh; 
+  position: relative;
+  
+  /* UPDATE: Menggunakan gradasi lingkaran (radial) biar atas-bawah gak hitam polos mati */
+  background: radial-gradient(circle at center, #141226 0%, #0a0a16 70%, #05050b 100%);
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 }
 
-.cubes-fixed {
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      overflow: hidden; z-index: 1; list-style: none; padding: 0; margin: 0;
-      contain: strict; /* OPTIMASI FPS: isolasi penuh, sama seperti .cubes utama */
-    }
-    .cubes-fixed li {
-      position: absolute; display: block; list-style: none; width: 25px; height: 25px;
-      background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(0, 212, 255, 0.4);
-      box-shadow: 0 0 10px rgba(0, 212, 255, 0.2); bottom: -150px;
-      animation: flyUpwards 20s linear infinite; border-radius: 4px;
-      will-change: transform, opacity;
-    }
-    .cubes-fixed li:nth-child(1) { left: 10%; width: 80px; height: 80px; animation-delay: 0s; animation-duration: 18s; }
-    .cubes-fixed li:nth-child(2) { left: 25%; width: 35px; height: 35px; animation-delay: 2s; animation-duration: 12s; }
-    .cubes-fixed li:nth-child(3) { left: 40%; width: 65px; height: 65px; animation-delay: 4s; animation-duration: 22s; }
-    .cubes-fixed li:nth-child(4) { left: 55%; width: 20px; height: 20px; animation-delay: 1s; animation-duration: 15s; }
-    .cubes-fixed li:nth-child(5) { left: 70%; width: 90px; height: 90px; animation-delay: 5s; animation-duration: 25s; }
-    .cubes-fixed li:nth-child(6) { left: 85%; width: 40px; height: 40px; animation-delay: 3s; animation-duration: 14s; }
-    .cubes-fixed li:nth-child(7) { left: 18%; width: 50px; height: 50px; animation-delay: 7s; animation-duration: 16s; }
-    .cubes-fixed li:nth-child(8) { left: 48%; width: 30px; height: 30px; animation-delay: 9s; animation-duration: 11s; }
-    .cubes-fixed li:nth-child(9) { left: 78%; width: 75px; height: 75px; animation-delay: 2s; animation-duration: 19s; }
+/* Wrapper teks (Tetap aman & presisi) */
+.hero-text-wrapper {
+  z-index: 10;
+  position: relative;
+  text-align: center;
+  pointer-events: none; 
+  width: 100%;
+  max-width: 1400px;
+  padding: 0 24px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 
-    /* OPTIMASI FPS: border-radius dihapus dari keyframe (lihat catatan di bagian #1).
-       border-radius: 4px statis di base style li tetap aman karena tidak dianimasikan. */
-    @keyframes flyUpwards {
-      0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-      10% { opacity: 1; }
-      90% { opacity: 1; }
-      100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
-    }
+/* Style Teks Nama Utama */
+.hero-title {
+  font-size: clamp(1.8rem, 5.2vw, 4.2rem); 
+  font-weight: 800; 
+  color: #ffffff;
+  letter-spacing: clamp(1px, 0.5vw, 5px); 
+  line-height: 1.2;
+  margin: 0 0 16px 0; 
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.3), 0 0 30px rgba(233, 69, 245, 0.4);
+  white-space: normal;
+  overflow-wrap: break-word;
+}
 
+/* Style Sub-teks */
+.hero-subtitle {
+  font-size: clamp(0.85rem, 2vw, 1.2rem);
+  color: #00F0FF; 
+  letter-spacing: clamp(2px, 0.4vw, 6px);
+  margin: 0;
+  font-weight: 600;
+  text-transform: uppercase;
+  opacity: 0.95;
+  font-family: system-ui, -apple-system, sans-serif;
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
+}
 /* OPTIMASI FPS MOBILE: kubus dekorasi cubes-fixed dimatikan total di HP */
 @media screen and (max-width: 768px) {
     .cubes-fixed {
