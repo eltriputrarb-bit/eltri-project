@@ -1103,7 +1103,6 @@ body {
 /* ==========================================================================
    SYSTEM INTEGRATED ULTRA-PREMIUM FONTS (IOS LOGIC)
    ========================================================================== */
-/* Font Utama untuk Data, Badge, Nama Sekolah, dan Deskripsi */
 .public-profile, 
 .public-profile strong, 
 .public-profile span, 
@@ -1112,107 +1111,143 @@ body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif !important;
 }
 
-/* Font Interface Khusus untuk Judul Utama, Judul Section, dan Link Maps */
 .profile-name, 
 .info-section h2, 
 .side-bar h3,
 .maps-link {
-    font-family: var(--font-mono), -apple-system, BlinkMacSystemFont !important;
+    font-family: 'Share Tech Mono', -apple-system, BlinkMacSystemFont, monospace !important;
     letter-spacing: 1px;
 }
 
 /* ==========================================================================
-   EFFECTS & ANIMATIONS SYSTEM
+   EFFECTS & ANIMATIONS SYSTEM - OPTIMIZED FOR PERFORMANCE
    ========================================================================== */
-/* Animasi berdenyut halus (Breathing Effect) untuk bingkai foto profil */
+
+/* FIX LAG: Gunakan hanya 'opacity' dan 'transform' di keyframes
+   — dua properti ini dijalankan di GPU, tidak menyentuh layout sama sekali */
 @keyframes neonPulse {
-    0% { box-shadow: 0 0 15px rgba(0, 216, 255, 0.5), inset 0 0 10px rgba(0, 216, 255, 0.3); }
-    50% { box-shadow: 0 0 30px rgba(0, 216, 255, 0.8), inset 0 0 15px rgba(0, 216, 255, 0.5); }
-    100% { box-shadow: 0 0 15px rgba(0, 216, 255, 0.5), inset 0 0 10px rgba(0, 216, 255, 0.3); }
+    0%   { opacity: 0.6; }
+    50%  { opacity: 1; }
+    100% { opacity: 0.6; }
 }
 
-/* Animasi lampu indikator online berkedip */
 @keyframes onlineBlink {
-    0% { transform: scale(1); opacity: 1; box-shadow: 0 0 8px #00ff66, 0 0 15px #00ff66; }
-    50% { transform: scale(1.1); opacity: 0.7; box-shadow: 0 0 4px #00ff66, 0 0 8px #00ff66; }
-    100% { transform: scale(1); opacity: 1; box-shadow: 0 0 8px #00ff66, 0 0 15px #00ff66; }
+    0%   { transform: scale(1);   opacity: 1; }
+    50%  { transform: scale(1.1); opacity: 0.7; }
+    100% { transform: scale(1);   opacity: 1; }
 }
 
-/* OPTIMASI FPS MOBILE: neonPulse & onlineBlink mengandung box-shadow yang dianimasikan —
-   ini SELALU repaint tiap frame (gak bisa di-GPU-composite), beda dari transform/opacity
-   biasa. Kalau elemen ini dipakai berulang (misal banyak status dot di satu halaman),
-   di HP low-end bisa berat. Kita redam blur radius-nya khusus mobile tanpa hapus animasinya. */
-@media screen and (max-width: 768px) {
-    @keyframes neonPulse {
-        0% { box-shadow: 0 0 8px rgba(0, 216, 255, 0.5), inset 0 0 5px rgba(0, 216, 255, 0.3); }
-        50% { box-shadow: 0 0 14px rgba(0, 216, 255, 0.8), inset 0 0 8px rgba(0, 216, 255, 0.5); }
-        100% { box-shadow: 0 0 8px rgba(0, 216, 255, 0.5), inset 0 0 5px rgba(0, 216, 255, 0.3); }
+/* FIX LAG: Sidebar hover — ganti 'transition: all' jadi properti spesifik
+   'all' memaksa browser cek SEMUA properti setiap frame → boros CPU */
+.rpg-profile-sidebar {
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                border-color 0.4s ease,
+                box-shadow 0.4s ease,
+                background 0.4s ease !important;
+    /* FIX LAG: Paksa elemen ke layer GPU sendiri supaya hover tidak ganggu render utama */
+    will-change: transform;
+    transform: translateZ(0);
+}
+.rpg-profile-sidebar:hover {
+    transform: translateY(-8px) translateZ(0);
+    border-color: rgba(0, 216, 255, 0.5) !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 216, 255, 0.2) !important;
+    background: rgba(10, 15, 26, 0.85) !important;
+}
+
+/* FIX LAG: Education item — sama, ganti 'all' ke properti spesifik */
+.education-item {
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+                border-color 0.3s ease,
+                box-shadow 0.3s ease,
+                background 0.3s ease !important;
+    position: relative;
+    /* FIX LAG: 'contain' membatasi efek layout/style agar tidak bocor ke luar elemen */
+    contain: layout style;
+    will-change: transform;
+    transform: translateZ(0);
+}
+.education-item:hover {
+    transform: translateX(8px) translateZ(0);
+    border-color: #00d8ff !important;
+    background: rgba(12, 20, 38, 0.85) !important;
+    box-shadow: 0 8px 25px rgba(0, 216, 255, 0.15) !important;
+}
+
+/* FIX LAG: Tambah pointer-events: none agar overlay tidak block click/hover event
+   yang memaksa browser re-calculate hit-testing */
+.education-item::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(10, 15, 30, 0.7);
+    z-index: 1;
+    pointer-events: none; /* ← FIX PENTING */
+}
+
+/* ==========================================================================
+   CUBES ANIMATION - OPTIMIZED
+   ========================================================================== */
+.cubes-fixed {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    overflow: hidden;
+    z-index: 1;
+    list-style: none;
+    padding: 0; margin: 0;
+    /* FIX LAG: 'contain' isolasi cubes agar animasinya tidak trigger reflow halaman */
+    contain: strict;
+    /* FIX LAG: Buat stacking context sendiri agar compositing tidak ganggu konten utama */
+    isolation: isolate;
+}
+
+.cubes-fixed li {
+    position: absolute;
+    display: block;
+    list-style: none;
+    width: 25px; height: 25px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(0, 212, 255, 0.4);
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.2);
+    bottom: -150px;
+    animation: flyUpwards 20s linear infinite;
+    border-radius: 4px;
+    /* FIX LAG: Setiap cube di layer GPU sendiri, tidak rebutan dengan elemen lain */
+    will-change: transform, opacity;
+    transform: translateZ(0);
+}
+
+.cubes-fixed li:nth-child(1) { left: 10%; width: 80px; height: 80px; animation-delay: 0s;  animation-duration: 18s; }
+.cubes-fixed li:nth-child(2) { left: 25%; width: 35px; height: 35px; animation-delay: 2s;  animation-duration: 12s; }
+.cubes-fixed li:nth-child(3) { left: 40%; width: 65px; height: 65px; animation-delay: 4s;  animation-duration: 22s; }
+.cubes-fixed li:nth-child(4) { left: 55%; width: 20px; height: 20px; animation-delay: 1s;  animation-duration: 15s; }
+.cubes-fixed li:nth-child(5) { left: 70%; width: 90px; height: 90px; animation-delay: 5s;  animation-duration: 25s; }
+.cubes-fixed li:nth-child(6) { left: 85%; width: 40px; height: 40px; animation-delay: 3s;  animation-duration: 14s; }
+.cubes-fixed li:nth-child(7) { left: 18%; width: 50px; height: 50px; animation-delay: 7s;  animation-duration: 16s; }
+.cubes-fixed li:nth-child(8) { left: 48%; width: 30px; height: 30px; animation-delay: 9s;  animation-duration: 11s; }
+.cubes-fixed li:nth-child(9) { left: 78%; width: 75px; height: 75px; animation-delay: 2s;  animation-duration: 19s; }
+
+/* FIX LAG: Keyframes hanya pakai 'transform' dan 'opacity'
+   — keduanya tidak trigger layout/paint, murni GPU compositing */
+@keyframes flyUpwards {
+    0%   { transform: translateY(0) rotate(0deg) translateZ(0);        opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { transform: translateY(-120vh) rotate(360deg) translateZ(0);  opacity: 0; border-radius: 50%; }
+}
+
+/* ==========================================================================
+   ACCESSIBILITY: Matikan animasi untuk pengguna yang minta reduced motion
+   Ini juga bantu device lemah / low-battery mode
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+    .cubes-fixed li,
+    .rpg-profile-sidebar,
+    .education-item {
+        animation: none !important;
+        transition: none !important;
+        will-change: auto !important;
     }
-    @keyframes onlineBlink {
-        0% { transform: scale(1); opacity: 1; box-shadow: 0 0 4px #00ff66, 0 0 8px #00ff66; }
-        50% { transform: scale(1.1); opacity: 0.7; box-shadow: 0 0 2px #00ff66, 0 0 4px #00ff66; }
-        100% { transform: scale(1); opacity: 1; box-shadow: 0 0 4px #00ff66, 0 0 8px #00ff66; }
-    }
-}
-
-/* Container Utama Hero Section - FIX BACKGROUND KOSONG */
-.hero-container {
-  width: 100%;
-  width: 100vw;
-  min-height: 100vh;
-  min-height: 100dvh; 
-  position: relative;
-  
-  /* UPDATE: Menggunakan gradasi lingkaran (radial) biar atas-bawah gak hitam polos mati */
-  background: radial-gradient(circle at center, #141226 0%, #0a0a16 70%, #05050b 100%);
-  
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-}
-
-/* Wrapper teks (Tetap aman & presisi) */
-.hero-text-wrapper {
-  z-index: 10;
-  position: relative;
-  text-align: center;
-  pointer-events: none; 
-  width: 100%;
-  max-width: 1400px;
-  padding: 0 24px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Style Teks Nama Utama */
-.hero-title {
-  font-size: clamp(1.8rem, 5.2vw, 4.2rem); 
-  font-weight: 800; 
-  color: #ffffff;
-  letter-spacing: clamp(1px, 0.5vw, 5px); 
-  line-height: 1.2;
-  margin: 0 0 16px 0; 
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  text-shadow: 0 0 15px rgba(255, 255, 255, 0.3), 0 0 30px rgba(233, 69, 245, 0.4);
-  white-space: normal;
-  overflow-wrap: break-word;
-}
-
-/* Style Sub-teks */
-.hero-subtitle {
-  font-size: clamp(0.85rem, 2vw, 1.2rem);
-  color: #00F0FF; 
-  letter-spacing: clamp(2px, 0.4vw, 6px);
-  margin: 0;
-  font-weight: 600;
-  text-transform: uppercase;
-  opacity: 0.95;
-  font-family: system-ui, -apple-system, sans-serif;
-  text-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
 }
 /* OPTIMASI FPS MOBILE: kubus dekorasi cubes-fixed dimatikan total di HP */
 @media screen and (max-width: 768px) {
