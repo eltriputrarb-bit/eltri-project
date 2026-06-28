@@ -634,3 +634,10 @@ video::-webkit-media-controls-enclosure {
   padding: 2px 10px;
   border-radius: 20px;
 }
+
+/* Views Badge Colors */
+.views-badge { transition: all 0.3s ease; font-weight: 600; padding: 4px 10px; border-radius: 20px; font-size: 12px; display: inline-block; }
+.views-zero { background: rgba(113,113,122,0.2); color: #71717a; border: 1px solid #71717a; }
+.views-cool { background: rgba(0,216,255,0.15); color: #00d8ff; border: 1px solid #00d8ff; }
+.views-warm { background: rgba(234,179,8,0.15); color: #eab308; border: 1px solid #eab308; }
+.views-hot { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid #ef4444; }

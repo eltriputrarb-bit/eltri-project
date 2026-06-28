@@ -159,9 +159,15 @@ function Gallery() {
               <div className="card-info">
                 <h3>{item.date}</h3>
                 <p>{item.desc}</p>
-                <span className="views-badge">
-                  👁 {mediaViews[item.id] || 0} views
-                </span>
+                <span className={`views-badge ${
+  (mediaViews[item.id] || 0) >= 50 ? 'views-hot' :
+  (mediaViews[item.id] || 0) >= 10 ? 'views-warm' :
+  (mediaViews[item.id] || 0) >= 1 ? 'views-cool' : 'views-zero'
+}`}>
+  {(mediaViews[item.id] || 0) >= 50 ? '🔥' :
+   (mediaViews[item.id] || 0) >= 10 ? '⚡' :
+   (mediaViews[item.id] || 0) >= 1 ? '👁' : '👁'} {mediaViews[item.id] || 0} views
+</span>
               </div>
             </div>
           ))}

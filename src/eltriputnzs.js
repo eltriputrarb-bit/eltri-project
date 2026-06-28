@@ -7,6 +7,7 @@ import ErrorPage from './ErrorPage';
 import MessageForm from './MessageForm';
 import './MessageForm.css';
 import AdminMessages from './AdminMessages';
+import AdminViews from './AdminViews';
 
 
 function EltriPutnzs() {
@@ -417,6 +418,8 @@ function EltriPutnzs() {
         <Route path="/ErrorPage" element={<ErrorPage />} />
 
         <Route path="/admin" element={<AdminMessages />} />
+
+        <Route path="/admin/views" element={<AdminViews />} />
 
       </Routes>
     </div>
