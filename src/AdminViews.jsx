@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 const ADMIN_PASSWORD = 'eltri2026';
+const ADMIN_TOKEN = 'eltri2026';
 
 const galleryItems = [
   { id: 19, type: 'video', desc: 'gereja katedral Makassar' },
@@ -35,6 +36,9 @@ function AdminViews() {
   const [viewsData, setViewsData] = useState({});
   const [loading, setLoading] = useState(false);
   const [sortBy, setSortBy] = useState('views');
+  const [editId, setEditId] = useState(null);
+  const [editVal, setEditVal] = useState('');
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     const navbar = document.querySelector('.container-navbar');
@@ -63,6 +67,26 @@ function AdminViews() {
     setLoading(false);
   };
 
+  const startEdit = (id, currentViews) => {
+    setEditId(id);
+    setEditVal(String(currentViews));
+  };
+
+  const saveEdit = async (id) => {
+    setSaving(true);
+    await fetch(`/api/views/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-admin-token': ADMIN_TOKEN,
+      },
+      body: JSON.stringify({ views: parseInt(editVal) }),
+    });
+    setViewsData(prev => ({ ...prev, [id]: parseInt(editVal) }));
+    setEditId(null);
+    setSaving(false);
+  };
+
   const merged = galleryItems.map(item => ({
     ...item,
     views: viewsData[item.id] || 0,
@@ -70,8 +94,7 @@ function AdminViews() {
 
   const sorted = [...merged].sort((a, b) => {
     if (sortBy === 'views') return b.views - a.views;
-    if (sortBy === 'id') return b.id - a.id;
-    return 0;
+    return b.id - a.id;
   });
 
   const totalViews = merged.reduce((sum, item) => sum + item.views, 0);
@@ -97,7 +120,6 @@ function AdminViews() {
 
   return (
     <div style={s.wrap}>
-      {/* Header */}
       <div style={s.header}>
         <div>
           <h2 style={s.title}>📊 Dashboard Views</h2>
@@ -114,52 +136,65 @@ function AdminViews() {
 
       {loading && <p style={{ color: '#71717a', textAlign: 'center' }}>Loading...</p>}
 
-      {/* Stats */}
       <div style={s.statsRow}>
         <div style={s.statCard}>
-          <span style={{ color: '#ef4444', fontSize: '20px' }}>🔥</span>
+          <span style={{ fontSize: '20px' }}>🔥</span>
           <span style={s.statNum}>{merged.filter(i => i.views >= 50).length}</span>
-          <span style={s.statLabel}>Hot (50+)</span>
+          <span style={s.statLabel}>Hot</span>
         </div>
         <div style={s.statCard}>
-          <span style={{ color: '#eab308', fontSize: '20px' }}>⚡</span>
+          <span style={{ fontSize: '20px' }}>⚡</span>
           <span style={s.statNum}>{merged.filter(i => i.views >= 10 && i.views < 50).length}</span>
-          <span style={s.statLabel}>Warm (10-49)</span>
+          <span style={s.statLabel}>Warm</span>
         </div>
         <div style={s.statCard}>
-          <span style={{ color: '#00d8ff', fontSize: '20px' }}>👁</span>
+          <span style={{ fontSize: '20px' }}>👁</span>
           <span style={s.statNum}>{merged.filter(i => i.views >= 1 && i.views < 10).length}</span>
-          <span style={s.statLabel}>Cool (1-9)</span>
+          <span style={s.statLabel}>Cool</span>
         </div>
         <div style={s.statCard}>
-          <span style={{ color: '#71717a', fontSize: '20px' }}>⭕</span>
+          <span style={{ fontSize: '20px' }}>⭕</span>
           <span style={s.statNum}>{merged.filter(i => i.views === 0).length}</span>
-          <span style={s.statLabel}>New (0)</span>
+          <span style={s.statLabel}>New</span>
         </div>
       </div>
 
-      {/* List */}
       {sorted.map(item => {
         const badge = getBadge(item.views);
+        const isEditing = editId === item.id;
         return (
           <div key={item.id} style={s.card}>
             <div style={s.cardLeft}>
-              <span style={{ fontSize: '20px' }}>{item.type === 'video' ? '🎬' : '🖼️'}</span>
-              <div>
+              <span style={{ fontSize: '18px' }}>{item.type === 'video' ? '🎬' : '🖼️'}</span>
+              <div style={{ minWidth: 0 }}>
                 <p style={s.desc}>{item.desc}</p>
                 <p style={s.idText}>ID: {item.id} • {item.type === 'video' ? 'Video' : 'Foto'}</p>
               </div>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <span style={{
-                ...s.badge,
-                color: badge.color,
-                background: badge.bg,
-                border: `1px solid ${badge.border}`,
-              }}>
-                {badge.icon} {item.views} views
-              </span>
-              <span style={{ ...s.labelBadge, color: badge.color }}>{badge.label}</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
+              {isEditing ? (
+                <>
+                  <input
+                    style={s.editInput}
+                    type="number"
+                    value={editVal}
+                    onChange={e => setEditVal(e.target.value)}
+                    min="0"
+                    autoFocus
+                  />
+                  <button style={s.saveBtn} onClick={() => saveEdit(item.id)} disabled={saving}>
+                    {saving ? '...' : '✅'}
+                  </button>
+                  <button style={s.cancelBtn} onClick={() => setEditId(null)}>❌</button>
+                </>
+              ) : (
+                <>
+                  <span style={{ ...s.badge, color: badge.color, background: badge.bg, border: `1px solid ${badge.border}` }}>
+                    {badge.icon} {item.views}
+                  </span>
+                  <button style={s.editBtn} onClick={() => startEdit(item.id, item.views)}>✏️</button>
+                </>
+              )}
             </div>
           </div>
         );
@@ -169,65 +204,30 @@ function AdminViews() {
 }
 
 const s = {
-  loginWrap: {
-    minHeight: '100vh', background: '#0a0a0a',
-    display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px',
-  },
-  loginBox: {
-    background: '#1a1a2e', borderRadius: '16px', padding: '40px',
-    display: 'flex', flexDirection: 'column', gap: '14px', width: '300px',
-    border: '1px solid rgba(0,216,255,0.2)', boxSizing: 'border-box',
-  },
+  loginWrap: { minHeight: '100vh', background: '#0a0a0a', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' },
+  loginBox: { background: '#1a1a2e', borderRadius: '16px', padding: '40px', display: 'flex', flexDirection: 'column', gap: '14px', width: '300px', border: '1px solid rgba(0,216,255,0.2)', boxSizing: 'border-box' },
   loginTitle: { color: '#00d8ff', margin: 0, textAlign: 'center' },
-  input: {
-    padding: '12px 14px', borderRadius: '8px',
-    border: '1px solid rgba(0,216,255,0.3)', background: 'rgba(255,255,255,0.05)',
-    color: '#fff', fontSize: '15px', outline: 'none',
-  },
-  btn: {
-    padding: '12px', borderRadius: '8px', border: 'none',
-    background: 'linear-gradient(135deg, #00d8ff, #0099cc)',
-    color: '#000', fontWeight: '700', cursor: 'pointer', fontSize: '15px',
-  },
-  wrap: {
-    minHeight: '100vh', background: '#0a0a0a',
-    maxWidth: '750px', margin: '0 auto', padding: '30px 16px', boxSizing: 'border-box',
-  },
-  header: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' },
+  input: { padding: '12px 14px', borderRadius: '8px', border: '1px solid rgba(0,216,255,0.3)', background: 'rgba(255,255,255,0.05)', color: '#fff', fontSize: '15px', outline: 'none' },
+  btn: { padding: '12px', borderRadius: '8px', border: 'none', background: 'linear-gradient(135deg, #00d8ff, #0099cc)', color: '#000', fontWeight: '700', cursor: 'pointer', fontSize: '15px' },
+  wrap: { minHeight: '100vh', background: '#0a0a0a', maxWidth: '750px', margin: '0 auto', padding: '30px 16px', boxSizing: 'border-box' },
+  header: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' },
   title: { color: '#00d8ff', margin: '0 0 4px 0', fontSize: '20px' },
   subtitle: { color: '#71717a', margin: 0, fontSize: '13px' },
-  select: {
-    padding: '7px 12px', borderRadius: '8px',
-    border: '1px solid rgba(0,216,255,0.3)', background: '#1a1a2e',
-    color: '#fff', fontSize: '13px', outline: 'none', cursor: 'pointer',
-  },
-  refreshBtn: {
-    padding: '7px 12px', borderRadius: '8px',
-    border: '1px solid #00d8ff', background: 'transparent',
-    color: '#00d8ff', cursor: 'pointer', fontSize: '15px',
-  },
-  statsRow: {
-    display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)',
-    gap: '10px', marginBottom: '20px',
-  },
-  statCard: {
-    background: '#1a1a2e', borderRadius: '10px', padding: '12px 8px',
-    display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px',
-    border: '1px solid rgba(0,216,255,0.1)',
-  },
+  select: { padding: '7px 12px', borderRadius: '8px', border: '1px solid rgba(0,216,255,0.3)', background: '#1a1a2e', color: '#fff', fontSize: '13px', outline: 'none', cursor: 'pointer' },
+  refreshBtn: { padding: '7px 12px', borderRadius: '8px', border: '1px solid #00d8ff', background: 'transparent', color: '#00d8ff', cursor: 'pointer', fontSize: '15px' },
+  statsRow: { display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px', marginBottom: '20px' },
+  statCard: { background: '#1a1a2e', borderRadius: '10px', padding: '12px 8px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', border: '1px solid rgba(0,216,255,0.1)' },
   statNum: { color: '#fff', fontWeight: '700', fontSize: '20px' },
-  statLabel: { color: '#71717a', fontSize: '11px', textAlign: 'center' },
-  card: {
-    background: '#1a1a2e', border: '1px solid rgba(0,216,255,0.1)',
-    borderRadius: '10px', padding: '14px 16px', marginBottom: '10px',
-    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-    gap: '10px',
-  },
-  cardLeft: { display: 'flex', alignItems: 'center', gap: '12px', flex: 1, minWidth: 0 },
-  desc: { color: '#fff', fontSize: '13px', margin: '0 0 2px 0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' },
+  statLabel: { color: '#71717a', fontSize: '11px' },
+  card: { background: '#1a1a2e', border: '1px solid rgba(0,216,255,0.1)', borderRadius: '10px', padding: '12px 14px', marginBottom: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '10px' },
+  cardLeft: { display: 'flex', alignItems: 'center', gap: '10px', flex: 1, minWidth: 0 },
+  desc: { color: '#fff', fontSize: '13px', margin: '0 0 2px 0', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' },
   idText: { color: '#71717a', fontSize: '11px', margin: 0 },
   badge: { padding: '4px 10px', borderRadius: '20px', fontSize: '12px', fontWeight: '600', whiteSpace: 'nowrap' },
-  labelBadge: { fontSize: '11px', fontWeight: '700', whiteSpace: 'nowrap' },
+  editBtn: { padding: '5px 10px', borderRadius: '6px', border: '1px solid #00d8ff', background: 'transparent', color: '#00d8ff', cursor: 'pointer', fontSize: '13px' },
+  editInput: { width: '70px', padding: '5px 8px', borderRadius: '6px', border: '1px solid #00d8ff', background: '#0a0a0a', color: '#fff', fontSize: '14px', outline: 'none' },
+  saveBtn: { padding: '5px 8px', borderRadius: '6px', border: 'none', background: '#22c55e', color: '#fff', cursor: 'pointer', fontSize: '13px' },
+  cancelBtn: { padding: '5px 8px', borderRadius: '6px', border: 'none', background: '#ef4444', color: '#fff', cursor: 'pointer', fontSize: '13px' },
 };
 
 export default AdminViews;

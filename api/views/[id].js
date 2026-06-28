@@ -12,7 +12,8 @@ async function getDb() {
 
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, x-admin-token');
 
   if (req.method === 'OPTIONS') return res.status(200).end();
 
@@ -31,5 +32,23 @@ module.exports = async function handler(req, res) {
       { upsert: true, returnDocument: 'after' }
     );
     return res.json({ id, views: result.views });
+  }
+
+  // PUT - edit views manual (butuh token admin)
+  if (req.method === 'PUT') {
+    const token = req.headers['x-admin-token'];
+    if (token !== 'eltri2026') {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+    const { views } = req.body;
+    if (views === undefined || isNaN(views)) {
+      return res.status(400).json({ error: 'Views tidak valid!' });
+    }
+    await db.collection('views').findOneAndUpdate(
+      { id },
+      { $set: { views: parseInt(views) } },
+      { upsert: true, returnDocument: 'after' }
+    );
+    return res.json({ id, views: parseInt(views) });
   }
 };
