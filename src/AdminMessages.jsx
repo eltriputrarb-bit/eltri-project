@@ -16,16 +16,19 @@ function AdminMessages() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Sembunyikan navbar saat di halaman admin
-  useEffect(() => {
-    const navbar = document.querySelector('container-navbar') || document.querySelector('nav') || document.querySelector('header');
-    if (navbar) navbar.style.display = 'none';
-    document.body.style.background = '#0a0a0a';
-    return () => {
-      if (navbar) navbar.style.display = '';
-      document.body.style.background = '';
-    };
-  }, []);
+useEffect(() => {
+  const navbar = document.querySelector('.container-navbar');
+  if (navbar) {
+    navbar.style.visibility = 'hidden';
+    navbar.style.opacity = '0';
+  }
+  return () => {
+    if (navbar) {
+      navbar.style.visibility = '';
+      navbar.style.opacity = '';
+    }
+  };
+}, []);
 
   const login = () => {
     if (inputPass === ADMIN_PASSWORD) {
