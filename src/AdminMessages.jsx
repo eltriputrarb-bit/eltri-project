@@ -16,6 +16,17 @@ function AdminMessages() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Sembunyikan navbar saat di halaman admin
+  useEffect(() => {
+    const navbar = document.querySelector('container-navbar') || document.querySelector('nav') || document.querySelector('header');
+    if (navbar) navbar.style.display = 'none';
+    document.body.style.background = '#0a0a0a';
+    return () => {
+      if (navbar) navbar.style.display = '';
+      document.body.style.background = '';
+    };
+  }, []);
+
   const login = () => {
     if (inputPass === ADMIN_PASSWORD) {
       setAuth(true);
@@ -52,7 +63,11 @@ function AdminMessages() {
   if (!auth) {
     return (
       <div style={styles.loginWrap}>
-        <div style={{ ...styles.loginBox, width: isMobile ? '85%' : '300px', padding: isMobile ? '30px 24px' : '40px' }}>
+        <div style={{
+          ...styles.loginBox,
+          width: isMobile ? '88%' : '320px',
+          padding: isMobile ? '28px 20px' : '40px',
+        }}>
           <h2 style={styles.loginTitle}>🔐 Admin Messages</h2>
           <input
             style={styles.input}
@@ -69,12 +84,15 @@ function AdminMessages() {
   }
 
   return (
-    <div style={{ ...styles.wrap, padding: isMobile ? '20px 12px' : '40px 20px' }}>
+    <div style={{
+      ...styles.wrap,
+      padding: isMobile ? '24px 12px' : '40px 24px',
+    }}>
       <div style={styles.header}>
-        <h2 style={{ ...styles.title, fontSize: isMobile ? '18px' : '24px' }}>💬 Pesan Masuk</h2>
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <button style={styles.refreshBtn} onClick={fetchMessages}>🔄 Refresh</button>
-        </div>
+        <h2 style={{ ...styles.title, fontSize: isMobile ? '17px' : '22px' }}>
+          💬 Pesan Masuk <span style={{ color: '#71717a', fontSize: '13px' }}>({messages.length})</span>
+        </h2>
+        <button style={styles.refreshBtn} onClick={fetchMessages}>🔄 Refresh</button>
       </div>
 
       {loading && <p style={styles.loading}>Loading...</p>}
@@ -89,7 +107,7 @@ function AdminMessages() {
             ...styles.cardHeader,
             flexDirection: isMobile ? 'column' : 'row',
             alignItems: isMobile ? 'flex-start' : 'center',
-            gap: isMobile ? '4px' : '0',
+            gap: isMobile ? '2px' : '0',
           }}>
             <span style={styles.name}>👤 {msg.name}</span>
             <span style={styles.date}>{formatDate(msg.createdAt)}</span>
@@ -119,7 +137,7 @@ const styles = {
     borderRadius: '16px',
     display: 'flex',
     flexDirection: 'column',
-    gap: '16px',
+    gap: '14px',
     border: '1px solid rgba(0,216,255,0.2)',
     boxSizing: 'border-box',
   },
@@ -162,14 +180,14 @@ const styles = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: '24px',
+    marginBottom: '20px',
   },
   title: {
     color: '#00d8ff',
     margin: 0,
   },
   refreshBtn: {
-    padding: '8px 16px',
+    padding: '8px 14px',
     borderRadius: '8px',
     border: '1px solid #00d8ff',
     background: 'transparent',
@@ -185,19 +203,19 @@ const styles = {
     border: '1px solid rgba(0,216,255,0.15)',
     borderRadius: '12px',
     padding: '16px',
-    marginBottom: '16px',
+    marginBottom: '14px',
     boxSizing: 'border-box',
   },
   cardHeader: {
     display: 'flex',
     justifyContent: 'space-between',
-    marginBottom: '10px',
+    marginBottom: '8px',
   },
-  name: { color: '#00d8ff', fontWeight: '700', fontSize: '15px' },
-  date: { color: '#71717a', fontSize: '12px' },
-  message: { color: '#ffffff', fontSize: '14px', margin: '0 0 12px 0', wordBreak: 'break-word' },
+  name: { color: '#00d8ff', fontWeight: '700', fontSize: '14px' },
+  date: { color: '#71717a', fontSize: '11px' },
+  message: { color: '#ffffff', fontSize: '14px', margin: '0 0 12px 0', wordBreak: 'break-word', lineHeight: '1.5' },
   deleteBtn: {
-    padding: '8px 16px',
+    padding: '7px 14px',
     borderRadius: '6px',
     border: 'none',
     background: '#ef4444',
@@ -205,7 +223,6 @@ const styles = {
     cursor: 'pointer',
     fontSize: '13px',
     fontWeight: '600',
-    width: '100%',
   },
 };
 
