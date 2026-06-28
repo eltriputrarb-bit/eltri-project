@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 const ADMIN_PASSWORD = 'eltri2026';
+const ADMIN_TOKEN = 'eltri2026';
 
 function AdminMessages() {
   const [auth, setAuth] = useState(false);
@@ -19,7 +20,9 @@ function AdminMessages() {
 
   const fetchMessages = async () => {
     setLoading(true);
-    const res = await fetch('/api/messages');
+    const res = await fetch('/api/messages', {
+      headers: { 'x-admin-token': ADMIN_TOKEN }
+    });
     const data = await res.json();
     setMessages(data);
     setLoading(false);
@@ -27,7 +30,10 @@ function AdminMessages() {
 
   const deleteMessage = async (id) => {
     if (!window.confirm('Hapus pesan ini?')) return;
-    await fetch(`/api/messages?id=${id}`, { method: 'DELETE' });
+    await fetch(`/api/messages?id=${id}`, {
+      method: 'DELETE',
+      headers: { 'x-admin-token': ADMIN_TOKEN }
+    });
     setMessages(prev => prev.filter(m => m._id !== id));
   };
 

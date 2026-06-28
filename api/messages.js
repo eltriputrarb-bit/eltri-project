@@ -2,6 +2,8 @@ const { MongoClient, ObjectId } = require('mongodb');
 
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://eltriputrarb_db_user:eltri1234@ac-5mmmxdx-shard-00-00.9dejjvu.mongodb.net:27017,ac-5mmmxdx-shard-00-01.9dejjvu.mongodb.net:27017,ac-5mmmxdx-shard-00-02.9dejjvu.mongodb.net:27017/?ssl=true&replicaSet=atlas-nsfg52-shard-0&authSource=admin&appName=eltri';
 
+const ADMIN_TOKEN = 'eltri2026';
+
 let client;
 async function getDb() {
   if (!client) {
@@ -13,12 +15,13 @@ async function getDb() {
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, x-admin-token');
 
   if (req.method === 'OPTIONS') return res.status(200).end();
 
   const db = await getDb();
 
+  // POST - simpan pesan baru (tidak perlu token)
   if (req.method === 'POST') {
     const { name, message } = req.body;
     if (!name || !message) {
@@ -26,6 +29,12 @@ module.exports = async function handler(req, res) {
     }
     await db.collection('messages').insertOne({ name, message, createdAt: new Date() });
     return res.json({ success: true, message: 'Pesan berhasil dikirim!' });
+  }
+
+  // GET & DELETE - butuh token admin
+  const token = req.headers['x-admin-token'];
+  if (token !== ADMIN_TOKEN) {
+    return res.status(401).json({ error: 'Unauthorized' });
   }
 
   if (req.method === 'GET') {
