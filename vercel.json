@@ -1,5 +1,6 @@
 {
   "rewrites": [
+    { "source": "/api/messages", "destination": "/api/messages" },
     { "source": "/api/views/:id", "destination": "/api/views/[id]" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]

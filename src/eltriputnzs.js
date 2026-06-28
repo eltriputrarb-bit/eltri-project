@@ -4,6 +4,8 @@ import './App.module.css';
 import Gallery from './gallery'; 
 import PublicProfile from './proyek'; 
 import ErrorPage from './ErrorPage';
+import MessageForm from './MessageForm';
+import './MessageForm.css';
 
 
 function EltriPutnzs() {
@@ -389,11 +391,11 @@ function EltriPutnzs() {
           <i className="fas fa-envelope icon-spacing"></i> eltriputrarb@gmail.com
         </a>
       </p>
+      <MessageForm />
     </div>
 
     {/* BAGIAN KANAN: Foto Profil Bulat Elegan */}
     <div className="footer-profile">
-      {/* Ganti dengan file foto profil kamu di folder public/images/ */}
       <img src="/images/lmz.jpg" alt="Eltri Profile" className="profile-img" />
     </div>
 
