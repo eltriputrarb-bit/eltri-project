@@ -37,6 +37,7 @@ function AdminViews() {
   const [editId, setEditId] = useState(null);
   const [editVal, setEditVal] = useState('');
   const [saving, setSaving] = useState(false);
+  const [loginError, setLoginError] = useState('');
 
   useEffect(() => {
     const navbar = document.querySelector('.container-navbar');
@@ -49,27 +50,56 @@ function AdminViews() {
   }, []);
 
   const login = async () => {
-    const res = await fetch('/api/auth', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password: inputPass }),
-    });
-    const data = await res.json();
-    if (data.success) {
-      setAuth(true);
-      setToken(data.token);
-      fetchViews();
-    } else {
-      alert('Password salah!');
+    setLoginError('');
+    try {
+      const res = await fetch('/api/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: inputPass }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setAuth(true);
+        setToken(data.token);
+        setInputPass('');
+        fetchViews(data.token);
+      } else {
+        setLoginError(data.error || 'Password salah!');
+      }
+    } catch (err) {
+      setLoginError('Gagal terhubung ke server.');
     }
   };
 
-  const fetchViews = async () => {
+  const logout = () => {
+    setAuth(false);
+    setToken('');
+    setViewsData({});
+  };
+
+  const fetchViews = async (t) => {
     setLoading(true);
-    const res = await fetch('/api/views');
-    const data = await res.json();
-    setViewsData(data);
-    setLoading(false);
+    try {
+      // Token WAJIB dikirim — kalau backend memang melindungi endpoint ini dengan token,
+      // tanpa ini request akan selalu gagal (atau, kalau berhasil tanpa token, itu tanda
+      // backend /api/views belum dilindungi sama sekali dan perlu diperbaiki juga).
+      const res = await fetch('/api/views', {
+        headers: { 'x-admin-token': t || token }
+      });
+
+      if (res.status === 401) {
+        logout();
+        setLoginError('Sesi berakhir, silakan login ulang.');
+        return;
+      }
+
+      const data = await res.json();
+      setViewsData(data || {});
+    } catch (err) {
+      console.error('Fetch views error:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const startEdit = (id, currentViews) => {
@@ -78,15 +108,41 @@ function AdminViews() {
   };
 
   const saveEdit = async (id) => {
+    const parsed = parseInt(editVal, 10);
+
+    // Validasi sebelum kirim — cegah NaN atau angka negatif
+    if (Number.isNaN(parsed) || parsed < 0) {
+      alert('Masukkan angka valid (0 atau lebih)!');
+      return;
+    }
+
     setSaving(true);
-    await fetch(`/api/views/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
-      body: JSON.stringify({ views: parseInt(editVal) }),
-    });
-    setViewsData(prev => ({ ...prev, [id]: parseInt(editVal) }));
-    setEditId(null);
-    setSaving(false);
+    try {
+      const res = await fetch(`/api/views/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
+        body: JSON.stringify({ views: parsed }),
+      });
+
+      if (res.status === 401) {
+        logout();
+        setLoginError('Sesi berakhir, silakan login ulang.');
+        return;
+      }
+
+      if (!res.ok) {
+        alert('Gagal menyimpan perubahan.');
+        return;
+      }
+
+      setViewsData(prev => ({ ...prev, [id]: parsed }));
+      setEditId(null);
+    } catch (err) {
+      console.error('Save edit error:', err);
+      alert('Gagal menyimpan perubahan.');
+    } finally {
+      setSaving(false);
+    }
   };
 
   const merged = galleryItems.map(item => ({ ...item, views: viewsData[item.id] || 0 }));
@@ -107,6 +163,7 @@ function AdminViews() {
             onKeyDown={e => e.key === 'Enter' && login()}
           />
           <button style={s.btn} onClick={login}>Masuk</button>
+          {loginError && <p style={s.errorText}>{loginError}</p>}
         </div>
       </div>
     );
@@ -124,7 +181,8 @@ function AdminViews() {
             <option value="views">Sort: Views</option>
             <option value="id">Sort: Terbaru</option>
           </select>
-          <button style={s.refreshBtn} onClick={fetchViews}>🔄</button>
+          <button style={s.refreshBtn} onClick={() => fetchViews()}>🔄</button>
+          <button style={s.logoutBtn} onClick={logout}>🚪</button>
         </div>
       </div>
 
@@ -186,12 +244,14 @@ const s = {
   loginTitle: { color: '#00d8ff', margin: 0, textAlign: 'center' },
   input: { padding: '12px 14px', borderRadius: '8px', border: '1px solid rgba(0,216,255,0.3)', background: 'rgba(255,255,255,0.05)', color: '#fff', fontSize: '15px', outline: 'none' },
   btn: { padding: '12px', borderRadius: '8px', border: 'none', background: 'linear-gradient(135deg, #00d8ff, #0099cc)', color: '#000', fontWeight: '700', cursor: 'pointer', fontSize: '15px' },
+  errorText: { color: '#ef4444', fontSize: '13px', textAlign: 'center', margin: 0 },
   wrap: { minHeight: '100vh', background: '#0a0a0a', maxWidth: '750px', margin: '0 auto', padding: '30px 16px', boxSizing: 'border-box' },
   header: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' },
   title: { color: '#00d8ff', margin: '0 0 4px 0', fontSize: '20px' },
   subtitle: { color: '#71717a', margin: 0, fontSize: '13px' },
   select: { padding: '7px 12px', borderRadius: '8px', border: '1px solid rgba(0,216,255,0.3)', background: '#1a1a2e', color: '#fff', fontSize: '13px', outline: 'none', cursor: 'pointer' },
   refreshBtn: { padding: '7px 12px', borderRadius: '8px', border: '1px solid #00d8ff', background: 'transparent', color: '#00d8ff', cursor: 'pointer', fontSize: '15px' },
+  logoutBtn: { padding: '7px 12px', borderRadius: '8px', border: '1px solid #ef4444', background: 'transparent', color: '#ef4444', cursor: 'pointer', fontSize: '15px' },
   statsRow: { display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px', marginBottom: '20px' },
   statCard: { background: '#1a1a2e', borderRadius: '10px', padding: '12px 8px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', border: '1px solid rgba(0,216,255,0.1)' },
   statNum: { color: '#fff', fontWeight: '700', fontSize: '20px' },
