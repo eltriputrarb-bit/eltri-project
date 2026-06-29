@@ -62,7 +62,7 @@ useEffect(() => {
             {/* SIDEBAR PROFILE */}
             <div className="side-bar rpg-profile-sidebar">
               <div className="photo-frame">
-                <img src="images/tenor.gif" alt="Eltri Putra" />
+                <img src="images/God.jpg" alt="Eltri Putra" />
               </div>
 
               <div className="side-content">

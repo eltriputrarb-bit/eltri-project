@@ -379,7 +379,7 @@ function EltriPutnzs() {
 
 <footer 
   className="footer" 
-  style={{ backgroundImage: "linear-gradient(rgba(20, 20, 20, 0.85), rgba(20, 20, 20, 0.85)), url('/images/jp.gif')" }}
+  style={{ backgroundImage: "linear-gradient(rgba(20, 20, 20, 0.85), rgba(20, 20, 20, 0.85)), url('/images/O.gif')" }}
 >
   <div className="container">
     
@@ -398,7 +398,7 @@ function EltriPutnzs() {
 
     {/* BAGIAN KANAN: Foto Profil Bulat Elegan */}
     <div className="footer-profile">
-      <img src="/images/lmz.jpg" alt="Eltri Profile" className="profile-img" />
+      <img src="/images/God.jpg" alt="Eltri Profile" className="profile-img" />
     </div>
 
   </div>
