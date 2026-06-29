@@ -6,6 +6,7 @@ function AdminMessages() {
   const [token, setToken] = useState('');
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [loginError, setLoginError] = useState('');
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   useEffect(() => {
@@ -29,38 +30,76 @@ function AdminMessages() {
   }, []);
 
   const login = async () => {
-    const res = await fetch('/api/auth', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password: inputPass }),
-    });
-    const data = await res.json();
-    if (data.success) {
-      setAuth(true);
-      setToken(data.token);
-      fetchMessages(data.token);
-    } else {
-      alert('Password salah!');
+    setLoginError('');
+    try {
+      const res = await fetch('/api/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: inputPass }),
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        setAuth(true);
+        setToken(data.token);
+        setInputPass('');
+        fetchMessages(data.token);
+      } else {
+        // Tampilkan pesan asli dari server (misal rate-limit), bukan selalu "Password salah!"
+        setLoginError(data.error || 'Password salah!');
+      }
+    } catch (err) {
+      setLoginError('Gagal terhubung ke server. Coba lagi.');
     }
+  };
+
+  const logout = () => {
+    setAuth(false);
+    setToken('');
+    setMessages([]);
   };
 
   const fetchMessages = async (t) => {
     setLoading(true);
-    const res = await fetch('/api/messages', {
-      headers: { 'x-admin-token': t || token }
-    });
-    const data = await res.json();
-    setMessages(data);
-    setLoading(false);
+    try {
+      const res = await fetch('/api/messages', {
+        headers: { 'x-admin-token': t || token }
+      });
+
+      if (res.status === 401) {
+        // Token sudah tidak valid (misal diganti manual di Vercel) — paksa login ulang
+        logout();
+        setLoginError('Sesi berakhir, silakan login ulang.');
+        return;
+      }
+
+      const data = await res.json();
+      setMessages(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error('Fetch messages error:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const deleteMessage = async (id) => {
     if (!window.confirm('Hapus pesan ini?')) return;
-    await fetch(`/api/messages?id=${id}`, {
-      method: 'DELETE',
-      headers: { 'x-admin-token': token }
-    });
-    setMessages(prev => prev.filter(m => m._id !== id));
+    try {
+      const res = await fetch(`/api/messages?id=${id}`, {
+        method: 'DELETE',
+        headers: { 'x-admin-token': token }
+      });
+
+      if (res.status === 401) {
+        logout();
+        setLoginError('Sesi berakhir, silakan login ulang.');
+        return;
+      }
+
+      setMessages(prev => prev.filter(m => m._id !== id));
+    } catch (err) {
+      console.error('Delete message error:', err);
+    }
   };
 
   const formatDate = (dateStr) => {
@@ -86,6 +125,7 @@ function AdminMessages() {
             onKeyDown={e => e.key === 'Enter' && login()}
           />
           <button style={styles.btn} onClick={login}>Masuk</button>
+          {loginError && <p style={styles.errorText}>{loginError}</p>}
         </div>
       </div>
     );
@@ -97,7 +137,10 @@ function AdminMessages() {
         <h2 style={{ ...styles.title, fontSize: isMobile ? '17px' : '22px' }}>
           💬 Pesan Masuk <span style={{ color: '#71717a', fontSize: '13px' }}>({messages.length})</span>
         </h2>
-        <button style={styles.refreshBtn} onClick={() => fetchMessages()}>🔄 Refresh</button>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <button style={styles.refreshBtn} onClick={() => fetchMessages()}>🔄 Refresh</button>
+          <button style={styles.logoutBtn} onClick={logout}>🚪 Logout</button>
+        </div>
       </div>
 
       {loading && <p style={styles.loading}>Loading...</p>}
@@ -133,10 +176,12 @@ const styles = {
   loginTitle: { color: '#00d8ff', margin: 0, textAlign: 'center', fontSize: '20px' },
   input: { padding: '12px 14px', borderRadius: '8px', border: '1px solid rgba(0,216,255,0.3)', background: 'rgba(255,255,255,0.05)', color: '#fff', fontSize: '16px', outline: 'none', width: '100%', boxSizing: 'border-box' },
   btn: { padding: '12px', borderRadius: '8px', border: 'none', background: 'linear-gradient(135deg, #00d8ff, #0099cc)', color: '#000', fontWeight: '700', cursor: 'pointer', fontSize: '15px', width: '100%' },
+  errorText: { color: '#ef4444', fontSize: '13px', textAlign: 'center', margin: 0 },
   wrap: { minHeight: '100vh', background: '#0a0a0a', maxWidth: '700px', margin: '0 auto', boxSizing: 'border-box' },
   header: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' },
   title: { color: '#00d8ff', margin: 0 },
   refreshBtn: { padding: '8px 14px', borderRadius: '8px', border: '1px solid #00d8ff', background: 'transparent', color: '#00d8ff', cursor: 'pointer', fontSize: '13px', whiteSpace: 'nowrap' },
+  logoutBtn: { padding: '8px 14px', borderRadius: '8px', border: '1px solid #ef4444', background: 'transparent', color: '#ef4444', cursor: 'pointer', fontSize: '13px', whiteSpace: 'nowrap' },
   loading: { color: '#71717a', textAlign: 'center' },
   empty: { color: '#71717a', textAlign: 'center' },
   card: { background: '#1a1a2e', border: '1px solid rgba(0,216,255,0.15)', borderRadius: '12px', padding: '16px', marginBottom: '14px', boxSizing: 'border-box' },
