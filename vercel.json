@@ -2,7 +2,7 @@
   "rewrites": [
     { "source": "/api/auth", "destination": "/api/auth" },
     { "source": "/api/messages", "destination": "/api/messages" },
-    { "source": "/api/messages/:id", "destination": "/api/messages" },
+    { "source": "/api/messages/:id", "destination": "/api/messages?id=:id" },
     { "source": "/api/views", "destination": "/api/views/index" },
     { "source": "/api/views/:id", "destination": "/api/views/[id]" },
     { "source": "/(.*)", "destination": "/index.html" }
