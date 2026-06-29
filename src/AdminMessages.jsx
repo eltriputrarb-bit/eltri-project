@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
-const ADMIN_PASSWORD = 'eltri2026';
-const ADMIN_TOKEN = 'eltri2026';
-
 function AdminMessages() {
   const [auth, setAuth] = useState(false);
   const [inputPass, setInputPass] = useState('');
+  const [token, setToken] = useState('');
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
@@ -16,33 +14,40 @@ function AdminMessages() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-useEffect(() => {
-  const navbar = document.querySelector('.container-navbar');
-  if (navbar) {
-    navbar.style.visibility = 'hidden';
-    navbar.style.opacity = '0';
-  }
-  return () => {
+  useEffect(() => {
+    const navbar = document.querySelector('.container-navbar');
     if (navbar) {
-      navbar.style.visibility = '';
-      navbar.style.opacity = '';
+      navbar.style.visibility = 'hidden';
+      navbar.style.opacity = '0';
     }
-  };
-}, []);
+    return () => {
+      if (navbar) {
+        navbar.style.visibility = '';
+        navbar.style.opacity = '';
+      }
+    };
+  }, []);
 
-  const login = () => {
-    if (inputPass === ADMIN_PASSWORD) {
+  const login = async () => {
+    const res = await fetch('/api/auth', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: inputPass }),
+    });
+    const data = await res.json();
+    if (data.success) {
       setAuth(true);
-      fetchMessages();
+      setToken(data.token);
+      fetchMessages(data.token);
     } else {
       alert('Password salah!');
     }
   };
 
-  const fetchMessages = async () => {
+  const fetchMessages = async (t) => {
     setLoading(true);
     const res = await fetch('/api/messages', {
-      headers: { 'x-admin-token': ADMIN_TOKEN }
+      headers: { 'x-admin-token': t || token }
     });
     const data = await res.json();
     setMessages(data);
@@ -53,7 +58,7 @@ useEffect(() => {
     if (!window.confirm('Hapus pesan ini?')) return;
     await fetch(`/api/messages?id=${id}`, {
       method: 'DELETE',
-      headers: { 'x-admin-token': ADMIN_TOKEN }
+      headers: { 'x-admin-token': token }
     });
     setMessages(prev => prev.filter(m => m._id !== id));
   };
@@ -87,15 +92,12 @@ useEffect(() => {
   }
 
   return (
-    <div style={{
-      ...styles.wrap,
-      padding: isMobile ? '24px 12px' : '40px 24px',
-    }}>
+    <div style={{ ...styles.wrap, padding: isMobile ? '24px 12px' : '40px 24px' }}>
       <div style={styles.header}>
         <h2 style={{ ...styles.title, fontSize: isMobile ? '17px' : '22px' }}>
           💬 Pesan Masuk <span style={{ color: '#71717a', fontSize: '13px' }}>({messages.length})</span>
         </h2>
-        <button style={styles.refreshBtn} onClick={fetchMessages}>🔄 Refresh</button>
+        <button style={styles.refreshBtn} onClick={() => fetchMessages()}>🔄 Refresh</button>
       </div>
 
       {loading && <p style={styles.loading}>Loading...</p>}
@@ -126,107 +128,23 @@ useEffect(() => {
 }
 
 const styles = {
-  loginWrap: {
-    minHeight: '100vh',
-    background: '#0a0a0a',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: '20px',
-    boxSizing: 'border-box',
-  },
-  loginBox: {
-    background: '#1a1a2e',
-    borderRadius: '16px',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '14px',
-    border: '1px solid rgba(0,216,255,0.2)',
-    boxSizing: 'border-box',
-  },
-  loginTitle: {
-    color: '#00d8ff',
-    margin: 0,
-    textAlign: 'center',
-    fontSize: '20px',
-  },
-  input: {
-    padding: '12px 14px',
-    borderRadius: '8px',
-    border: '1px solid rgba(0,216,255,0.3)',
-    background: 'rgba(255,255,255,0.05)',
-    color: '#fff',
-    fontSize: '16px',
-    outline: 'none',
-    width: '100%',
-    boxSizing: 'border-box',
-  },
-  btn: {
-    padding: '12px',
-    borderRadius: '8px',
-    border: 'none',
-    background: 'linear-gradient(135deg, #00d8ff, #0099cc)',
-    color: '#000',
-    fontWeight: '700',
-    cursor: 'pointer',
-    fontSize: '15px',
-    width: '100%',
-  },
-  wrap: {
-    minHeight: '100vh',
-    background: '#0a0a0a',
-    maxWidth: '700px',
-    margin: '0 auto',
-    boxSizing: 'border-box',
-  },
-  header: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: '20px',
-  },
-  title: {
-    color: '#00d8ff',
-    margin: 0,
-  },
-  refreshBtn: {
-    padding: '8px 14px',
-    borderRadius: '8px',
-    border: '1px solid #00d8ff',
-    background: 'transparent',
-    color: '#00d8ff',
-    cursor: 'pointer',
-    fontSize: '13px',
-    whiteSpace: 'nowrap',
-  },
+  loginWrap: { minHeight: '100vh', background: '#0a0a0a', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px', boxSizing: 'border-box' },
+  loginBox: { background: '#1a1a2e', borderRadius: '16px', display: 'flex', flexDirection: 'column', gap: '14px', border: '1px solid rgba(0,216,255,0.2)', boxSizing: 'border-box' },
+  loginTitle: { color: '#00d8ff', margin: 0, textAlign: 'center', fontSize: '20px' },
+  input: { padding: '12px 14px', borderRadius: '8px', border: '1px solid rgba(0,216,255,0.3)', background: 'rgba(255,255,255,0.05)', color: '#fff', fontSize: '16px', outline: 'none', width: '100%', boxSizing: 'border-box' },
+  btn: { padding: '12px', borderRadius: '8px', border: 'none', background: 'linear-gradient(135deg, #00d8ff, #0099cc)', color: '#000', fontWeight: '700', cursor: 'pointer', fontSize: '15px', width: '100%' },
+  wrap: { minHeight: '100vh', background: '#0a0a0a', maxWidth: '700px', margin: '0 auto', boxSizing: 'border-box' },
+  header: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' },
+  title: { color: '#00d8ff', margin: 0 },
+  refreshBtn: { padding: '8px 14px', borderRadius: '8px', border: '1px solid #00d8ff', background: 'transparent', color: '#00d8ff', cursor: 'pointer', fontSize: '13px', whiteSpace: 'nowrap' },
   loading: { color: '#71717a', textAlign: 'center' },
   empty: { color: '#71717a', textAlign: 'center' },
-  card: {
-    background: '#1a1a2e',
-    border: '1px solid rgba(0,216,255,0.15)',
-    borderRadius: '12px',
-    padding: '16px',
-    marginBottom: '14px',
-    boxSizing: 'border-box',
-  },
-  cardHeader: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    marginBottom: '8px',
-  },
+  card: { background: '#1a1a2e', border: '1px solid rgba(0,216,255,0.15)', borderRadius: '12px', padding: '16px', marginBottom: '14px', boxSizing: 'border-box' },
+  cardHeader: { display: 'flex', justifyContent: 'space-between', marginBottom: '8px' },
   name: { color: '#00d8ff', fontWeight: '700', fontSize: '14px' },
   date: { color: '#71717a', fontSize: '11px' },
   message: { color: '#ffffff', fontSize: '14px', margin: '0 0 12px 0', wordBreak: 'break-word', lineHeight: '1.5' },
-  deleteBtn: {
-    padding: '7px 14px',
-    borderRadius: '6px',
-    border: 'none',
-    background: '#ef4444',
-    color: '#fff',
-    cursor: 'pointer',
-    fontSize: '13px',
-    fontWeight: '600',
-  },
+  deleteBtn: { padding: '7px 14px', borderRadius: '6px', border: 'none', background: '#ef4444', color: '#fff', cursor: 'pointer', fontSize: '13px', fontWeight: '600' },
 };
 
 export default AdminMessages;

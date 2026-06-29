@@ -1,6 +1,6 @@
 const { MongoClient } = require('mongodb');
 
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://eltriputrarb_db_user:eltri1234@ac-5mmmxdx-shard-00-00.9dejjvu.mongodb.net:27017,ac-5mmmxdx-shard-00-01.9dejjvu.mongodb.net:27017,ac-5mmmxdx-shard-00-02.9dejjvu.mongodb.net:27017/?ssl=true&replicaSet=atlas-nsfg52-shard-0&authSource=admin&appName=eltri';
+const MONGO_URI = process.env.MONGO_URI;
 
 let client;
 async function getDb() {
@@ -10,7 +10,7 @@ async function getDb() {
   return client.db('eltri');
 }
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET');
 
@@ -21,4 +21,4 @@ export default async function handler(req, res) {
   const result = {};
   all.forEach(item => result[item.id] = item.views);
   return res.json(result);
-}
+};

@@ -1,8 +1,6 @@
 const { MongoClient, ObjectId } = require('mongodb');
 
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://eltriputrarb_db_user:eltri1234@ac-5mmmxdx-shard-00-00.9dejjvu.mongodb.net:27017,ac-5mmmxdx-shard-00-01.9dejjvu.mongodb.net:27017,ac-5mmmxdx-shard-00-02.9dejjvu.mongodb.net:27017/?ssl=true&replicaSet=atlas-nsfg52-shard-0&authSource=admin&appName=eltri';
-
-const ADMIN_TOKEN = 'eltri2026';
+const MONGO_URI = process.env.MONGO_URI;
 
 let client;
 async function getDb() {
@@ -33,7 +31,7 @@ module.exports = async function handler(req, res) {
 
   // GET & DELETE - butuh token admin
   const token = req.headers['x-admin-token'];
-  if (token !== ADMIN_TOKEN) {
+  if (token !== process.env.ADMIN_TOKEN) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 

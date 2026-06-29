@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-const ADMIN_PASSWORD = 'eltri2026';
-const ADMIN_TOKEN = 'eltri2026';
-
 const galleryItems = [
   { id: 19, type: 'video', desc: 'gereja katedral Makassar' },
   { id: 18, type: 'video', desc: 'jalan ke gereja' },
@@ -33,6 +30,7 @@ function getBadge(views) {
 function AdminViews() {
   const [auth, setAuth] = useState(false);
   const [inputPass, setInputPass] = useState('');
+  const [token, setToken] = useState('');
   const [viewsData, setViewsData] = useState({});
   const [loading, setLoading] = useState(false);
   const [sortBy, setSortBy] = useState('views');
@@ -50,9 +48,16 @@ function AdminViews() {
     };
   }, []);
 
-  const login = () => {
-    if (inputPass === ADMIN_PASSWORD) {
+  const login = async () => {
+    const res = await fetch('/api/auth', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: inputPass }),
+    });
+    const data = await res.json();
+    if (data.success) {
       setAuth(true);
+      setToken(data.token);
       fetchViews();
     } else {
       alert('Password salah!');
@@ -76,10 +81,7 @@ function AdminViews() {
     setSaving(true);
     await fetch(`/api/views/${id}`, {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-admin-token': ADMIN_TOKEN,
-      },
+      headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
       body: JSON.stringify({ views: parseInt(editVal) }),
     });
     setViewsData(prev => ({ ...prev, [id]: parseInt(editVal) }));
@@ -87,16 +89,8 @@ function AdminViews() {
     setSaving(false);
   };
 
-  const merged = galleryItems.map(item => ({
-    ...item,
-    views: viewsData[item.id] || 0,
-  }));
-
-  const sorted = [...merged].sort((a, b) => {
-    if (sortBy === 'views') return b.views - a.views;
-    return b.id - a.id;
-  });
-
+  const merged = galleryItems.map(item => ({ ...item, views: viewsData[item.id] || 0 }));
+  const sorted = [...merged].sort((a, b) => sortBy === 'views' ? b.views - a.views : b.id - a.id);
   const totalViews = merged.reduce((sum, item) => sum + item.views, 0);
 
   if (!auth) {
@@ -137,26 +131,18 @@ function AdminViews() {
       {loading && <p style={{ color: '#71717a', textAlign: 'center' }}>Loading...</p>}
 
       <div style={s.statsRow}>
-        <div style={s.statCard}>
-          <span style={{ fontSize: '20px' }}>🔥</span>
-          <span style={s.statNum}>{merged.filter(i => i.views >= 50).length}</span>
-          <span style={s.statLabel}>Hot</span>
-        </div>
-        <div style={s.statCard}>
-          <span style={{ fontSize: '20px' }}>⚡</span>
-          <span style={s.statNum}>{merged.filter(i => i.views >= 10 && i.views < 50).length}</span>
-          <span style={s.statLabel}>Warm</span>
-        </div>
-        <div style={s.statCard}>
-          <span style={{ fontSize: '20px' }}>👁</span>
-          <span style={s.statNum}>{merged.filter(i => i.views >= 1 && i.views < 10).length}</span>
-          <span style={s.statLabel}>Cool</span>
-        </div>
-        <div style={s.statCard}>
-          <span style={{ fontSize: '20px' }}>⭕</span>
-          <span style={s.statNum}>{merged.filter(i => i.views === 0).length}</span>
-          <span style={s.statLabel}>New</span>
-        </div>
+        {[
+          { icon: '🔥', count: merged.filter(i => i.views >= 50).length, label: 'Hot' },
+          { icon: '⚡', count: merged.filter(i => i.views >= 10 && i.views < 50).length, label: 'Warm' },
+          { icon: '👁', count: merged.filter(i => i.views >= 1 && i.views < 10).length, label: 'Cool' },
+          { icon: '⭕', count: merged.filter(i => i.views === 0).length, label: 'New' },
+        ].map(stat => (
+          <div key={stat.label} style={s.statCard}>
+            <span style={{ fontSize: '20px' }}>{stat.icon}</span>
+            <span style={s.statNum}>{stat.count}</span>
+            <span style={s.statLabel}>{stat.label}</span>
+          </div>
+        ))}
       </div>
 
       {sorted.map(item => {
@@ -174,17 +160,8 @@ function AdminViews() {
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
               {isEditing ? (
                 <>
-                  <input
-                    style={s.editInput}
-                    type="number"
-                    value={editVal}
-                    onChange={e => setEditVal(e.target.value)}
-                    min="0"
-                    autoFocus
-                  />
-                  <button style={s.saveBtn} onClick={() => saveEdit(item.id)} disabled={saving}>
-                    {saving ? '...' : '✅'}
-                  </button>
+                  <input style={s.editInput} type="number" value={editVal} onChange={e => setEditVal(e.target.value)} min="0" autoFocus />
+                  <button style={s.saveBtn} onClick={() => saveEdit(item.id)} disabled={saving}>{saving ? '...' : '✅'}</button>
                   <button style={s.cancelBtn} onClick={() => setEditId(null)}>❌</button>
                 </>
               ) : (
