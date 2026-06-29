@@ -62,7 +62,7 @@ useEffect(() => {
             {/* SIDEBAR PROFILE */}
             <div className="side-bar rpg-profile-sidebar">
               <div className="photo-frame">
-                <img src="images/God.jpg" alt="Eltri Putra" />
+                <img src="images/katolik.jpg" alt="Eltri Putra" />
               </div>
 
               <div className="side-content">
@@ -118,7 +118,7 @@ useEffect(() => {
                 {/* ITEM 3: SD */}
                 <div className="item education-item" style={{ '--edu-bg': "url('/images/Eltripro.jpg')" }}>
                   <div className="item-title">
-                    <strong>SDLB/SD Katolik Rajawali</strong>
+                    <strong>SDLB/SD ST. Joseph Katolik Rajawali</strong>
                     <a
                       href="https://maps.app.goo.gl/o1JExkS8SGsWWa1R8"
                       className="maps-link mono"

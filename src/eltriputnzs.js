@@ -398,7 +398,7 @@ function EltriPutnzs() {
 
     {/* BAGIAN KANAN: Foto Profil Bulat Elegan */}
     <div className="footer-profile">
-      <img src="/images/God.jpg" alt="Eltri Profile" className="profile-img" />
+      <img src="/images/katolik.jpg" alt="Eltri Profile" className="profile-img" />
     </div>
 
   </div>
