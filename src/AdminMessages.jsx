@@ -71,7 +71,7 @@ useEffect(() => {
           width: isMobile ? '88%' : '320px',
           padding: isMobile ? '28px 20px' : '40px',
         }}>
-          <h2 style={styles.loginTitle}>🔐 Admin Messages</h2>
+          <h2 style={styles.loginTitle}>🔐 Admin Server</h2>
           <input
             style={styles.input}
             type="password"
