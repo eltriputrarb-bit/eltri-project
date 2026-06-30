@@ -1,4 +1,4 @@
-import React, { useEffect, lazy, Suspense } from 'react';
+import React, { useEffect, lazy, } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import './App.module.css';
 import Gallery from './gallery'; 
@@ -417,17 +417,8 @@ function EltriPutnzs() {
 
         <Route path="/ErrorPage" element={<ErrorPage />} />
 
-<Route path="/xk9z-control-panel" element={
-  <Suspense fallback={<div>Loading...</div>}>
-    <AdminMessages />
-  </Suspense>
-} />
-
-<Route path="/xk9z-control-panel/views" element={
-  <Suspense fallback={<div>Loading...</div>}>
-    <AdminViews />
-  </Suspense>
-} />
+<Route path="/x7k9z-vault-pesan" element={<AdminMessages />} />
+<Route path="/x7k9z-vault-views" element={<AdminViews />} />
 
       </Routes>
     </div>
