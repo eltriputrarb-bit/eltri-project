@@ -16,6 +16,12 @@ module.exports = async function handler(req, res) {
 
   if (req.method === 'OPTIONS') return res.status(200).end();
 
+  // Tambahkan ini — cek token admin
+  const token = req.headers['x-admin-token'];
+  if (token !== process.env.ADMIN_TOKEN) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
   const db = await getDb();
   const all = await db.collection('views').find().toArray();
   const result = {};

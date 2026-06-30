@@ -417,9 +417,9 @@ function EltriPutnzs() {
 
         <Route path="/ErrorPage" element={<ErrorPage />} />
 
-        <Route path="/admin" element={<AdminMessages />} />
+        <Route path="/xk9z-control-panel" element={<AdminMessages />} />
 
-        <Route path="/admin/views" element={<AdminViews />} />
+        <Route path="/xk9z-control-panel/views" element={<AdminViews />} />
 
       </Routes>
     </div>
