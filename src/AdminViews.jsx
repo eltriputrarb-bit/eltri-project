@@ -1,23 +1,19 @@
 import React, { useState, useEffect } from 'react';
 
 const galleryItems = [
-  { id: 19, type: 'video', desc: 'gereja katedral Makassar' },
-  { id: 18, type: 'video', desc: 'jalan ke gereja' },
-  { id: 17, type: 'video', desc: 'servis honda' },
-  { id: 16, type: 'video', desc: '⛅️' },
-  { id: 15, type: 'img', desc: 'DI SMC MAKASSAR (2)' },
-  { id: 14, type: 'img', desc: 'DI SMC MAKASSAR (1)' },
-  { id: 13, type: 'video', desc: 'saya jalan jadi' },
-  { id: 12, type: 'video', desc: 'kid miss u' },
-  { id: 11, type: 'img', desc: 'warkop gunung nona indah' },
-  { id: 10, type: 'img', desc: 'toraja' },
-  { id: 9, type: 'img', desc: 'di makale, tana toraja' },
-  { id: 8, type: 'img', desc: 'Hokky Rumah Makan China' },
-  { id: 6, type: 'img', desc: 'MAU MAKAN' },
-  { id: 4, type: 'img', desc: 'Parkiran Roda mobil' },
-  { id: 3, type: 'img', desc: 'CAMERA SMAKARA' },
-  { id: 2, type: 'img', desc: 'RAJAWALI ANAK KECIL' },
-  { id: 1, type: 'img', desc: 'jalanan kota Makassar' },
+    { id: 17, type: 'video', src: '/video/katolik.mp4', date: '23/06,juni,2026', desc: 'gereja katedral Makassar hati yesus yang mahakudus' },
+    { id: 16, type: 'video', src: '/video/jalan.mp4', date: '23/06,juni,2026', desc: 'jalan ke gereja' },
+    { id: 15, type: 'video', src: '/video/elin.mp4', date: '20/06,juni,2026', desc: 'servis honda' },
+    { id: 14, type: 'video', src: '/video/kotae.mp4', date: '19/06,juni,2026', desc: '⛅️' },    
+    { id: 11, type: 'img', src: '/images/foto11.jpg', date: '10/06,juni,2026', desc: 'warkop gunung nona indah' },
+    { id: 12, type: 'video', src: '/video/Nostalgia.mp4', date: '09/06,juni,2026', desc: 'kid miss u' },
+    { id: 10, type: 'img', src: '/images/foto10.jpg', date: '08/06,juni,2026', desc: 'toraja' },
+    { id: 9, type: 'img', src: '/images/foto9.jpg', date: '07/06,juni,2026', desc: 'Lokasi: di makale, tana toraja' },
+    { id: 1, type: 'img', src: '/images/foto1.jpg', date: '15/05,mei,2026', desc: 'Lokasi: Makassar Sudut pandang sinematik jalanan kota' },
+    { id: 6, type: 'img', src: '/images/foto6.jpg', date: '18/4,APRIL,2026', desc: 'SAYA SENDIRI INI MAU MAKAN' },
+    { id: 4, type: 'img', src: '/images/foto4.jpg', date: '14/03,MARET,2026', desc: 'Parkiran Roda mobil' },
+    { id: 3, type: 'img', src: '/images/foto3.jpg', date: '07/12,DESEMBER,2018', desc: 'SAYA FOTO PAKAI CAMERA SMAKARA' },
+    { id: 2, type: 'img', src: '/images/RAJAWALI.jpg', date: '06/08,AGUSTUS,2015', desc: 'RAJAWALI ANAK KECIL' },
 ];
 
 function getBadge(views) {

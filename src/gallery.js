@@ -18,18 +18,14 @@ function Gallery() {
   const itemsPerPage = 12;
 
   const galleryItems = [
-    { id: 19, type: 'video', src: '/video/katolik.mp4', date: '23/06,juni,2026', desc: 'gereja katedral Makassar hati yesus yang mahakudus' },
-    { id: 18, type: 'video', src: '/video/jalan.mp4', date: '23/06,juni,2026', desc: 'jalan ke gereja' },
-    { id: 17, type: 'video', src: '/video/elin.mp4', date: '20/06,juni,2026', desc: 'servis honda' },
-    { id: 16, type: 'video', src: '/video/kotae.mp4', date: '19/06,juni,2026', desc: '⛅️' },    
-    { id: 14, type: 'img', src: '/images/foto13.jpg', date: '14/06,juni,2026', desc: 'DI SMC MAKASSAR' },
-    { id: 15, type: 'img', src: '/images/foto12.jpg', date: '14/06,juni,2026', desc: 'DI SMC MAKASSAR' },
+    { id: 17, type: 'video', src: '/video/katolik.mp4', date: '23/06,juni,2026', desc: 'gereja katedral Makassar hati yesus yang mahakudus' },
+    { id: 16, type: 'video', src: '/video/jalan.mp4', date: '23/06,juni,2026', desc: 'jalan ke gereja' },
+    { id: 15, type: 'video', src: '/video/elin.mp4', date: '20/06,juni,2026', desc: 'servis honda' },
+    { id: 14, type: 'video', src: '/video/kotae.mp4', date: '19/06,juni,2026', desc: '⛅️' },    
     { id: 11, type: 'img', src: '/images/foto11.jpg', date: '10/06,juni,2026', desc: 'warkop gunung nona indah' },
     { id: 12, type: 'video', src: '/video/Nostalgia.mp4', date: '09/06,juni,2026', desc: 'kid miss u' },
     { id: 10, type: 'img', src: '/images/foto10.jpg', date: '08/06,juni,2026', desc: 'toraja' },
     { id: 9, type: 'img', src: '/images/foto9.jpg', date: '07/06,juni,2026', desc: 'Lokasi: di makale, tana toraja' },
-    { id: 13, type: 'video', src: '/video/perumtel.mp4', date: '04/06,juni,2026', desc: 'saya jalan jadi' },
-    { id: 8, type: 'img', src: '/images/foto8.jpg', date: '30/05,mei,2026', desc: 'Lokasi: Hokky Rumah Makan China' },
     { id: 1, type: 'img', src: '/images/foto1.jpg', date: '15/05,mei,2026', desc: 'Lokasi: Makassar Sudut pandang sinematik jalanan kota' },
     { id: 6, type: 'img', src: '/images/foto6.jpg', date: '18/4,APRIL,2026', desc: 'SAYA SENDIRI INI MAU MAKAN' },
     { id: 4, type: 'img', src: '/images/foto4.jpg', date: '14/03,MARET,2026', desc: 'Parkiran Roda mobil' },
