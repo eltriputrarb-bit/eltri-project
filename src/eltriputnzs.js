@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, lazy, Suspense } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import './App.module.css';
 import Gallery from './gallery'; 
@@ -6,8 +6,8 @@ import PublicProfile from './proyek';
 import ErrorPage from './ErrorPage';
 import MessageForm from './MessageForm';
 import './MessageForm.css';
-import AdminMessages from './AdminMessages';
-import AdminViews from './AdminViews';
+const AdminMessages = lazy(() => import('./AdminMessages'));
+const AdminViews = lazy(() => import('./AdminViews'));
 
 
 function EltriPutnzs() {
@@ -417,9 +417,17 @@ function EltriPutnzs() {
 
         <Route path="/ErrorPage" element={<ErrorPage />} />
 
-        <Route path="/xk9z-control-panel" element={<AdminMessages />} />
+<Route path="/xk9z-control-panel" element={
+  <Suspense fallback={<div>Loading...</div>}>
+    <AdminMessages />
+  </Suspense>
+} />
 
-        <Route path="/xk9z-control-panel/views" element={<AdminViews />} />
+<Route path="/xk9z-control-panel/views" element={
+  <Suspense fallback={<div>Loading...</div>}>
+    <AdminViews />
+  </Suspense>
+} />
 
       </Routes>
     </div>
