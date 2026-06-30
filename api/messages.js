@@ -50,7 +50,7 @@ async function verifyCaptcha(token) {
     body: `secret=${secret}&response=${token}`,
   });
   const data = await res.json();
-  return data.success;  
+  return data.success;
 }
 
 module.exports = async function handler(req, res) {
