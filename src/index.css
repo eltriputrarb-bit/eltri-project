@@ -1641,3 +1641,7 @@ body {
   }
 }
 
+.profile-img {
+  -webkit-touch-callout: none !important; /* Mematikan menu tahan-layar di iOS */
+  user-select: none !important;           /* Mematikan seleksi di Android */
+}
