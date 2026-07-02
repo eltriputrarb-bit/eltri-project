@@ -641,3 +641,10 @@ video::-webkit-media-controls-enclosure {
 .views-cool { background: rgba(0,216,255,0.15); color: #00d8ff; border: 1px solid #00d8ff; }
 .views-warm { background: rgba(234,179,8,0.15); color: #eab308; border: 1px solid #eab308; }
 .views-hot { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid #ef4444; }
+
+/* Menjangkau semua gambar di grid dan modal */
+.gallery-card img, .modal-content img {
+  -webkit-touch-callout: none; /* Mematikan menu tahan-lama di iOS */
+  -webkit-user-select: none;   /* Mencegah teks terpilih secara tak sengaja di Android */
+  user-select: none;
+}

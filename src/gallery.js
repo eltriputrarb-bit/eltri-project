@@ -196,13 +196,24 @@ function Gallery() {
         <div className="modal-lightbox" style={{ display: 'flex' }} onClick={closeModal}>
           <span className="close-btn" onClick={(e) => { e.stopPropagation(); closeModal(); }}>&times;</span>
           {modalMedia.type === 'img' ? (
-            <img className="modal-content" src={modalMedia.src} alt="Lightbox Zoom" onClick={(e) => e.stopPropagation()} />
+            <img 
+    className="modal-content" 
+    src={modalMedia.src} 
+    alt="Lightbox Zoom" 
+    // --- TAMBAHKAN DUA BARIS DI BAWAH INI ---
+    onContextMenu={(e) => e.preventDefault()} // Mencegah klik kanan & long-press di modal besar
+    draggable={false}                          // Mencegah gambar diseret saat dizoom
+    // ----------------------------------------
+    onClick={(e) => e.stopPropagation()} 
+  />
           ) : (
             <video
               ref={videoRef}
               className="modal-content"
               src={modalMedia.src}
               controls controlsList="nodownload" loop autoPlay
+              // FIX 2: Mematikan long-press & klik kanan ketika video dibuka besar di modal
+              onContextMenu={(e) => e.preventDefault()}
               onClick={(e) => e.stopPropagation()}
             ></video>
           )}
