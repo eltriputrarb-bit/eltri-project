@@ -648,3 +648,16 @@ video::-webkit-media-controls-enclosure {
   -webkit-user-select: none;   /* Mencegah teks terpilih secara tak sengaja di Android */
   user-select: none;
 }
+
+/* Tambahkan ini di bagian paling bawah gallery.css kamu */
+.clickable-media, .modal-content {
+  -webkit-touch-callout: none !important; /* Mematikan menu tahan-layar di iOS */
+  -webkit-user-select: none !important;   /* Mematikan seleksi gambar di Android */
+  -khtml-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+  
+  /* Tambahan opsional: mematikan highlight biru saat di-klik di HP */
+  -webkit-tap-highlight-color: transparent; 
+}
