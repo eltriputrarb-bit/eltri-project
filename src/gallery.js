@@ -140,6 +140,9 @@ function Gallery() {
                     src={`${process.env.PUBLIC_URL}${item.src}`}
                     alt={item.desc || 'Gallery Visual'}
                     className="clickable-media"
+                    // --- FIX GRID GAMBAR ---
+                    onContextMenu={(e) => e.preventDefault()}
+                    draggable={false}
                     onClick={() => openModal('img', `${process.env.PUBLIC_URL}${item.src}`, item.id)}
                   />
                 ) : (
@@ -148,6 +151,8 @@ function Gallery() {
                     autoPlay muted loop playsInline
                     controlsList="nodownload"
                     className="clickable-media"
+                    // --- FIX GRID VIDEO ---
+                    onContextMenu={(e) => e.preventDefault()}
                     onClick={() => openModal('video', `${process.env.PUBLIC_URL}${item.src}`, item.id)}
                   ></video>
                 )}
@@ -156,14 +161,14 @@ function Gallery() {
                 <h3>{item.date}</h3>
                 <p>{item.desc}</p>
                 <span className={`views-badge ${
-  (mediaViews[item.id] || 0) >= 50 ? 'views-hot' :
-  (mediaViews[item.id] || 0) >= 10 ? 'views-warm' :
-  (mediaViews[item.id] || 0) >= 1 ? 'views-cool' : 'views-zero'
-}`}>
-  {(mediaViews[item.id] || 0) >= 50 ? '🔥' :
-   (mediaViews[item.id] || 0) >= 10 ? '⚡' :
-   (mediaViews[item.id] || 0) >= 1 ? '👁' : '👁'} {mediaViews[item.id] || 0} views
-</span>
+                  (mediaViews[item.id] || 0) >= 50 ? 'views-hot' :
+                  (mediaViews[item.id] || 0) >= 10 ? 'views-warm' :
+                  (mediaViews[item.id] || 0) >= 1 ? 'views-cool' : 'views-zero'
+                }`}>
+                  {(mediaViews[item.id] || 0) >= 50 ? '🔥' :
+                   (mediaViews[item.id] || 0) >= 10 ? '⚡' :
+                   (mediaViews[item.id] || 0) >= 1 ? '👁' : '👁'} {mediaViews[item.id] || 0} views
+                </span>
               </div>
             </div>
           ))}
@@ -197,22 +202,21 @@ function Gallery() {
           <span className="close-btn" onClick={(e) => { e.stopPropagation(); closeModal(); }}>&times;</span>
           {modalMedia.type === 'img' ? (
             <img 
-    className="modal-content" 
-    src={modalMedia.src} 
-    alt="Lightbox Zoom" 
-    // --- TAMBAHKAN DUA BARIS DI BAWAH INI ---
-    onContextMenu={(e) => e.preventDefault()} // Mencegah klik kanan & long-press di modal besar
-    draggable={false}                          // Mencegah gambar diseret saat dizoom
-    // ----------------------------------------
-    onClick={(e) => e.stopPropagation()} 
-  />
+              className="modal-content" 
+              src={modalMedia.src} 
+              alt="Lightbox Zoom" 
+              // --- FIX MODAL GAMBAR ---
+              onContextMenu={(e) => e.preventDefault()}
+              draggable={false}
+              onClick={(e) => e.stopPropagation()} 
+            />
           ) : (
             <video
               ref={videoRef}
               className="modal-content"
               src={modalMedia.src}
               controls controlsList="nodownload" loop autoPlay
-              // FIX 2: Mematikan long-press & klik kanan ketika video dibuka besar di modal
+              // --- FIX MODAL VIDEO ---
               onContextMenu={(e) => e.preventDefault()}
               onClick={(e) => e.stopPropagation()}
             ></video>
