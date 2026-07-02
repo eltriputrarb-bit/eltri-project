@@ -210,20 +210,20 @@ function EltriPutnzs() {
 
     {/* KANAN: Foto Profil */}
     <div className="hero-profile">
-      <div className="hero-profile-wrapper">
-        <div className="hero-profile-glow"></div>
-        <div className="hero-profile-ring">
-          <div className="hero-profile-ring-inner"></div>
-        </div>
-<video
-  src={`${process.env.PUBLIC_URL}/video/live.mp4`}
-  className="hero-profile-img"
-  autoPlay
-  muted
-  loop
-  playsInline
-/>
-      </div>
+<div className="hero-profile-wrapper">
+  <div className="hero-profile-glow"></div>
+  <div className="hero-profile-ring">
+    <div className="hero-profile-ring-inner"></div>
+  </div>
+  <video
+    src={`${process.env.PUBLIC_URL}/video/live.mp4`}
+    className="hero-profile-img"
+    autoPlay
+    muted
+    loop
+    playsInline
+  />
+</div>
     </div>
 
   </div>
