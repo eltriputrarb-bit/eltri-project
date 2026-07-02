@@ -190,85 +190,263 @@ body {
     }
 }
 
+/* =============================================
+   HERO SECTION - GAMING NEON STYLE
+   ============================================= */
+
 .hero-section {
-    position: relative;
-    overflow: hidden;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #020818 0%, #0a1628 50%, #020c1b 100%);
 }
 
-.hero-content {
-    z-index: 5;
-    position: relative;
-    width: 100%;
-}
-
+/* Cubes tetap sama seperti sebelumnya */
 .cubes-fixed {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    overflow: hidden; z-index: 1; list-style: none; padding: 0; margin: 0;
-    contain: strict;
-    isolation: isolate;
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  overflow: hidden; z-index: 1; list-style: none; padding: 0; margin: 0;
+  contain: strict;
+  isolation: isolate;
 }
-
 .cubes-fixed li {
-    position: absolute; display: block; list-style: none; width: 25px; height: 25px;
-    background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(0, 212, 255, 0.4);
-    box-shadow: 0 0 10px rgba(0, 212, 255, 0.2); bottom: -150px;
-    animation: flyUpwards 20s linear infinite; border-radius: 4px;
-    will-change: transform, opacity;
-    transform: translateZ(0);
+  position: absolute; display: block; list-style: none; width: 25px; height: 25px;
+  background: rgba(0, 216, 255, 0.08);
+  border: 1px solid rgba(0, 216, 255, 0.3);
+  box-shadow: 0 0 10px rgba(0, 216, 255, 0.15);
+  bottom: -150px;
+  animation: flyUpwards 20s linear infinite; border-radius: 4px;
+  will-change: transform, opacity;
+  transform: translateZ(0);
 }
-
-.cubes-fixed li:nth-child(1) { left: 10%; width: 80px; height: 80px; animation-delay: 0s;  animation-duration: 18s; }
-.cubes-fixed li:nth-child(2) { left: 25%; width: 35px; height: 35px; animation-delay: 2s;  animation-duration: 12s; }
-.cubes-fixed li:nth-child(3) { left: 40%; width: 65px; height: 65px; animation-delay: 4s;  animation-duration: 22s; }
-.cubes-fixed li:nth-child(4) { left: 55%; width: 20px; height: 20px; animation-delay: 1s;  animation-duration: 15s; }
-.cubes-fixed li:nth-child(5) { left: 70%; width: 90px; height: 90px; animation-delay: 5s;  animation-duration: 25s; }
-.cubes-fixed li:nth-child(6) { left: 85%; width: 40px; height: 40px; animation-delay: 3s;  animation-duration: 14s; }
-.cubes-fixed li:nth-child(7) { left: 18%; width: 50px; height: 50px; animation-delay: 7s;  animation-duration: 16s; }
-.cubes-fixed li:nth-child(8) { left: 48%; width: 30px; height: 30px; animation-delay: 9s;  animation-duration: 11s; }
-.cubes-fixed li:nth-child(9) { left: 78%; width: 75px; height: 75px; animation-delay: 2s;  animation-duration: 19s; }
+.cubes-fixed li:nth-child(1) { left: 10%; width: 80px; height: 80px; animation-delay: 0s; animation-duration: 18s; }
+.cubes-fixed li:nth-child(2) { left: 25%; width: 35px; height: 35px; animation-delay: 2s; animation-duration: 12s; }
+.cubes-fixed li:nth-child(3) { left: 40%; width: 65px; height: 65px; animation-delay: 4s; animation-duration: 22s; }
+.cubes-fixed li:nth-child(4) { left: 55%; width: 20px; height: 20px; animation-delay: 1s; animation-duration: 15s; }
+.cubes-fixed li:nth-child(5) { left: 70%; width: 90px; height: 90px; animation-delay: 5s; animation-duration: 25s; }
+.cubes-fixed li:nth-child(6) { left: 85%; width: 40px; height: 40px; animation-delay: 3s; animation-duration: 14s; }
+.cubes-fixed li:nth-child(7) { left: 18%; width: 50px; height: 50px; animation-delay: 7s; animation-duration: 16s; }
+.cubes-fixed li:nth-child(8) { left: 48%; width: 30px; height: 30px; animation-delay: 9s; animation-duration: 11s; }
+.cubes-fixed li:nth-child(9) { left: 78%; width: 75px; height: 75px; animation-delay: 2s; animation-duration: 19s; }
 
 @keyframes flyUpwards {
-    0%   { transform: translateY(0) rotate(0deg) translateZ(0);       opacity: 0; }
-    10%  { opacity: 1; }
-    90%  { opacity: 1; }
-    100% { transform: translateY(-120vh) rotate(360deg) translateZ(0); opacity: 0; border-radius: 50%; }
+  0%   { transform: translateY(0) rotate(0deg) translateZ(0); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translateY(-120vh) rotate(360deg) translateZ(0); opacity: 0; }
 }
 
-/* OPTIMASI FPS MOBILE: hero adalah section PERTAMA yang dilihat user, jadi kubusnya
-   tidak kita matikan total (biar tetap estetik di awal kesan pertama) — tapi kita
-   pangkas jumlah kubus aktif dari 9 jadi 5 di HP low-end, dan kubus besar (yang
-   area repaint-nya paling luas) kita kecilkan. Ini titik tengah: estetik tetap
-   kelihatan, tapi beban GPU di section paling kritis ini turun signifikan. */
-@media screen and (max-width: 768px) {
-    .cubes li:nth-child(6),
-    .cubes li:nth-child(7),
-    .cubes li:nth-child(8),
-    .cubes li:nth-child(9) {
-        display: none !important;
-    }
-    .cubes li:nth-child(1) { width: 50px; height: 50px; }
-    .cubes li:nth-child(4) { width: 40px; height: 40px; }
+/* Hero Content Layout */
+.hero-content {
+  z-index: 5;
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 60px;
 }
 
-/* LOGIKA JALURNYA ANIMASI */
-/* OPTIMASI FPS: border-radius DIHAPUS dari keyframe.
-   Animasi border-radius memaksa browser repaint tiap frame (tidak bisa di-composite GPU),
-   beda dengan transform/opacity yang murah. Efek visual "berubah jadi bulat" nyaris tak
-   kelihatan karena bertepatan dengan opacity menuju 0, jadi aman dihapus demi performa. */
-@keyframes gerakKeAtas {
-    0% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 1;
-    }
-    100% {
-        transform: translateY(-1000px) rotate(720deg); /* Terbang ke atas sejauh 1000px sambil berputar */
-        opacity: 0;
-    }
+/* LEFT: Text */
+.hero-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: fadeInLeft 0.8s ease forwards;
+}
+
+@keyframes fadeInLeft {
+  from { opacity: 0; transform: translateX(-40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 216, 255, 0.1);
+  border: 1px solid rgba(0, 216, 255, 0.3);
+  border-radius: 50px;
+  padding: 6px 16px;
+  width: fit-content;
+  color: #00d8ff;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.hero-badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #00d8ff;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+.hero-title {
+  font-size: clamp(32px, 5vw, 64px);
+  font-weight: 900;
+  line-height: 1.1;
+  color: #ffffff;
+  letter-spacing: -1px;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.hero-title .highlight {
+  background: linear-gradient(135deg, #00d8ff, #0099cc, #00d8ff);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s linear infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+.hero-subtitle {
+  font-size: clamp(14px, 2vw, 18px);
+  color: #71717a;
+  margin: 0;
+  line-height: 1.6;
+  max-width: 420px;
+}
+
+.hero-subtitle span {
+  color: #00d8ff;
+  font-weight: 600;
+}
+
+.hero-divider {
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #00d8ff, transparent);
+  border-radius: 2px;
+}
+
+.hero-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.hero-tag {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 5px 12px;
+  font-size: 12px;
+  color: #a1a1aa;
+  font-weight: 500;
+}
+
+/* RIGHT: Profile Photo */
+.hero-profile {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeInRight 0.8s ease 0.3s both;
+}
+
+@keyframes fadeInRight {
+  from { opacity: 0; transform: translateX(40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.hero-profile-wrapper {
+  position: relative;
+  width: 280px;
+  height: 280px;
+}
+
+/* Rotating border ring */
+.hero-profile-ring {
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, #00d8ff, transparent 40%, #00d8ff 60%, transparent 80%, #00d8ff);
+  animation: spinRing 4s linear infinite;
+}
+
+@keyframes spinRing {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.hero-profile-ring-inner {
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  background: #020818;
+}
+
+.hero-profile-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  z-index: 2;
+  border: 3px solid rgba(0, 216, 255, 0.3);
+}
+
+/* Glow behind photo */
+.hero-profile-glow {
+  position: absolute;
+  inset: -20px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 216, 255, 0.15) 0%, transparent 70%);
+  z-index: 0;
+}
+
+/* Corner accent dots */
+.hero-profile-wrapper::before,
+.hero-profile-wrapper::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #00d8ff;
+  box-shadow: 0 0 10px #00d8ff;
+  z-index: 3;
+}
+.hero-profile-wrapper::before { top: 10px; right: 10px; }
+.hero-profile-wrapper::after  { bottom: 10px; left: 10px; animation: pulse 2s infinite 1s; }
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .hero-content {
+    flex-direction: column-reverse;
+    text-align: center;
+    padding: 100px 20px 40px;
+    gap: 40px;
+  }
+  .hero-text { align-items: center; }
+  .hero-subtitle { max-width: 100%; }
+  .hero-profile-wrapper { width: 200px; height: 200px; }
+  .cubes-fixed li:nth-child(6),
+  .cubes-fixed li:nth-child(7),
+  .cubes-fixed li:nth-child(8),
+  .cubes-fixed li:nth-child(9) { display: none !important; }
 }
 /* ==========================================================================
    3. KONFIGURASI NAVBAR UTAMA (BIRU NEON GLOW)

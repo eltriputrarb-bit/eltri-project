@@ -174,7 +174,7 @@ const styles = {
   loginWrap: { minHeight: '100vh', background: '#0a0a0a', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px', boxSizing: 'border-box' },
   loginBox: { background: '#1a1a2e', borderRadius: '16px', display: 'flex', flexDirection: 'column', gap: '14px', border: '1px solid rgba(0,216,255,0.2)', boxSizing: 'border-box' },
   loginTitle: { color: '#00d8ff', margin: 0, textAlign: 'center', fontSize: '20px' },
-  input: { padding: '12px 14px', borderRadius: '8px', border: '1px solid rgba(0,216,255,0.3)', background: 'rgba(255,255,255,0.05)', color: '#fff', fontSize: '16px', outline: 'none', width: '100%', boxSizing: 'border-box' },
+  input: { padding: '12px 14px', borderRadius: '8px', border: ' 1px solid rgba(0,216,255,0.3)', background: 'rgba(255,255,255,0.05)', color: '#fff', fontSize: '16px', outline: 'none', width: '100%', boxSizing: 'border-box' },
   btn: { padding: '12px', borderRadius: '8px', border: 'none', background: 'linear-gradient(135deg, #00d8ff, #0099cc)', color: '#000', fontWeight: '700', cursor: 'pointer', fontSize: '15px', width: '100%' },
   errorText: { color: '#ef4444', fontSize: '13px', textAlign: 'center', margin: 0 },
   wrap: { minHeight: '100vh', background: '#0a0a0a', maxWidth: '700px', margin: '0 auto', boxSizing: 'border-box' },

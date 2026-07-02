@@ -173,14 +173,59 @@ function EltriPutnzs() {
         {/* HALAMAN HOME */}
         <Route path="/" element={
           <>
-{/* HERO SECTION WITH BUILT-IN ANIMATION FIX */}
+{/* HERO SECTION */}
 <section className="hero hero-section">
   <ul className="cubes-fixed">
     <li></li><li></li><li></li><li></li><li></li>
     <li></li><li></li><li></li><li></li>
   </ul>
+
   <div className="hero-content">
-    <h1 className="hero-title">ELTRI PUTRA ROMBEBUA</h1>
+
+    {/* KIRI: Teks */}
+    <div className="hero-text">
+      <div className="hero-badge">
+        <span className="hero-badge-dot"></span>
+        ELTRI ATLAS
+      </div>
+
+      <h1 className="hero-title">
+        ELTRI PUTRA<br />
+        <span className="highlight">ROMBEBUA</span>
+      </h1>
+
+      <div className="hero-divider"></div>
+
+      <p className="hero-subtitle">
+        developer & photographer dari{' '}
+        <span>Makassar</span>
+      </p>
+
+      <div className="hero-tags">
+        <span className="hero-tag">⚡ React JS</span>
+        <span className="hero-tag">📸 Photography</span>
+        <span className="hero-tag">🚀 Node.js</span>
+      </div>
+    </div>
+
+    {/* KANAN: Foto Profil */}
+    <div className="hero-profile">
+      <div className="hero-profile-wrapper">
+        <div className="hero-profile-glow"></div>
+        <div className="hero-profile-ring">
+          <div className="hero-profile-ring-inner"></div>
+        </div>
+<video
+  src={`${process.env.PUBLIC_URL}/video/live.mp4`}
+  className="hero-profile-img"
+  autoPlay
+  muted
+  loop
+  playsInline
+/>
+      </div>
+    </div>
+
   </div>
 </section>
 <section className="social-footer">
