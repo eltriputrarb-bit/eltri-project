@@ -445,9 +445,16 @@ function EltriPutnzs() {
     </div>
 
     {/* BAGIAN KANAN: Foto Profil Bulat Elegan */}
-    <div className="footer-profile">
-      <img src="/images/katolik.jpg" alt="Eltri Profile" className="profile-img" />
-    </div>
+<div className="footer-profile">
+  <img 
+    src="/images/katolik.jpg" 
+    alt="Eltri Profile" 
+    className="profile-img" 
+    // --- FIX ANTI CURI GAMBAR FOOTER ---
+    onContextMenu={(e) => e.preventDefault()} // Mencegah long-press di HP & klik kanan di PC
+    draggable={false}                          // Mencegah gambar diseret
+  />
+</div>
 
   </div>
   
