@@ -48,7 +48,7 @@ useEffect(() => {
   };
 
   return (
-    <div className="profile-page">
+<div className="profile-page">
       {/* PARTIKEL ANIMASI KUBUS GAHAR */}
       <ul className="cubes-fixed">
         <li></li><li></li><li></li><li></li><li></li>
@@ -62,7 +62,13 @@ useEffect(() => {
             {/* SIDEBAR PROFILE */}
             <div className="side-bar rpg-profile-sidebar">
               <div className="photo-frame">
-                <img src="images/katolik.jpg" alt="Eltri Putra" />
+                <img 
+                  src="images/katolik.jpg" 
+                  alt="Eltri Putra" 
+                  // --- FIX ANTI CURI GAMBAR PROFIL ---
+                  onContextMenu={(e) => e.preventDefault()} 
+                  draggable={false} 
+                />
               </div>
 
               <div className="side-content">
@@ -96,7 +102,12 @@ useEffect(() => {
                 </div>
 
                 {/* ITEM 2: SMP */}
-                <div className="item education-item" style={{ '--edu-bg': "url('/images/Eltripro.jpg')" }}>
+                <div 
+                  className="item education-item" 
+                  style={{ '--edu-bg': "url('/images/Eltripro.jpg')" }}
+                  // --- ANTI CURI UNTUK DIV BACKGROUND (Mencegah Klik Kanan Pada Background Gambar) ---
+                  onContextMenu={(e) => e.preventDefault()}
+                >
                   <div className="item-title">
                     <strong>SMPLB/SMP Katolik Rajawali</strong>
 
@@ -116,7 +127,12 @@ useEffect(() => {
                 </div>
 
                 {/* ITEM 3: SD */}
-                <div className="item education-item" style={{ '--edu-bg': "url('/images/Eltripro.jpg')" }}>
+                <div 
+                  className="item education-item" 
+                  style={{ '--edu-bg': "url('/images/Eltripro.jpg')" }}
+                  // --- ANTI CURI UNTUK DIV BACKGROUND ---
+                  onContextMenu={(e) => e.preventDefault()}
+                >
                   <div className="item-title">
                     <strong>SDLB/SD ST. Joseph Katolik Rajawali</strong>
                     <a
