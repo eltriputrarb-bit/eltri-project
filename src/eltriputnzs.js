@@ -215,14 +215,17 @@ function EltriPutnzs() {
   <div className="hero-profile-ring">
     <div className="hero-profile-ring-inner"></div>
   </div>
-  <video
-    src={`${process.env.PUBLIC_URL}/video/live.mp4`}
-    className="hero-profile-img"
-    autoPlay
-    muted
-    loop
-    playsInline
-  />
+<video
+  src={`${process.env.PUBLIC_URL}/video/live.mp4`}
+  className="hero-profile-img"
+  autoPlay
+  muted
+  loop
+  playsInline
+  // --- TAMBAHKAN DUA BARIS DI BAWAH INI ---
+  onContextMenu={(e) => e.preventDefault()} // Mencegah long-press (tahan layar) di HP & klik kanan di PC
+  style={{ pointerEvents: 'none' }}        // Membuat video kebal dari sentuhan/klik jari
+/>
 </div>
     </div>
 
