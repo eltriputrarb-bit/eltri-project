@@ -4,12 +4,30 @@ import './gallery.css';
 // Ganti URL ini dengan nama kamu setelah deploy backend
 const BACKEND_URL = '';
 
+// Data statis dipindah keluar komponen supaya tidak jadi dependency useEffect
+// dan tidak dibuat ulang tiap kali komponen re-render
+const galleryItems = [
+  { id: 17, type: 'video', src: '/video/katolik.mp4', date: '23/06,juni,2026', desc: 'gereja katedral Makassar hati yesus yang mahakudus' },
+  { id: 16, type: 'video', src: '/video/jalan.mp4', date: '23/06,juni,2026', desc: 'jalan ke gereja' },
+  { id: 15, type: 'video', src: '/video/elin.mp4', date: '20/06,juni,2026', desc: 'servis honda' },
+  { id: 14, type: 'video', src: '/video/kotae.mp4', date: '19/06,juni,2026', desc: '⛅️' },
+  { id: 11, type: 'img', src: '/images/foto11.jpg', date: '10/06,juni,2026', desc: 'warkop gunung nona indah' },
+  { id: 12, type: 'video', src: '/video/Nostalgia.mp4', date: '09/06,juni,2026', desc: 'kid miss u' },
+  { id: 10, type: 'img', src: '/images/foto10.jpg', date: '08/06,juni,2026', desc: 'toraja' },
+  { id: 9, type: 'img', src: '/images/foto9.jpg', date: '07/06,juni,2026', desc: 'Lokasi: di makale, tana toraja' },
+  { id: 1, type: 'img', src: '/images/foto1.jpg', date: '15/05,mei,2026', desc: 'Lokasi: Makassar Sudut pandang sinematik jalanan kota' },
+  { id: 6, type: 'img', src: '/images/foto6.jpg', date: '18/4,APRIL,2026', desc: 'SAYA SENDIRI INI MAU MAKAN' },
+  { id: 4, type: 'img', src: '/images/foto4.jpg', date: '14/03,MARET,2026', desc: 'Parkiran Roda mobil' },
+  { id: 3, type: 'img', src: '/images/foto3.jpg', date: '07/12,DESEMBER,2018', desc: 'SAYA FOTO PAKAI CAMERA SMAKARA' },
+  { id: 2, type: 'img', src: '/images/RAJAWALI.jpg', date: '06/08,AGUSTUS,2015', desc: 'RAJAWALI ANAK KECIL' },
+];
+
 function Gallery() {
   const [currentPercent, setCurrentPercent] = useState(0);
   const [showLoader, setShowLoader] = useState(true);
   const [fadeLoader, setFadeLoader] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  
+
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMedia, setModalMedia] = useState({ type: '', src: '' });
   const [mediaViews, setMediaViews] = useState({});
@@ -17,42 +35,80 @@ function Gallery() {
   const videoRef = useRef(null);
   const itemsPerPage = 12;
 
-  const galleryItems = [
-    { id: 17, type: 'video', src: '/video/katolik.mp4', date: '23/06,juni,2026', desc: 'gereja katedral Makassar hati yesus yang mahakudus' },
-    { id: 16, type: 'video', src: '/video/jalan.mp4', date: '23/06,juni,2026', desc: 'jalan ke gereja' },
-    { id: 15, type: 'video', src: '/video/elin.mp4', date: '20/06,juni,2026', desc: 'servis honda' },
-    { id: 14, type: 'video', src: '/video/kotae.mp4', date: '19/06,juni,2026', desc: '⛅️' },    
-    { id: 11, type: 'img', src: '/images/foto11.jpg', date: '10/06,juni,2026', desc: 'warkop gunung nona indah' },
-    { id: 12, type: 'video', src: '/video/Nostalgia.mp4', date: '09/06,juni,2026', desc: 'kid miss u' },
-    { id: 10, type: 'img', src: '/images/foto10.jpg', date: '08/06,juni,2026', desc: 'toraja' },
-    { id: 9, type: 'img', src: '/images/foto9.jpg', date: '07/06,juni,2026', desc: 'Lokasi: di makale, tana toraja' },
-    { id: 1, type: 'img', src: '/images/foto1.jpg', date: '15/05,mei,2026', desc: 'Lokasi: Makassar Sudut pandang sinematik jalanan kota' },
-    { id: 6, type: 'img', src: '/images/foto6.jpg', date: '18/4,APRIL,2026', desc: 'SAYA SENDIRI INI MAU MAKAN' },
-    { id: 4, type: 'img', src: '/images/foto4.jpg', date: '14/03,MARET,2026', desc: 'Parkiran Roda mobil' },
-    { id: 3, type: 'img', src: '/images/foto3.jpg', date: '07/12,DESEMBER,2018', desc: 'SAYA FOTO PAKAI CAMERA SMAKARA' },
-    { id: 2, type: 'img', src: '/images/RAJAWALI.jpg', date: '06/08,AGUSTUS,2015', desc: 'RAJAWALI ANAK KECIL' },
-  ];
-
-  // Loader
+  // Loader - REAL progress dari network (fetch views + preload gambar/video)
   useEffect(() => {
     document.body.classList.add('no-scroll');
-    const intervalWaktu = 100;
-    const timer = setInterval(() => {
-      setCurrentPercent((prev) => {
-        if (prev >= 100) {
-          clearInterval(timer);
-          setTimeout(() => {
-            setFadeLoader(true);
-            document.body.classList.remove('no-scroll');
-            setTimeout(() => setShowLoader(false), 600);
-          }, 200);
-          return 100;
-        }
-        return prev + 1;
+    let isMounted = true;
+
+    const finishLoading = () => {
+      if (!isMounted) return;
+      setCurrentPercent(100);
+      setTimeout(() => {
+        setFadeLoader(true);
+        document.body.classList.remove('no-scroll');
+        setTimeout(() => setShowLoader(false), 600);
+      }, 200);
+    };
+
+    async function loadEverything() {
+      const tasks = [];
+
+      // 1. Fetch data views
+      const viewsTask = fetch(`${BACKEND_URL}/api/views`)
+        .then(res => res.json())
+        .then(data => { if (isMounted) setMediaViews(data); })
+        .catch(err => console.error('Gagal fetch views:', err));
+      tasks.push(viewsTask);
+
+      // 2. Preload semua gambar
+      const imageTasks = galleryItems
+        .filter(item => item.type === 'img')
+        .map(item => new Promise((resolve) => {
+          const img = new Image();
+          img.src = `${process.env.PUBLIC_URL}${item.src}`;
+          img.onload = resolve;
+          img.onerror = resolve;
+        }));
+      tasks.push(...imageTasks);
+
+      // 3. Preload metadata video
+      const videoTasks = galleryItems
+        .filter(item => item.type === 'video')
+        .map(item => new Promise((resolve) => {
+          const video = document.createElement('video');
+          video.src = `${process.env.PUBLIC_URL}${item.src}`;
+          video.preload = 'metadata';
+          video.onloadedmetadata = resolve;
+          video.onerror = resolve;
+        }));
+      tasks.push(...videoTasks);
+
+      const total = tasks.length || 1;
+      let completed = 0;
+
+      tasks.forEach(task => {
+        Promise.resolve(task).then(() => {
+          completed++;
+          if (isMounted) {
+            setCurrentPercent(Math.round((completed / total) * 100));
+          }
+        });
       });
-    }, intervalWaktu);
+
+      await Promise.all(tasks);
+      finishLoading();
+    }
+
+    loadEverything();
+
+    // Safety net: kalau network lambat/hang, loader tetap ketutup max 10 detik
+    const safetyTimeout = setTimeout(() => {
+      if (isMounted) finishLoading();
+    }, 10000);
+
     return () => {
-      clearInterval(timer);
+      isMounted = false;
+      clearTimeout(safetyTimeout);
       document.body.classList.remove('no-scroll');
     };
   }, []);
@@ -68,14 +124,6 @@ function Gallery() {
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Fetch semua views saat halaman load
-  useEffect(() => {
-    fetch(`${BACKEND_URL}/api/views`)
-      .then(res => res.json())
-      .then(data => setMediaViews(data))
-      .catch(err => console.error('Gagal fetch views:', err));
   }, []);
 
   // Pagination
@@ -201,14 +249,14 @@ function Gallery() {
         <div className="modal-lightbox" style={{ display: 'flex' }} onClick={closeModal}>
           <span className="close-btn" onClick={(e) => { e.stopPropagation(); closeModal(); }}>&times;</span>
           {modalMedia.type === 'img' ? (
-            <img 
-              className="modal-content" 
-              src={modalMedia.src} 
-              alt="Lightbox Zoom" 
+            <img
+              className="modal-content"
+              src={modalMedia.src}
+              alt="Lightbox Zoom"
               // --- FIX MODAL GAMBAR ---
               onContextMenu={(e) => e.preventDefault()}
               draggable={false}
-              onClick={(e) => e.stopPropagation()} 
+              onClick={(e) => e.stopPropagation()}
             />
           ) : (
             <video
@@ -221,7 +269,7 @@ function Gallery() {
               onClick={(e) => e.stopPropagation()}
             ></video>
           )}
-        </div>
+        </div>  
       )}
     </div>
   );
