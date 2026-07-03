@@ -1645,3 +1645,17 @@ body {
   -webkit-touch-callout: none !important; /* Mematikan menu tahan-layar di iOS */
   user-select: none !important;           /* Mematikan seleksi di Android */
 }
+
+/* Trik menyembunyikan draggable & pointer-events dari HTML */
+.secure-media {
+  /* Menggantikan style={{ pointerEvents: 'none' }} */
+  pointer-events: none !important; 
+
+  /* Cara standar mengunci media agar tidak bisa diseleksi atau digerakkan */
+  -webkit-touch-callout: none !important;
+  -webkit-user-select: none !important;
+  -khtml-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}

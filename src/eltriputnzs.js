@@ -13,6 +13,7 @@ const AdminViews = lazy(() => import('./AdminViews'));
 function EltriPutnzs() {
 
   useEffect(() => {
+    
     // 1. Logika Jam Digital Dunia (World Clock)
     const updateWorldClocks = () => {
       const formatOptions = (timeZone) => {
@@ -217,15 +218,12 @@ function EltriPutnzs() {
   </div>
 <video
   src={`${process.env.PUBLIC_URL}/video/live.mp4`}
-  className="hero-profile-img"
+  className="hero-profile-img secure-media" // Tambahkan class secure-media
   autoPlay
   muted
   loop
   playsInline
-  // --- FIX ANTI CURI VIDEO HERO ---
-  onContextMenu={(e) => e.preventDefault()} // Mencegah long-press (tahan layar) di HP & klik kanan di PC
-  draggable={false}                         // Mencegah video ditarik/diseret
-  style={{ pointerEvents: 'none' }}         // Membuat video kebal dari sentuhan/klik jari
+  onContextMenu={(e) => e.preventDefault()} // Ini wajib tetap ada di React
 />
 </div>
     </div>
