@@ -222,9 +222,10 @@ function EltriPutnzs() {
   muted
   loop
   playsInline
-  // --- TAMBAHKAN DUA BARIS DI BAWAH INI ---
+  // --- FIX ANTI CURI VIDEO HERO ---
   onContextMenu={(e) => e.preventDefault()} // Mencegah long-press (tahan layar) di HP & klik kanan di PC
-  style={{ pointerEvents: 'none' }}        // Membuat video kebal dari sentuhan/klik jari
+  draggable={false}                         // Mencegah video ditarik/diseret
+  style={{ pointerEvents: 'none' }}         // Membuat video kebal dari sentuhan/klik jari
 />
 </div>
     </div>
