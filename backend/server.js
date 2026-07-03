@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const { MongoClient } = require('mongodb');
@@ -5,7 +7,13 @@ const { MongoClient } = require('mongodb');
 const app = express();
 
 const PORT = process.env.PORT || 5000;
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://eltriputrarb_db_user:eltri1234@ac-5mmmxdx-shard-00-00.9dejjvu.mongodb.net:27017,ac-5mmmxdx-shard-00-01.9dejjvu.mongodb.net:27017,ac-5mmmxdx-shard-00-02.9dejjvu.mongodb.net:27017/?ssl=true&replicaSet=atlas-nsfg52-shard-0&authSource=admin&appName=eltri'
+const MONGO_URI = process.env.MONGO_URI;
+
+if (!MONGO_URI) {
+  console.error('❌ MONGO_URI belum di-set di environment variables!');
+  process.exit(1);
+}
+
 let db;
 
 // Connect ke MongoDB
@@ -51,30 +59,51 @@ app.use(cors({
 
 app.use(express.json());
 
+// Middleware kecil: pastikan db sudah siap sebelum handle request
+app.use((req, res, next) => {
+  if (!db) return res.status(503).json({ error: 'Database belum siap, coba lagi sebentar' });
+  next();
+});
+
 // GET /api/views — ambil semua views
 app.get('/api/views', async (req, res) => {
-  const all = await db.collection('views').find().toArray();
-  const result = {};
-  all.forEach(item => result[item.id] = item.views);
-  res.json(result);
+  try {
+    const all = await db.collection('views').find().toArray();
+    const result = {};
+    all.forEach(item => result[item.id] = item.views);
+    res.json(result);
+  } catch (err) {
+    console.error('❌ Error GET /api/views:', err);
+    res.status(500).json({ error: 'Gagal mengambil data views' });
+  }
 });
 
 // GET /api/views/:id — ambil views 1 item
 app.get('/api/views/:id', async (req, res) => {
-  const id = req.params.id;
-  const item = await db.collection('views').findOne({ id });
-  res.json({ id, views: item ? item.views : 0 });
+  try {
+    const id = req.params.id;
+    const item = await db.collection('views').findOne({ id });
+    res.json({ id, views: item ? item.views : 0 });
+  } catch (err) {
+    console.error('❌ Error GET /api/views/:id:', err);
+    res.status(500).json({ error: 'Gagal mengambil data views' });
+  }
 });
 
 // POST /api/views/:id — tambah 1 view
 app.post('/api/views/:id', async (req, res) => {
-  const id = req.params.id;
-  const result = await db.collection('views').findOneAndUpdate(
-    { id },
-    { $inc: { views: 1 } },
-    { upsert: true, returnDocument: 'after' }
-  );
-  res.json({ id, views: result.views });
+  try {
+    const id = req.params.id;
+    const result = await db.collection('views').findOneAndUpdate(
+      { id },
+      { $inc: { views: 1 } },
+      { upsert: true, returnDocument: 'after' }
+    );
+    res.json({ id, views: result.views });
+  } catch (err) {
+    console.error('❌ Error POST /api/views/:id:', err);
+    res.status(500).json({ error: 'Gagal update views' });
+  }
 });
 
 app.listen(PORT, () => {
