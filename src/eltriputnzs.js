@@ -446,7 +446,7 @@ function EltriPutnzs() {
     {/* BAGIAN KANAN: Foto Profil Bulat Elegan */}
 <div className="footer-profile">
   <img 
-    src="/images/katolik.jpg" 
+    src="/images/successplantbaru.jpg" 
     alt="Eltri Profile" 
     className="profile-img" 
     // --- FIX ANTI CURI GAMBAR FOOTER ---
