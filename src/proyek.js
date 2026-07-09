@@ -63,7 +63,7 @@ useEffect(() => {
             <div className="side-bar rpg-profile-sidebar">
               <div className="photo-frame">
                 <img 
-                  src="images/katolik.jpg" 
+                  src="images/successplantbaru.jpg" 
                   alt="Eltri Putra" 
                   // --- FIX ANTI CURI GAMBAR PROFIL ---
                   onContextMenu={(e) => e.preventDefault()} 
