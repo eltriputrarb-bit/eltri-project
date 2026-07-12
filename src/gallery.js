@@ -18,8 +18,6 @@ const galleryItems = [
   { id: 1, type: 'img', src: '/images/foto1.jpg', date: '15/05,mei,2026', desc: 'Lokasi: Makassar Sudut pandang sinematik jalanan kota' },
   { id: 6, type: 'img', src: '/images/foto6.jpg', date: '18/4,APRIL,2026', desc: 'SAYA SENDIRI INI MAU MAKAN' },
   { id: 4, type: 'img', src: '/images/foto4.jpg', date: '14/03,MARET,2026', desc: 'Parkiran Roda mobil' },
-  { id: 3, type: 'img', src: '/images/foto3.jpg', date: '07/12,DESEMBER,2018', desc: 'SAYA FOTO PAKAI CAMERA SMAKARA' },
-  { id: 2, type: 'img', src: '/images/RAJAWALI.jpg', date: '06/08,AGUSTUS,2015', desc: 'RAJAWALI ANAK KECIL' },
 ];
 
 function Gallery() {
