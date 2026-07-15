@@ -1,4 +1,4 @@
-import React, { useEffect, lazy, } from 'react';
+import React, { useEffect, useState, lazy, } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import './App.module.css';
 import Gallery from './gallery'; 
@@ -6,11 +6,23 @@ import PublicProfile from './proyek';
 import ErrorPage from './ErrorPage';
 import MessageForm from './MessageForm';
 import './MessageForm.css';
+import GundamLoader from './GundamLoader';
 const AdminMessages = lazy(() => import('./AdminMessages'));
 const AdminViews = lazy(() => import('./AdminViews'));
 
 
 function EltriPutnzs() {
+
+  // Boot screen: nyala pertama kali situs dibuka, hilang begitu
+  // semua resource halaman (gambar/video/font/css) selesai kebaca browser.
+  const [booting, setBooting] = useState(true);
+  const [loaderMounted, setLoaderMounted] = useState(true);
+
+  const handleBootDone = () => {
+    setBooting(false);
+    // kasih jeda dikit buat animasi fade-out sebelum loader dilepas dari DOM
+    setTimeout(() => setLoaderMounted(false), 500);
+  };
 
   useEffect(() => {
     
@@ -113,7 +125,11 @@ function EltriPutnzs() {
   }, []);
 
   return (
-    <div className="EltriPutnzs">
+    <>
+      {loaderMounted && (
+        <GundamLoader mode="page" fadingOut={!booting} onDone={handleBootDone} />
+      )}
+      <div className="EltriPutnzs" aria-hidden={booting} style={{ visibility: booting ? 'hidden' : 'visible' }}>
 {/* NAVBAR */}
 {/* NAVBAR */}
 <nav className="container-navbar">
@@ -475,7 +491,8 @@ function EltriPutnzs() {
 <Route path="/x7k9z-vault-views" element={<AdminViews />} />
 
       </Routes>
-    </div>
+      </div>
+    </>
   );
 }
 
