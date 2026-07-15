@@ -41,18 +41,6 @@ function sanitize(str) {
     .slice(0, 500);
 }
 
-// Verify hCaptcha token
-async function verifyCaptcha(token) {
-  const secret = process.env.HCAPTCHA_SECRET;
-  const res = await fetch('https://api.hcaptcha.com/siteverify', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: `secret=${secret}&response=${token}`,
-  });
-  const data = await res.json();
-  return data.success;
-}
-
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE');
@@ -64,23 +52,11 @@ module.exports = async function handler(req, res) {
 
   // POST - simpan pesan baru
   if (req.method === 'POST') {
-    // Cek rate limit
     const ip = req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown';
     if (!checkRateLimit(ip)) {
       return res.status(429).json({ error: 'Terlalu banyak request! Coba lagi dalam 1 menit.' });
     }
 
-    // Verifikasi hCaptcha
-    const { captchaToken } = req.body;
-    if (!captchaToken) {
-      return res.status(400).json({ error: 'CAPTCHA wajib diselesaikan!' });
-    }
-    const captchaValid = await verifyCaptcha(captchaToken);
-    if (!captchaValid) {
-      return res.status(400).json({ error: 'CAPTCHA tidak valid!' });
-    }
-
-    // Sanitize input
     const name = sanitize(req.body?.name || '');
     const message = sanitize(req.body?.message || '');
 
