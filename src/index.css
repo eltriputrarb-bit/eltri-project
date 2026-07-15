@@ -1,0 +1,1661 @@
+/* ==========================================================================
+   0. ROOT VARIABLES (DESIGN TOKENS — disalin dari eltriKatolik.css
+      supaya index.css mandiri, gak perlu cek file lain buat tau variable apa aja yang ada)
+   ========================================================================== */
+:root {
+        /* Brand Colors */
+        --color-cyan: #00d8ff;
+        --color-cyan-soft: #00bcd4;
+        --color-blue: #0088cc;
+        --color-blue-short: #08c;
+        --color-blue-deep: #020024;
+        --color-blue-mid: #090979;
+
+        /* Neutrals */
+        --color-white: #fff;
+        --color-black: #0c0c0c;
+        --color-bg-dark: #040814;
+        --color-bg-darker: #03001e;
+        --color-bg-panel: #0a0f1a;
+
+        /* Accent Colors */
+        --color-gold: #fa0;
+        --color-gold-warm: #ff8c00;
+        --color-green: #0f8;
+        --color-red: #ff2a4b;
+
+        /* Text */
+        --text-muted: #aaa;
+        --text-faint: #666;
+        --text-soft: #ccc;
+
+        /* Shadows / Glows */
+        --glow-cyan: 0 0 15px rgba(0, 188, 212, 0.4);
+        --glow-blue: 0 0 12px rgba(0, 136, 204, 0.85);
+        --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.5);
+        --shadow-deep: 0 15px 35px rgba(0, 0, 0, 0.5);
+
+        /* Fonts */
+        --font-main: 'Montserrat', sans-serif;
+        --font-mono: 'Share Tech Mono', monospace;
+        --font-display: 'Playfair Display', Georgia, serif;
+}
+
+/* ==========================================================================
+   1. RESET, GENERAL STYLE, & PAGE TRANSITIONS (VIEW TRANSITIONS API)
+   ========================================================================== */
+* {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+}
+
+/* --- FITUR ANIMASI TRANSISI ANTAR HALAMAN (MURNI CSS BROWSER) --- */
+@view-transition {
+        navigation: auto; /* Mengaktifkan animasi otomatis saat klik menu pindah halaman */
+}
+
+/* Animasi halaman lama saat mulai menghilang */
+::view-transition-old(root) {
+        animation: fade-out 0.3s cubic-bezier(0.4, 0, 0.2, 1) both,
+                scale-down 0.3s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+/* Animasi halaman baru saat meluncur masuk */
+::view-transition-new(root) {
+        animation: fade-in 0.4s cubic-bezier(0.4, 0, 0.2, 1) both,
+                slide-up 0.4s cubic-bezier(0.1, 0.9, 0.2, 1) both;
+}
+
+/* Keyframes Pergerakan Animasi */
+@keyframes fade-out {
+        from { opacity: 1; }
+        to { opacity: 0; }
+}
+@keyframes fade-in {
+        from { opacity: 0; }
+        to { opacity: 1; }
+}
+@keyframes scale-down {
+        from { transform: scale(1); }
+        to { transform: scale(0.98); }
+}
+@keyframes slide-up {
+        from { transform: translateY(30px); }
+        to { transform: translateY(0); }
+}
+
+/* OPTIMASI FPS MOBILE: di HP low-end, animasi page-transition full (scale+slide+fade
+   yang jalan barengan dengan semua kubus & blur di halaman baru/lama) bisa bikin
+   "freeze" sesaat tiap pindah menu. Kita sederhanakan jadi fade doang di mobile,
+   dan hormati prefers-reduced-motion kalau user mengaktifkannya di sistem HP-nya. */
+@media screen and (max-width: 768px) {
+        ::view-transition-old(root) {
+                animation: fade-out 0.2s ease both;
+        }
+        ::view-transition-new(root) {
+                animation: fade-in 0.25s ease both;
+        }
+}
+
+@media (prefers-reduced-motion: reduce) {
+        ::view-transition-old(root),
+        ::view-transition-new(root) {
+                animation: none !important;
+        }
+}
+
+body {
+        background-color: var(--color-black) !important; /* Dasar halaman dikunci hitam gahar murni */
+        background: var(--color-black) !important;
+        font-family: var(--font-main);
+        color: var(--color-white) !important; /* FIX: Dikembangkan ke putih agar tulisan terbaca gahar */
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        min-height: 100vh;
+        overflow-x: hidden; /* Mencegah layar geser kanan-kiri */
+}
+
+/* ==========================================================================
+   2. HERO SECTION & BACKGROUND LAYER (DEEP NEON GRADIENT UPDATE)
+   ========================================================================== */
+.hero {
+    position: relative;     /* Wajib! Sebagai jangkar supaya kubus tidak melayang keluar area hero */
+    min-height: 100vh;      /* Memastikan tinggi hero memenuhi 1 layar penuh */
+    width: 100%;
+    overflow: hidden;       /* Menyembunyikan kubus saat dia terbang melewati batas atas layar */
+    background: linear-gradient(135deg, var(--color-blue-deep) 0%, var(--color-blue-mid) 35%, var(--color-cyan) 100%); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    contain: layout paint;  /* OPTIMASI FPS: isolasi repaint hero biar gak nular ke section lain */
+}
+
+/* --- FIX UKURAN TEKS: RESPONSIF & GAGAH DI SEMUA LAYAR --- */
+.hero-content {
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 20px;
+    text-align: center;
+    z-index: 5;
+    position: relative;
+    box-sizing: border-box;
+}
+
+/* Diubah selektornya ke .hero-title biar singkron dengan tag JSX-mu */
+.hero-title {
+    font-family: var(--font-main) !important;
+    font-weight: 900 !important;
+    color: var(--color-white) !important;
+    text-shadow: 0 0 30px rgba(0, 136, 204, 0.85),
+                 0 4px 15px rgba(0, 0, 0, 0.9) !important;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    
+    /* DESKTOP: Clamp otomatis nge-scale pas dari resolusi layar monitor gede sampai laptop */
+    font-size: clamp(32px, 5vw, 56px) !important;
+    line-height: 1.2;
+    
+    /* Diubah dari nowrap ke normal supaya di HP layar kecil dia otomatis patah baris dengan rapi, anti-bocor */
+    white-space: normal; 
+    word-wrap: break-word;
+}
+
+/* ==========================================================================
+   OPTIMASI & FIX SIZING UNTUK SCREEN IPHONE & ANDROID (MOBILE)
+   ========================================================================== */
+@media screen and (max-width: 768px) {
+    .hero-title {
+        /* Ukuran font disesuaikan khusus HP (Min: 22px, Max: 32px) */
+        font-size: clamp(22px, 6vw, 32px) !important;
+        letter-spacing: 2px;
+        line-height: 1.3; /* Memberi nafas antar baris saat teks patah jadi 2 baris di HP */
+        
+        /* OPTIMASI FPS MOBILE: Meremajakan beban GPU saat scroll/transisi */
+        text-shadow: 0 0 12px rgba(0, 136, 204, 0.85),
+                     0 2px 6px rgba(0, 0, 0, 0.9) !important;
+    }
+}
+
+/* Khusus iPhone SE / Android Layar Sangat Kecil (< 380px) */
+@media screen and (max-width: 380px) {
+    .hero-title {
+        font-size: 20px !important;
+        letter-spacing: 1px;
+    }
+    .hero-content {
+        padding: 0 15px;
+    }
+}
+
+/* =============================================
+   HERO SECTION - GAMING NEON STYLE
+   ============================================= */
+
+.hero-section {
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #020818 0%, #0a1628 50%, #020c1b 100%);
+}
+
+/* Cubes tetap sama seperti sebelumnya */
+.cubes-fixed {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  overflow: hidden; z-index: 1; list-style: none; padding: 0; margin: 0;
+  contain: strict;
+  isolation: isolate;
+}
+.cubes-fixed li {
+  position: absolute; display: block; list-style: none; width: 25px; height: 25px;
+  background: rgba(0, 216, 255, 0.08);
+  border: 1px solid rgba(0, 216, 255, 0.3);
+  box-shadow: 0 0 10px rgba(0, 216, 255, 0.15);
+  bottom: -150px;
+  animation: flyUpwards 20s linear infinite; border-radius: 4px;
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+.cubes-fixed li:nth-child(1) { left: 10%; width: 80px; height: 80px; animation-delay: 0s; animation-duration: 18s; }
+.cubes-fixed li:nth-child(2) { left: 25%; width: 35px; height: 35px; animation-delay: 2s; animation-duration: 12s; }
+.cubes-fixed li:nth-child(3) { left: 40%; width: 65px; height: 65px; animation-delay: 4s; animation-duration: 22s; }
+.cubes-fixed li:nth-child(4) { left: 55%; width: 20px; height: 20px; animation-delay: 1s; animation-duration: 15s; }
+.cubes-fixed li:nth-child(5) { left: 70%; width: 90px; height: 90px; animation-delay: 5s; animation-duration: 25s; }
+.cubes-fixed li:nth-child(6) { left: 85%; width: 40px; height: 40px; animation-delay: 3s; animation-duration: 14s; }
+.cubes-fixed li:nth-child(7) { left: 18%; width: 50px; height: 50px; animation-delay: 7s; animation-duration: 16s; }
+.cubes-fixed li:nth-child(8) { left: 48%; width: 30px; height: 30px; animation-delay: 9s; animation-duration: 11s; }
+.cubes-fixed li:nth-child(9) { left: 78%; width: 75px; height: 75px; animation-delay: 2s; animation-duration: 19s; }
+
+@keyframes flyUpwards {
+  0%   { transform: translateY(0) rotate(0deg) translateZ(0); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translateY(-120vh) rotate(360deg) translateZ(0); opacity: 0; }
+}
+
+/* Hero Content Layout */
+.hero-content {
+  z-index: 5;
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 60px;
+}
+
+/* LEFT: Text */
+.hero-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: fadeInLeft 0.8s ease forwards;
+}
+
+@keyframes fadeInLeft {
+  from { opacity: 0; transform: translateX(-40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 216, 255, 0.1);
+  border: 1px solid rgba(0, 216, 255, 0.3);
+  border-radius: 50px;
+  padding: 6px 16px;
+  width: fit-content;
+  color: #00d8ff;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.hero-badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #00d8ff;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+.hero-title {
+  font-size: clamp(32px, 5vw, 64px);
+  font-weight: 900;
+  line-height: 1.1;
+  color: #ffffff;
+  letter-spacing: -1px;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.hero-title .highlight {
+  background: linear-gradient(135deg, #00d8ff, #0099cc, #00d8ff);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s linear infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+.hero-subtitle {
+  font-size: clamp(14px, 2vw, 18px);
+  color: #71717a;
+  margin: 0;
+  line-height: 1.6;
+  max-width: 420px;
+}
+
+.hero-subtitle span {
+  color: #00d8ff;
+  font-weight: 600;
+}
+
+.hero-divider {
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #00d8ff, transparent);
+  border-radius: 2px;
+}
+
+.hero-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.hero-tag {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 5px 12px;
+  font-size: 12px;
+  color: #a1a1aa;
+  font-weight: 500;
+}
+
+/* RIGHT: Profile Photo */
+.hero-profile {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeInRight 0.8s ease 0.3s both;
+}
+
+@keyframes fadeInRight {
+  from { opacity: 0; transform: translateX(40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.hero-profile-wrapper {
+  position: relative;
+  width: 280px;
+  height: 280px;
+}
+
+/* Rotating border ring */
+.hero-profile-ring {
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, #00d8ff, transparent 40%, #00d8ff 60%, transparent 80%, #00d8ff);
+  animation: spinRing 4s linear infinite;
+}
+
+@keyframes spinRing {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.hero-profile-ring-inner {
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  background: #020818;
+}
+
+.hero-profile-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  z-index: 2;
+  border: 3px solid rgba(0, 216, 255, 0.3);
+}
+
+/* Glow behind photo */
+.hero-profile-glow {
+  position: absolute;
+  inset: -20px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 216, 255, 0.15) 0%, transparent 70%);
+  z-index: 0;
+}
+
+/* Corner accent dots */
+.hero-profile-wrapper::before,
+.hero-profile-wrapper::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #00d8ff;
+  box-shadow: 0 0 10px #00d8ff;
+  z-index: 3;
+}
+.hero-profile-wrapper::before { top: 10px; right: 10px; }
+.hero-profile-wrapper::after  { bottom: 10px; left: 10px; animation: pulse 2s infinite 1s; }
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .hero-content {
+    flex-direction: column-reverse;
+    text-align: center;
+    padding: 100px 20px 40px;
+    gap: 40px;
+  }
+  .hero-text { align-items: center; }
+  .hero-subtitle { max-width: 100%; }
+  .hero-profile-wrapper { width: 200px; height: 200px; }
+  .cubes-fixed li:nth-child(6),
+  .cubes-fixed li:nth-child(7),
+  .cubes-fixed li:nth-child(8),
+  .cubes-fixed li:nth-child(9) { display: none !important; }
+}
+/* ==========================================================================
+   3. KONFIGURASI NAVBAR UTAMA (BIRU NEON GLOW)
+   ========================================================================== */
+.container-navbar {
+        background: rgba(10, 10, 10, 0.75) !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        padding: 0 5% !important;
+        height: 80px !important;
+        position: fixed !important;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 100000 !important;
+        border-bottom: 1px solid rgba(0, 136, 204, 0.1) !important;
+        /* OPTIMASI FPS: "all" diganti properti spesifik. transition:all bikin browser
+           harus cek SEMUA properti CSS tiap frame buat tau apa yang berubah, padahal
+           cuma background/height/border/shadow yang animasi. Ini elemen FIXED yang
+           kena repaint terus tiap scroll, jadi perubahan ini paling kerasa efeknya. */
+        transition: background 0.4s ease-in-out, height 0.4s ease-in-out,
+                border-bottom-color 0.4s ease-in-out, box-shadow 0.4s ease-in-out !important;
+}
+
+.container-navbar.navbar-scrolled {
+        background: rgba(10, 10, 10, 0.98) !important;
+        height: 70px !important;
+        border-bottom: 1px solid rgba(0, 136, 204, 0.6) !important;
+        box-shadow: 0 5px 25px rgba(0, 136, 204, 0.3) !important;
+}
+
+.nav-left {
+        display: flex !important;
+        align-items: center !important;
+        z-index: 100002 !important;
+}
+
+.logo-link {
+        display: flex !important;
+        align-items: center !important;
+        gap: 12px !important;
+        text-decoration: none !important;
+}
+
+.logo {
+        width: 45px !important;
+        height: 45px !important;
+        object-fit: contain !important;
+}
+
+.brand-text {
+        color: var(--color-white) !important;
+        font-weight: 900 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 1.5px !important;
+}
+
+.nav-right {
+        display: flex !important;
+        align-items: center !important;
+}
+
+/* ==========================================================================
+   4. TOMBOL NAVIGASI BIRU NEON GAHAR (DESKTOP & MOBILE LIST)
+   ========================================================================== */
+.ul-navbar li a,
+.ul-navbar .btn-gahar,
+.menu-item-btn.btn-gahar,
+.ul-navbar li a.btn-gahar {
+        font-family: var(--font-main) !important;
+        font-weight: 800 !important;
+        font-size: 13px !important;
+        letter-spacing: 1.5px !important;
+        text-transform: uppercase !important;
+        color: var(--color-white) !important;
+        background: rgba(15, 15, 15, 0.7) !important;
+        border: 2px solid var(--color-blue) !important;
+        border-radius: 50px !important;
+        padding: 12px 24px !important;
+        text-decoration: none !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 12px !important;
+        white-space: nowrap !important;
+        width: auto !important;
+        text-shadow: 0 0 5px rgba(0, 136, 204, 0.6) !important;
+        box-shadow: 0 0 12px rgba(0, 136, 204, 0.3) !important;
+        /* OPTIMASI FPS: "all" -> properti spesifik (cuma background/color/shadow/transform
+           yang benar2 berubah saat hover). Tombol ini banyak & sering disentuh di mobile. */
+        transition: background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.ul-navbar li a:hover,
+.ul-navbar .btn-gahar:hover,
+.menu-item-btn.btn-gahar:hover,
+.ul-navbar li a.btn-gahar:hover {
+        background: var(--color-blue) !important;
+        background-color: var(--color-blue) !important;
+        color: var(--color-white) !important;
+        box-shadow: 0 0 25px rgba(0, 136, 204, 0.9) !important;
+        transform: translateY(-2px) !important;
+}
+
+/* ==========================================================================
+   5. DESKTOP & MOBILE BREAKPOINT (RESPONSIVE & HAMBURGER FIX)
+   ========================================================================== */
+@media screen and (min-width: 769px) {
+        .mobile-only,
+        .menu-toggle {
+                display: none !important;
+        }
+        .ul-navbar {
+                display: flex !important;
+                list-style: none !important;
+                gap: 20px !important;
+        }
+}
+
+@media screen and (max-width: 768px) {
+        .menu-toggle {
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: center !important;
+                align-items: center !important;
+                gap: 6px !important;
+                cursor: pointer !important;
+                z-index: 100005 !important;
+                padding: 10px !important;
+                background: transparent !important;
+                border: none !important;
+                width: 45px !important;
+                height: 45px !important;
+                position: relative !important;
+        }
+
+        .menu-toggle span {
+                display: block !important;
+                width: 28px !important;
+                height: 3px !important;
+                background-color: var(--color-blue) !important;
+                border-radius: 2px !important;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                box-shadow: 0 0 8px rgba(0, 136, 204, 0.7) !important;
+        }
+
+        .menu-toggle.is-active span {
+                background-color: var(--color-white) !important;
+                background: var(--color-white) !important;
+                box-shadow: 0 0 10px rgba(255, 255, 255, 0.9) !important;
+        }
+
+        .menu-toggle.is-active span:nth-child(1) { transform: translateY(9px) rotate(45deg) !important; }
+        .menu-toggle.is-active span:nth-child(2) { opacity: 0 !important; transform: scale(0) !important; }
+        .menu-toggle.is-active span:nth-child(3) { transform: translateY(-9px) rotate(-45deg) !important; }
+
+        .ul-navbar {
+                position: fixed !important;
+                top: 0 !important;
+                right: -100% !important;
+                width: 290px !important;
+                height: 100vh !important;
+                background: rgba(15, 15, 15, 0.98) !important;
+                display: flex !important;
+                flex-direction: column !important;
+                padding-top: 130px !important;
+                align-items: center !important;
+                gap: 25px !important;
+                transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                border-top-left-radius: 30px !important;
+                border-left: 1px solid rgba(0, 136, 204, 0.2) !important;
+                list-style: none !important;
+                z-index: 100001 !important;
+                box-shadow: -10px 0 30px rgba(0, 0, 0, 0.8) !important;
+                will-change: right; /* OPTIMASI FPS: drawer mobile sering dibuka-tutup */
+        }
+
+        .ul-navbar.active {
+                right: 0 !important;
+        }
+
+        .ul-navbar li {
+                width: 100% !important;
+                display: flex !important;
+                justify-content: center !important;
+                padding: 0 25px !important;
+        }
+
+        .ul-navbar li a,
+        .ul-navbar .btn-gahar,
+        .ul-navbar li a.btn-gahar {
+                width: 100% !important;
+                justify-content: flex-start !important;
+                padding: 14px 20px !important;
+                font-size: 14px !important;
+        }
+}
+
+/* ==========================================================================
+   7. WORLD CLOCK SYSTEM (WITH INTEGRATED ANIMATED BACKGROUND)
+   ========================================================================== */
+.world-clock-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        padding: 25px 30px;
+        flex-wrap: nowrap;
+        
+        /* 
+           🔥 FIX BACKGROUND TOTAL:
+           Ujung kanan kita paksa menggelap pekat (#050522) agar warna biru bodi utama 
+           tidak bocor menembus ke dalam kotak jam, sehingga transisinya rata & bersih.
+        */
+        background: linear-gradient(135deg, var(--color-blue-deep) 0%, #05053d 50%, #050522 100%);
+        
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        max-width: 800px;
+        margin: 50px auto;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Shadow sedikit dipertegas */
+        
+        position: relative;
+        overflow: hidden;
+        contain: layout paint;
+}
+
+/* --- SISTEM UTAMA KUBUS MELAYANG --- */
+.world-clock-container .cubes {
+        /* Menggunakan absolute supaya flexbox di atas mengabaikan elemen ini */
+        position: absolute !important; 
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: 1; /* Berada di bawah kartu jam */
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        pointer-events: none; /* Supaya area jam tetap bisa diklik/hover aman */
+}
+
+.world-clock-container .cubes li {
+        position: absolute;
+        display: block;
+        width: 15px;
+        height: 15px;
+        background: rgba(255, 255, 255, 0.07);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        animation: animateClockCubes 12s linear infinite;
+        bottom: -50px;
+        will-change: transform, opacity;
+}
+
+/* Variasi acak posisi horizontal, ukuran, dan delay kubus */
+.world-clock-container .cubes li:nth-child(1) { left: 12%; width: 35px; height: 35px; animation-delay: 0s; }
+.world-clock-container .cubes li:nth-child(2) { left: 45%; width: 20px; height: 20px; animation-delay: 2s; animation-duration: 7s; }
+.world-clock-container .cubes li:nth-child(3) { left: 68%; width: 15px; height: 15px; animation-delay: 4s; }
+.world-clock-container .cubes li:nth-child(4) { left: 88%; width: 30px; height: 30px; animation-delay: 1.5s; animation-duration: 10s; }
+
+/* OPTIMASI FPS: border-radius dihapus dari keyframe (lihat catatan di bagian #1) */
+@keyframes animateClockCubes {
+        0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+        }
+        100% {
+                transform: translateY(-350px) rotate(360deg);
+                opacity: 0;
+        }
+}
+
+/* KARTU JAM (Diberi z-index tinggi agar melayang di atas kubus) */
+.clock-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex: 1;
+        min-width: 140px;
+        padding: 12px;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.03);
+        /* OPTIMASI FPS: blur dikurangi dari 4px -> 3px dan background sedikit dipekatkan
+           (0.03 -> 0.05) agar tetap "kaca" tanpa terlalu membebani backdrop-filter,
+           yang harus dihitung ulang tiap frame karena kubus bergerak di belakangnya. */
+        backdrop-filter: blur(3px);
+        transition: transform 0.3s ease, background 0.3s ease;
+        position: relative;
+        z-index: 5; /* Wajib di atas angka 1 */
+        will-change: transform;
+}
+
+.clock-card:hover {
+        background: rgba(255, 255, 255, 0.07);
+        transform: translateY(-5px);
+}
+
+.city-name {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.65);
+        letter-spacing: 2px;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+}
+
+.time-display {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--color-cyan-soft);
+        text-shadow: 0 0 12px rgba(0, 188, 212, 0.4);
+        font-family: "Courier New", monospace;
+}
+
+.date-display {
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.45);
+        margin-top: 5px;
+}
+
+/* ==========================================================================
+   MEDIA QUERY ANDROID (GRID KOTAK 2x2 YANG RESPONSIVEL)
+   ========================================================================== */
+@media screen and (max-width: 768px) {
+        .world-clock-container {
+                display: grid !important; /* Paksa merubah susunan menjadi Grid murni */
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 10px !important;
+                padding: 16px 12px !important;
+                margin: 20px auto !important;
+                max-width: 95% !important;
+                border-radius: 12px !important;
+                flex-wrap: unset !important;
+        }
+
+        /* OPTIMASI FPS MOBILE: kubus latar dimatikan total di HP.
+           Elemen ini cuma dekorasi, tapi paling berat dikombinasikan dengan
+           backdrop-filter di .clock-card. GPU mobile paling kerasa lag-nya di sini. */
+        .world-clock-container .cubes {
+                display: none !important;
+        }
+
+        .clock-card {
+                min-width: 0 !important;
+                flex: none !important;
+                padding: 10px 5px !important;
+                background: rgba(255, 255, 255, 0.06) !important;
+                border-radius: 8px !important;
+                /* OPTIMASI FPS MOBILE: backdrop-filter dimatikan di HP, diganti background
+                   sedikit lebih pekat di atas supaya tampilan "kaca" tetap kebaca tanpa biaya blur. */
+                backdrop-filter: none !important;
+        }
+
+        .city-name {
+                font-size: 0.65rem !important;
+                letter-spacing: 1px !important;
+                margin-bottom: 4px !important;
+        }
+
+        .time-display {
+                font-size: 1.2rem !important; /* Ukuran teks ideal & pas untuk Android */
+                text-shadow: 0 0 6px rgba(0, 188, 212, 0.3) !important;
+        }
+
+        .date-display {
+                font-size: 0.6rem !important;
+                margin-top: 3px !important;
+        }
+}
+
+/* ==========================================================================
+   8. RPG SYSTEM DIGITAL SKILL CARD (DESKTOP & LAPTOP VERSION)
+   ========================================================================== */
+.skills-section-wrapper {
+    width: 100%;
+    padding: 40px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    /* 🔥 FIX BACKGROUND TOTAL:
+       Warna biru terang (#005c8a) dibuang total dan diganti ke warna gelap pekat (#050522).
+       Sekarang gradasinya menyatu mulus dari atas sampai bawah tanpa potongan warna kaku!
+    */
+    background: linear-gradient(135deg, var(--color-blue-deep) 0%, #05053d 50%, #050522 100%) !important;
+    
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    max-width: 1200px;
+    margin: 0 auto 50px auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Shadow dipertegas agar makin premium */
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+    contain: layout paint;
+}
+
+/* --- Animasi Kubus Latar Belakang --- */
+.skills-section-wrapper .cubes {
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 1;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    pointer-events: none;
+}
+
+.skills-section-wrapper .cubes li {
+    position: absolute;
+    display: block;
+    width: 15px;
+    height: 15px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    animation: animateSkillCubes 14s linear infinite;
+    bottom: -50px;
+    will-change: transform, opacity;
+}
+
+.skills-section-wrapper .cubes li:nth-child(1) { left: 15%; width: 40px; height: 40px; animation-delay: 0s; }
+.skills-section-wrapper .cubes li:nth-child(2) { left: 35%; width: 20px; height: 20px; animation-delay: 3s; animation-duration: 8s; }
+.skills-section-wrapper .cubes li:nth-child(3) { left: 65%; width: 25px; height: 25px; animation-delay: 1.5s; }
+.skills-section-wrapper .cubes li:nth-child(4) { left: 85%; width: 35px; height: 35px; animation-delay: 4s; animation-duration: 11s; }
+
+/* OPTIMASI FPS: border-radius dihapus dari keyframe (lihat catatan di bagian #1) */
+@keyframes animateSkillCubes {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(-450px) rotate(360deg); opacity: 0; }
+}
+
+/* Container Utama Kartu (Desktop Mode) */
+.skills-section-wrapper .skills-grid-container {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    gap: 20px !important;
+    width: 90% !important;
+    max-width: 1200px;
+    position: relative;
+    z-index: 5;
+}
+
+/* Base Style Kartu RPG */
+.skills-section-wrapper .rpg-skill-card {
+    background: rgba(15, 23, 42, 0.6) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 12px !important;
+    padding: 20px !important;
+    width: 200px !important;
+    height: 140px !important;
+    /* OPTIMASI FPS: blur dikurangi dari 8px -> 5px, background dipekatkan sedikit
+       (0.5 -> 0.6) untuk menutupi penurunan blur secara visual tanpa nambah beban GPU. */
+    backdrop-filter: blur(5px);
+    font-family: "Courier New", monospace;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    will-change: transform;
+}
+
+.skills-section-wrapper .rpg-skill-card:hover {
+    transform: translateY(-5px);
+    background: rgba(15, 23, 42, 0.7) !important;
+    border-color: rgba(76, 166, 76, 0.5) !important;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+}
+
+.skills-section-wrapper .skill-card-logo-zone {
+    display: flex !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    width: 100% !important;
+}
+
+.skills-section-wrapper .skill-icon-logo {
+    font-size: 2rem !important;
+}
+
+/* Efek Warna Icon Global */
+.python-color { color: #3776ab; filter: drop-shadow(0 0 6px rgba(55, 118, 171, 0.6)); }
+.html-color   { color: #e34f26; filter: drop-shadow(0 0 6px rgba(227, 79, 38, 0.6)); }
+.js-color     { color: #f7df1e; background: #000; border-radius: 4px; padding: 1px 4px; font-size: 1.7rem !important; filter: drop-shadow(0 0 6px rgba(247, 223, 30, 0.5)); }
+.css-color    { color: #1572b6; filter: drop-shadow(0 0 6px rgba(21, 114, 182, 0.6)); }
+
+/* Efek Khusus React JS */
+.react-color { color: #61dafb; filter: drop-shadow(0 0 6px rgba(97, 218, 251, 0.7)); }
+.react-level-color { color: #61dafb !important; font-weight: 900; }
+.react-progress-fill { 
+    background: linear-gradient(90deg, #61dafb, #00bfff) !important;
+    box-shadow: 0 0 12px rgba(97, 218, 251, 0.8) !important;
+}
+.react-card-glow { border-color: rgba(97, 218, 251, 0.25) !important; }
+.react-card-glow:hover {
+    border-color: rgba(97, 218, 251, 0.6) !important;
+    box-shadow: 0 0 20px rgba(97, 218, 251, 0.25) !important;
+}
+
+/* Efek Khusus PHP */
+.php-color { 
+    color: #777bb4; 
+    filter: drop-shadow(0 0 6px rgba(119, 123, 180, 0.7)); 
+    font-size: 2.2rem !important;
+}
+.php-level-color { 
+    color: #a0a4d4 !important; 
+    font-weight: bold;
+}
+.php-progress-fill { 
+    background: linear-gradient(90deg, #777bb4, #9b9ece) !important;
+    box-shadow: 0 0 10px rgba(119, 123, 180, 0.6) !important;
+}
+
+/* Header di dalam kartu */
+.skills-section-wrapper .skill-card-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+}
+
+.skills-section-wrapper .skill-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-white);
+    letter-spacing: 1px;
+}
+
+.skills-section-wrapper .card-level {
+    font-size: 0.9rem;
+    color: #85bb65;
+    font-weight: bold;
+}
+
+/* Progress Bar Base */
+.skills-section-wrapper .card-progress-bar {
+    width: 100% !important;
+    height: 6px !important;
+    background: rgba(0, 0, 0, 0.5) !important;
+    border-radius: 4px !important;
+    overflow: hidden !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+.skills-section-wrapper .progress-fill {
+    height: 100% !important;
+    background: linear-gradient(90deg, #4ca64c, #6ec06e);
+    box-shadow: 0 0 10px rgba(76, 166, 76, 0.6);
+}
+
+/* Efek Khusus Node JS */
+.node-color { 
+    color: #339933; 
+    filter: drop-shadow(0 0 6px rgba(51, 153, 51, 0.7)); 
+}
+.node-level-color { 
+    color: #66cc66 !important; 
+    font-weight: 900; 
+}
+.node-progress-fill { 
+    background: linear-gradient(90deg, #339933, #66cc66) !important;
+    box-shadow: 0 0 12px rgba(51, 153, 51, 0.8) !important;
+}
+.node-card-glow { 
+    border-color: rgba(51, 153, 51, 0.25) !important; 
+}
+.node-card-glow:hover {
+    border-color: rgba(51, 153, 51, 0.6) !important;
+    box-shadow: 0 0 20px rgba(51, 153, 51, 0.3) !important;
+}
+
+/* Efek Khusus Git */
+.git-color { 
+    color: #f05032; 
+    filter: drop-shadow(0 0 6px rgba(240, 80, 50, 0.7)); 
+}
+.git-level-color { 
+    color: #ff765e !important; 
+    font-weight: 900; 
+}
+.git-progress-fill { 
+    background: linear-gradient(90deg, #f05032, #ff765e) !important;
+    box-shadow: 0 0 12px rgba(240, 80, 50, 0.8) !important;
+}
+.git-card-glow { 
+    border-color: rgba(240, 80, 50, 0.25) !important; 
+}
+.git-card-glow:hover {
+    border-color: rgba(240, 80, 50, 0.6) !important;
+    box-shadow: 0 0 20px rgba(240, 80, 50, 0.3) !important;
+}
+
+/* ==========================================================================
+   PENYELAMAT LAYOUT MOBILE / ANDROID (OPTIMIZED)
+   ========================================================================== */
+@media screen and (max-width: 768px) {
+    .skills-section-wrapper {
+        max-width: 92% !important;
+        margin: 20px auto !important;
+        padding: 25px 12px !important;
+    }
+
+    /* OPTIMASI FPS MOBILE: kubus latar skill section dimatikan total di HP,
+       sama seperti world-clock — paling berat dikombinasi dengan backdrop-filter kartu. */
+    .skills-section-wrapper .cubes {
+        display: none !important;
+    }
+
+    /* Grid Murni 2 Kolom Kompak */
+    .skills-section-wrapper .skills-grid-container {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px !important;
+        width: 100% !important;
+    }
+
+    /* Kartu Responsif Android */
+    .skills-section-wrapper .rpg-skill-card {
+        width: 100% !important;
+        min-width: 0 !important;
+        height: 130px !important;
+        padding: 14px 12px !important;
+        border-radius: 10px !important;
+        /* OPTIMASI FPS MOBILE: backdrop-filter dimatikan di HP, ganti background lebih pekat */
+        backdrop-filter: none !important;
+        background: rgba(15, 23, 42, 0.85) !important;
+    }
+
+    /* Penyelamatan Header Kartu di Mobile */
+    .skills-section-wrapper .skill-card-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 4px !important;
+    }
+
+    .skills-section-wrapper .skill-title {
+        font-size: 0.9rem !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        width: 100% !important;
+        display: block !important;
+    }
+
+    .skills-section-wrapper .card-level {
+        font-size: 0.8rem !important;
+    }
+
+    /* Skala Ukuran Icon di Layar Kecil */
+    .skills-section-wrapper .skill-icon-logo {
+        font-size: 1.6rem !important;
+    }
+
+    .skills-section-wrapper .js-color {
+        font-size: 1.3rem !important;
+    }
+    
+    .skills-section-wrapper .php-color {
+        font-size: 1.8rem !important; /* Mencegah logo PHP mobile overflow */
+    }
+
+    /* 🟢 TAMBAHAN SUNTIKAN MOBILE NODE JS BIAR PAS */
+    .skills-section-wrapper .node-color {
+        font-size: 1.8rem !important; /* Ukuran pas untuk HP, seimbang dengan PHP */
+    }
+
+    /* 🔴 TAMBAHAN SUNTIKAN MOBILE GIT BIAR PAS */
+    .skills-section-wrapper .git-color {
+        font-size: 1.8rem !important; /* Ukuran presisi pas layar HP Android */
+    }
+
+    .skills-section-wrapper .card-progress-bar {
+        height: 5px !important;
+    }
+}
+/* ==========================================================================
+   9. FOOTER DESIGN & INTERACTIVE SOCIAL MEDIA (FIXED)
+   ========================================================================== */
+.social-footer {
+    width: 100%;
+    padding: 40px 0;
+    /* 🔥 FIX TOTAL BACKGROUND: 
+       Kita paksa menggelap pekat agar balok biru raksasa di atas terputus 
+       dan melebur bersih sebelum masuk ke bagian Jam & Skill!
+    */
+    background: var(--color-blue-deep) !important; 
+    position: relative;
+    z-index: 2;
+    text-align: center;
+}
+
+.social-footer h3 {
+    margin-bottom: 25px;
+    font-family: "Yellowtail", cursive;
+    color: var(--color-gold-warm);
+    font-size: 28px;
+    letter-spacing: 1px;
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+/* FIX: Sinkronisasi selector .icon agar gaya tombolnya terbaca sempurna */
+.social-icons a.icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    text-decoration: none;
+    /* OPTIMASI FPS: cubic-bezier custom dipertahankan tapi target properti
+       dipersempit (cukup background/box-shadow/transform yang berubah di hover) */
+    transition: background-color 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+            background 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+            box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+            transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.social-icons a.icon i {
+    color: var(--color-white) !important;
+    font-size: 24px !important;
+}
+
+/* FIX TOMBOL INSTAGRAM */
+.social-icons a.instagram { 
+    background-color: #e4405f !important; 
+}
+.social-icons a.instagram:hover {
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888) !important;
+    box-shadow: 0 0 25px rgba(228, 64, 95, 0.7);
+    transform: translateY(-5px) scale(1.08);
+}
+
+/* FIX TOMBOL X (TWITTER) */
+.social-icons a.x-logo { 
+    background-color: #000000 !important; 
+    border: 1px solid rgba(255, 255, 255, 0.2) !important; 
+}
+.social-icons a.x-logo:hover {
+    background-color: var(--color-white) !important;
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.7);
+    transform: translateY(-5px) scale(1.08);
+}
+.social-icons a.x-logo:hover .svg-x { 
+    fill: #000000 !important; 
+}
+
+/* Base style SVG X */
+.social-icons a.x-logo .svg-x { 
+    transition: fill 0.3s ease; /* OPTIMASI FPS: "0.3s ease" tanpa properti = transition:all tersembunyi */
+}
+
+.main-footer {
+    text-align: center;
+    padding: 30px;
+    background: var(--color-black) !important;
+    color: var(--color-white) !important;
+    font-size: 13px;
+    width: 100%;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* FIX TOMBOL TIKTOK */
+.social-icons a.tiktok { 
+    background-color: #000000 !important; 
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+.social-icons a.tiktok:hover {
+    background: linear-gradient(45deg, #25F4EE, #000000, #FE2C55) !important;
+    box-shadow: 0 0 25px rgba(254, 44, 85, 0.7);
+    transform: translateY(-5px) scale(1.08);
+}
+
+/* === RESPONSIVE MEDIA QUERY UNTUK HP === */
+@media screen and (max-width: 600px) {
+    .social-footer {
+        padding: 30px 0 !important;
+    }
+
+    .social-footer h3 {
+        font-size: 22px !important;
+        margin-bottom: 18px !important;
+    }
+
+    .social-icons a.icon {
+        width: 46px !important;
+        height: 46px !important;
+    }
+}
+
+/* GREEN ONLINE INDICATOR DOT */
+.status-dot-fixed {
+        width: 10px;
+        height: 10px;
+        background-color: var(--color-green);
+        border-radius: 50%;
+        position: relative;
+        display: inline-block;
+        box-shadow: 0 0 10px var(--color-green);
+        flex-shrink: 0;
+}
+.status-dot-fixed::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 100%;
+        height: 100%;
+        background-color: var(--color-green);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        animation: pulseEffect 2s infinite ease-in-out;
+        will-change: width, height, opacity;
+}
+
+/* OPTIMASI FPS: keyframe pulseEffect ASLI animasi width/height — itu trigger
+   layout reflow tiap frame (paling mahal di seluruh file ini!). Diganti pakai
+   transform:scale + opacity yang murni GPU-composite, hasil visual identik. */
+@keyframes pulseEffect {
+        0% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+        100% { transform: translate(-50%, -50%) scale(3); opacity: 0; }
+}
+
+/* ==========================================================================
+   SYSTEM INTEGRATED ULTRA-PREMIUM FONTS (IOS LOGIC)
+   ========================================================================== */
+.public-profile, 
+.public-profile strong, 
+.public-profile span, 
+.public-profile p, 
+.public-profile div {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif !important;
+}
+
+.profile-name, 
+.info-section h2, 
+.side-bar h3,
+.maps-link {
+    font-family: 'Share Tech Mono', -apple-system, BlinkMacSystemFont, monospace !important;
+    letter-spacing: 1px;
+}
+
+/* ==========================================================================
+   EFFECTS & ANIMATIONS SYSTEM - OPTIMIZED FOR PERFORMANCE
+   ========================================================================== */
+
+/* FIX LAG: Gunakan hanya 'opacity' dan 'transform' di keyframes
+   — dua properti ini dijalankan di GPU, tidak menyentuh layout sama sekali */
+@keyframes neonPulse {
+    0%   { opacity: 0.6; }
+    50%  { opacity: 1; }
+    100% { opacity: 0.6; }
+}
+
+@keyframes onlineBlink {
+    0%   { transform: scale(1);   opacity: 1; }
+    50%  { transform: scale(1.1); opacity: 0.7; }
+    100% { transform: scale(1);   opacity: 1; }
+}
+
+/* FIX LAG: Sidebar hover — ganti 'transition: all' jadi properti spesifik
+   'all' memaksa browser cek SEMUA properti setiap frame → boros CPU */
+.rpg-profile-sidebar {
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                border-color 0.4s ease,
+                box-shadow 0.4s ease,
+                background 0.4s ease !important;
+    /* FIX LAG: Paksa elemen ke layer GPU sendiri supaya hover tidak ganggu render utama */
+    will-change: transform;
+    transform: translateZ(0);
+}
+.rpg-profile-sidebar:hover {
+    transform: translateY(-8px) translateZ(0);
+    border-color: rgba(0, 216, 255, 0.5) !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 216, 255, 0.2) !important;
+    background: rgba(10, 15, 26, 0.85) !important;
+}
+
+/* FIX LAG: Education item — sama, ganti 'all' ke properti spesifik */
+.education-item {
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+                border-color 0.3s ease,
+                box-shadow 0.3s ease,
+                background 0.3s ease !important;
+    position: relative;
+    /* FIX LAG: 'contain' membatasi efek layout/style agar tidak bocor ke luar elemen */
+    contain: layout style;
+    will-change: transform;
+    transform: translateZ(0);
+}
+.education-item:hover {
+    transform: translateX(8px) translateZ(0);
+    border-color: #00d8ff !important;
+    background: rgba(12, 20, 38, 0.85) !important;
+    box-shadow: 0 8px 25px rgba(0, 216, 255, 0.15) !important;
+}
+
+/* FIX LAG: Tambah pointer-events: none agar overlay tidak block click/hover event
+   yang memaksa browser re-calculate hit-testing */
+.education-item::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(10, 15, 30, 0.7);
+    z-index: 1;
+    pointer-events: none; /* ← FIX PENTING */
+}
+
+/* ==========================================================================
+   CUBES ANIMATION - OPTIMIZED
+   ========================================================================== */
+.cubes-fixed {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    overflow: hidden;
+    z-index: 1;
+    list-style: none;
+    padding: 0; margin: 0;
+    /* FIX LAG: 'contain' isolasi cubes agar animasinya tidak trigger reflow halaman */
+    contain: strict;
+    /* FIX LAG: Buat stacking context sendiri agar compositing tidak ganggu konten utama */
+    isolation: isolate;
+}
+
+.cubes-fixed li {
+    position: absolute;
+    display: block;
+    list-style: none;
+    width: 25px; height: 25px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(0, 212, 255, 0.4);
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.2);
+    bottom: -150px;
+    animation: flyUpwards 20s linear infinite;
+    border-radius: 4px;
+    /* FIX LAG: Setiap cube di layer GPU sendiri, tidak rebutan dengan elemen lain */
+    will-change: transform, opacity;
+    transform: translateZ(0);
+}
+
+.cubes-fixed li:nth-child(1) { left: 10%; width: 80px; height: 80px; animation-delay: 0s;  animation-duration: 18s; }
+.cubes-fixed li:nth-child(2) { left: 25%; width: 35px; height: 35px; animation-delay: 2s;  animation-duration: 12s; }
+.cubes-fixed li:nth-child(3) { left: 40%; width: 65px; height: 65px; animation-delay: 4s;  animation-duration: 22s; }
+.cubes-fixed li:nth-child(4) { left: 55%; width: 20px; height: 20px; animation-delay: 1s;  animation-duration: 15s; }
+.cubes-fixed li:nth-child(5) { left: 70%; width: 90px; height: 90px; animation-delay: 5s;  animation-duration: 25s; }
+.cubes-fixed li:nth-child(6) { left: 85%; width: 40px; height: 40px; animation-delay: 3s;  animation-duration: 14s; }
+.cubes-fixed li:nth-child(7) { left: 18%; width: 50px; height: 50px; animation-delay: 7s;  animation-duration: 16s; }
+.cubes-fixed li:nth-child(8) { left: 48%; width: 30px; height: 30px; animation-delay: 9s;  animation-duration: 11s; }
+.cubes-fixed li:nth-child(9) { left: 78%; width: 75px; height: 75px; animation-delay: 2s;  animation-duration: 19s; }
+
+/* FIX LAG: Keyframes hanya pakai 'transform' dan 'opacity'
+   — keduanya tidak trigger layout/paint, murni GPU compositing */
+@keyframes flyUpwards {
+    0%   { transform: translateY(0) rotate(0deg) translateZ(0);        opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { transform: translateY(-120vh) rotate(360deg) translateZ(0);  opacity: 0; border-radius: 50%; }
+}
+
+/* ==========================================================================
+   ACCESSIBILITY: Matikan animasi untuk pengguna yang minta reduced motion
+   Ini juga bantu device lemah / low-battery mode
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+    .cubes-fixed li,
+    .rpg-profile-sidebar,
+    .education-item {
+        animation: none !important;
+        transition: none !important;
+        will-change: auto !important;
+    }
+}
+/* OPTIMASI FPS MOBILE: kubus dekorasi cubes-fixed dimatikan total di HP */
+@media screen and (max-width: 768px) {
+    .cubes-fixed {
+        display: none !important;
+    }
+}
+
+/* Styling Dropdown Container */
+.nav-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Menyembunyikan Dropdown Menu secara default */
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #1a1a1a; /* Sesuaikan dengan warna tema gelap gahar kamu */
+  min-width: 160px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  border-radius: 4px;
+  padding: 5px 0;
+  list-style: none;
+  border: 1px solid #333;
+}
+
+/* Menampilkan Dropdown Menu saat di-hover */
+.nav-dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+/* Styling isi item dropdown */
+.dropdown-item {
+  color: var(--color-white);
+  padding: 10px 15px;
+  text-decoration: none;
+  display: block;
+  font-size: 14px;
+  transition: background-color 0.3s ease; /* OPTIMASI FPS: spesifik, bukan "background" generik */
+}
+
+/* Efek Hover untuk Item Dropdown */
+.dropdown-item:hover {
+  background-color: #ff0055; /* CATATAN: warna pink-neon khusus dropdown, tidak ada token persis di :root (beda dari --color-red/#ff2a4b), dibiarkan hex */
+  color: var(--color-white);
+}
+
+/* Memperbaiki tombol toggle agar tidak merusak struktur link */
+.dropdown-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.footer {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #ffffff !important;
+  padding: 80px 20px 30px 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  position: relative;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  /* DESKTOP: Teks di ujung kiri, Profile di ujung kanan */
+  justify-content: space-between !important; 
+  align-items: center;
+  padding: 0 8% !important; /* Memberi ruang seimbang kanan-kiri desktop */
+}
+
+.footer-content {
+  text-align: left !important; 
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start !important;
+  flex: 1;
+}
+
+/* --- STYLE LOGO / FOTO PROFIL KANAN --- */
+.footer-profile {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex: 1;
+}
+
+.profile-img {
+  width: 110px;           /* Ukuran ideal, pas dan tidak kebesaran */
+  height: 110px;
+  border-radius: 50%;    /* Membuat foto berbentuk lingkaran sempurna */
+  object-fit: cover;     /* Memastikan foto tidak lonjong/penyok */
+  
+  /* 🔥 UPDATE: Bingkai tipis warna biru cyan neon senada tema utama */
+  border: 3px solid #00d8ff !important; 
+  
+  /* 🔥 UPDATE: Efek pendaran neon biru mewah di sekeliling foto */
+  box-shadow: 0 0 20px rgba(0, 216, 255, 0.5) !important; 
+  
+  transition: transform 0.3s ease;
+}
+
+.profile-img:hover {
+  transform: scale(1.05); /* Sedikit membesar saat kursor diarahkan ke foto */
+  border-color: #ffffff !important;
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Teks Ayat */
+.ayat-text {
+  /* 🔥 UPDATE: Teks Lukas 1:37 diubah jadi Biru Cyan */
+  color: #ee5712 !important; 
+  font-size: 13px;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 6px;
+  letter-spacing: 1.5px;
+  text-shadow: 0 0 8px rgba(0, 216, 255, 0.4) !important;
+}
+
+/* Nama Kamu */
+.title {
+  color: #ffffff !important;
+  font-size: 26px; 
+  font-weight: 800;
+  margin: 0 0 8px 0;
+  letter-spacing: 0.5px;
+}
+
+/* Slogan */
+.slogan-text {
+  color: #a1a1aa !important; 
+  font-style: italic;
+  font-size: 14px;
+  margin: 0 0 20px 0;
+}
+
+/* Link Gmail */
+.email-link {
+  color: #ffffff !important;          
+  text-decoration: none !important;  
+  display: inline-flex;
+  align-items: center;
+  font-size: 15px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.email-link:hover, 
+.email-link:active {
+  /* 🔥 UPDATE: Saat di-hover, teks Gmail berubah jadi Biru */
+  color: #00d8ff !important;          
+  opacity: 0.95 !important;
+}
+
+.icon-spacing {
+  margin-right: 10px;
+  font-size: 16px;
+}
+
+/* Copyright Line */
+.copyright {
+  text-align: center !important;
+  margin-top: 60px;
+  font-size: 11px;
+  color: #71717a !important; 
+  border-top: 1px solid rgba(255, 255, 255, 0.08); 
+  padding-top: 25px;
+  letter-spacing: 0.5px;
+}
+
+/* =================================================== */
+/* IPHONE / MOBILE VIEW: Auto-Stack Menurun            */
+/* =================================================== */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column-reverse; /* Foto otomatis pindah ke atas teks di HP */
+    gap: 30px; /* Jarak antara foto dan teks di layar HP */
+    align-items: flex-start !important; /* Tetap konsisten mengunci rata kiri di HP */
+    padding-left: 25px !important; 
+  }
+
+  .footer-profile {
+    justify-content: flex-start; /* Foto ikut mepet kiri pas di layar HP */
+    width: 100%;
+  }
+
+  .profile-img {
+    width: 90px; /* Dikecilkan dikit di HP biar proporsional */
+    height: 90px;
+  }
+
+  .title {
+    font-size: 21px !important; 
+  }
+}
+
+.profile-img {
+  -webkit-touch-callout: none !important; /* Mematikan menu tahan-layar di iOS */
+  user-select: none !important;           /* Mematikan seleksi di Android */
+}
+
+/* Trik menyembunyikan draggable & pointer-events dari HTML */
+.secure-media {
+  /* Menggantikan style={{ pointerEvents: 'none' }} */
+  pointer-events: none !important; 
+
+  /* Cara standar mengunci media agar tidak bisa diseleksi atau digerakkan */
+  -webkit-touch-callout: none !important;
+  -webkit-user-select: none !important;
+  -khtml-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
