@@ -24,6 +24,19 @@ function EltriPutnzs() {
     setTimeout(() => setLoaderMounted(false), 500);
   };
 
+  // Kunci scroll body selama boot screen tampil. Tanpa ini, konten asli
+  // di bawahnya (yang panjang banget: hero + world clock + skills + footer)
+  // tetap "memakan" tinggi halaman walau disembunyikan, jadi layar bisa
+  // di-scroll dan nyisain ruang kosong di atas/bawah loader.
+  useEffect(() => {
+    document.body.style.overflow = booting ? 'hidden' : '';
+    document.documentElement.style.overflow = booting ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    };
+  }, [booting]);
+
   useEffect(() => {
     
     // 1. Logika Jam Digital Dunia (World Clock)
