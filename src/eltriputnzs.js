@@ -455,7 +455,7 @@ function EltriPutnzs() {
 
 <footer 
   className="footer" 
-  style={{ backgroundImage: "linear-gradient(rgba(20, 20, 20, 0.85), rgba(20, 20, 20, 0.85)), url('/images/sword.gif')" }}
+  style={{ backgroundImage: "linear-gradient(rgba(20, 20, 20, 0.85), rgba(20, 20, 20, 0.85)), url('/images/jp.jpg')" }}
 >
   <div className="container">
     
