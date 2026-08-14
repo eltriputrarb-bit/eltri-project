@@ -56,7 +56,7 @@ function MessageForm() {
         onClick={handleSubmit}
         disabled={loading}
       >
-        {loading ? 'Mengirim...' : 'Kirim Pesan Server'}
+        {loading ? 'Mengirim...' : 'Kirim Pesan'}
       </button>
       {status === 'success' && <p className="message-success">✅ Pesan terkirim!</p>}
       {status === 'error-input' && <p className="message-error">❌ Isi nama dan pesan dulu!</p>}
